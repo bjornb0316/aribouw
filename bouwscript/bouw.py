@@ -41,33 +41,46 @@ def kop(variant, actief, titel, omschrijving, wa_bericht, extra="", kopklasse=""
                     % (b, ' aria-current="page"' if b == actief else "", n)
                     for b, n in paginas(variant))
     nav_m = "\n".join('      <a href="%s">%s</a>' % (b, n) for b, n in paginas(variant))
+    # De voorbeeldbalk en noindex staan er zolang LIVE uit staat. De eigen
+    # URL van de pagina kent kop() niet (dienstpagina's geven "diensten.html"
+    # mee voor het menu), dus die vult schrijf() in op __PAGINA__.
+    robots = "" if D.LIVE else '<meta name="robots" content="noindex,nofollow">\n'
+    balk = "" if D.LIVE else """<div class="voorstel">
+  <div class="wrap">
+    <span><b>Voorbeeldpagina.</b> Voorstel voor Aribouw, gemaakt door Bjorn van Capital BB. Dit is niet de offici&euml;le website.</span>
+    <span><a href="https://wa.me/%s">Reageren via WhatsApp</a></span>
+  </div>
+</div>
+""" % D.BJORN_WA
     return """<!doctype html>
 <html lang="nl">
 <head>
 <script>document.documentElement.className+=" js";</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex,nofollow">
-<title>%(titel)s</title>
+%(robots)s<title>%(titel)s</title>
 <meta name="description" content="%(omschrijving)s">
+<link rel="canonical" href="%(site)s/__PAGINA__">
 <meta property="og:title" content="%(titel)s">
 <meta property="og:description" content="%(omschrijving)s">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="nl_NL">
+<meta property="og:site_name" content="Aribouw">
+<meta property="og:url" content="%(site)s/__PAGINA__">
+<meta property="og:image" content="%(site)s/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#F6F4F0">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 %(fonts)s
 <link rel="stylesheet" href="assets/css/stijl.css">
 %(extra)s
 </head>
 <body data-wa-bericht="%(wa)s">
 
-<div class="voorstel">
-  <div class="wrap">
-    <span><b>Voorbeeldpagina.</b> Voorstel voor Aribouw, gemaakt door Bjorn van Capital BB. Dit is niet de offici&euml;le website.</span>
-    <span><a href="https://wa.me/%(bjorn)s">Reageren via WhatsApp</a></span>
-  </div>
-</div>
-
+%(balk)s
 <header class="kop%(kopklasse)s">
   <div class="wrap kop-in">
     <a class="merk" href="index.html">
@@ -103,8 +116,9 @@ def kop(variant, actief, titel, omschrijving, wa_bericht, extra="", kopklasse=""
 
 <main>
 """ % dict(titel=titel, omschrijving=omschrijving, fonts=FONTS, extra=extra, nav=nav,
-           nav_m=nav_m, wa=wa_bericht, bjorn=D.BJORN_WA, tel=D.TEL_TOON, tellink=D.TEL_LINK,
-           mark=MARK, kopklasse=(" " + kopklasse) if kopklasse else "")
+           nav_m=nav_m, wa=wa_bericht, tel=D.TEL_TOON, tellink=D.TEL_LINK,
+           mark=MARK, kopklasse=(" " + kopklasse) if kopklasse else "",
+           robots=robots, balk=balk, site=D.SITE_URL[variant])
 
 
 def voet(variant):
@@ -141,7 +155,7 @@ def voet(variant):
     </div>
     <div class="voet-onder">
       <span>Schildersbedrijf uit %(plaats)s. Werken op afspraak, op locatie.</span>
-      <span>Voorbeeldontwerp van Bjorn, Capital BB. <a href="https://wa.me/%(bjorn)s" style="display:inline;text-decoration:underline">Reageren</a></span>
+      <span><a class="voet-inline" href="privacy.html">Privacyverklaring</a>%(ontwerp)s</span>
     </div>
   </div>
 </footer>
@@ -155,8 +169,11 @@ def voet(variant):
 </body>
 </html>
 """ % dict(links=links, tel=D.TEL_TOON, tellink=D.TEL_LINK, mail=D.MAIL, kvk=D.KVK,
-           werkspot=D.WERKSPOT, gebied=gebied, plaats=D.PLAATS, bjorn=D.BJORN_WA,
-           eigenaar=D.EIGENAAR, adres=D.ADRES, postcode=D.POSTCODE, btw=D.BTW)
+           werkspot=D.WERKSPOT, gebied=gebied, plaats=D.PLAATS,
+           eigenaar=D.EIGENAAR, adres=D.ADRES, postcode=D.POSTCODE, btw=D.BTW,
+           ontwerp="" if D.LIVE else (
+               ' &nbsp;&middot;&nbsp; Voorbeeldontwerp van Bjorn, Capital BB. <a class="voet-inline" '
+               'href="https://wa.me/%s">Reageren</a>' % D.BJORN_WA))
 
 
 def snee(om=False, zand=False):
@@ -326,13 +343,36 @@ def scoreblok():
             % (D.SCORE, D.AANTAL_REVIEWS, D.SCORE_DATUM))
 
 
+def markeer(tekst):
+    """[NOG AANVULLEN: iets] wordt een zichtbare markering op de pagina."""
+    import re
+    return re.sub(r"\[NOG AANVULLEN: ([^\]]+)\]",
+                  lambda m: '<span class="markering">Nog aanvullen: %s</span>' % m.group(1), tekst)
+
+
+# ---- formulieren ----
+# Een verborgen veld dat mensen niet zien en spambots wel invullen.
+HONING = ('<div class="honing" aria-hidden="true"><label for="%s">Laat dit veld leeg</label>'
+          '<input id="%s" name="_honey" type="text" tabindex="-1" autocomplete="off"></div>')
+
+
+def verzendfout():
+    """Als versturen mislukt, is er altijd nog bellen of appen."""
+    return ('<p class="verzendfout" data-verzendfout role="alert">Versturen lukte niet. Bel of app '
+            'mij op <a href="tel:%s">%s</a>, dan kijk ik er meteen naar.</p>'
+            % (D.TEL_LINK, D.TEL_TOON))
+
+
+def demozin():
+    """Zolang er geen ontvanger is ingesteld, zegt de bevestiging dat eerlijk."""
+    return "" if D.FORMULIER_ACTIE else " In deze voorbeeldpagina gaat er nog niets echt de deur uit."
+
+
 def vragen(lijst, kop_id="vragen"):
     h = '        <div class="vragen op" id="%s">\n' % kop_id
     for v, a in lijst:
-        a = (a.replace("[NOG AANVULLEN: garantietermijnen]",
-                       '<span class="markering">Nog aanvullen: garantietermijnen</span>')
-              .replace("[NOG AANVULLEN: gebruikelijke doorlooptijden]",
-                       '<span class="markering">Nog aanvullen: doorlooptijden</span>'))
+        a = markeer(a.replace("[NOG AANVULLEN: gebruikelijke doorlooptijden]",
+                              "[NOG AANVULLEN: doorlooptijden]"))
         h += ('          <div class="vraag" data-open="0">\n'
               '            <button type="button" aria-expanded="false">'
               '<span>%s</span><span class="vraag-teken" aria-hidden="true"></span></button>\n'
@@ -395,15 +435,17 @@ def contactblok(titel, intro, onderwerpen=None, variant=None):
               <textarea id="bericht" name="bericht" rows="4" placeholder="Bijvoorbeeld: woonkamer en gang schilderen, muren zijn nu behangen, plafond mag mee."></textarea>
               <span class="hulp">Niet verplicht. Hoe meer u kwijt wilt, hoe gerichter het antwoord.</span>
             </div>
+            %(honing)s
             <button class="knop knop--vol" type="submit">Offerte aanvragen</button>
+            %(verzendfout)s
             <p class="formulier-noot">Vrijblijvend. Ik kom eerst kijken, daarna pas een prijs.
-            Foto&#39;s stuurt u het makkelijkst via WhatsApp.</p>
+            Foto&#39;s stuurt u het makkelijkst via WhatsApp. Wat ik met uw gegevens doe, staat in
+            de <a href="privacy.html">privacyverklaring</a>.</p>
           </form>
           <div class="gelukt op" data-gelukt role="status">
-            <b>Aanvraag genoteerd.</b>
+            <b>Aanvraag verstuurd.</b>
             <p>Ik bel u om een moment af te spreken. Stuur gerust alvast een paar foto&#39;s van de
-            ruimte, dan kan ik meteen meedenken. In deze voorbeeldpagina gaat er nog niets echt de
-            deur uit.</p>
+            ruimte, dan kan ik meteen meedenken.%(demozin)s</p>
             <div class="knopgroep" style="margin-top:1.1rem">
               <a class="knop knop--lijn knop--klein" href="#" data-wa-pagina>Foto&#39;s sturen</a>
             </div>
@@ -431,19 +473,65 @@ def contactblok(titel, intro, onderwerpen=None, variant=None):
   </section>
 """ % dict(titel=titel, intro=intro, opties=opties, tel=D.TEL_TOON, tellink=D.TEL_LINK,
            mail=D.MAIL, plaats=D.PLAATS, werkspot=D.WERKSPOT, score=D.SCORE,
-           extra=extra, filmpje=filmpje, adres=D.ADRES, postcode=D.POSTCODE)
+           extra=extra, filmpje=filmpje, adres=D.ADRES, postcode=D.POSTCODE,
+           honing=HONING % ("honing-contact", "honing-contact"), verzendfout=verzendfout(),
+           demozin=demozin())
+
+
+# Het merkteken als favicon: hetzelfde doorgesneden vierkant als in de kop.
+FAVICON = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28">'
+           '<rect width="28" height="28" rx="5" fill="#23262B"/>'
+           '<path d="M0 28V5a5 5 0 0 1 5-5h23z" fill="#14508C"/></svg>\n')
 
 
 def stijlbladen():
+    import shutil
+    from PIL import Image, ImageDraw
     for variant in ("grondlaag", "aflak"):
         for soort, inhoud, naam in (("css", stijl.blad(variant), "stijl.css"),
-                                    ("js", JS.blad(variant, D.WA), "main.js")):
+                                    ("js", JS.blad(variant, D.WA, D.FORMULIER_ACTIE), "main.js")):
             map_ = os.path.join(WORTEL, "variant-" + variant, "assets", soort)
             os.makedirs(map_, exist_ok=True)
             io.open(os.path.join(map_, naam), "w", encoding="utf-8").write(inhoud)
+        assets = os.path.join(WORTEL, "variant-" + variant, "assets")
+        io.open(os.path.join(assets, "favicon.svg"), "w", encoding="utf-8").write(FAVICON)
+        # Voor iOS een PNG; iOS rondt de hoeken zelf af.
+        im = Image.new("RGB", (180, 180), "#23262B")
+        ImageDraw.Draw(im).polygon([(0, 0), (180, 0), (0, 180)], fill="#14508C")
+        im.save(os.path.join(assets, "apple-touch-icon.png"))
+        # De deelafbeelding voor WhatsApp, Facebook en LinkedIn. Gemaakt
+        # door film.py; hier alleen naar de variant gekopieerd.
+        og = os.path.join(WORTEL, "assets", "img", "og-aribouw.jpg")
+        if os.path.exists(og):
+            shutil.copyfile(og, os.path.join(assets, "og.jpg"))
 
 
 def schrijf(variant, naam, inhoud):
     map_ = os.path.join(WORTEL, "variant-" + variant)
     os.makedirs(map_, exist_ok=True)
+    inhoud = inhoud.replace("__PAGINA__", "" if naam == "index.html" else naam)
     io.open(os.path.join(map_, naam), "w", encoding="utf-8").write(inhoud)
+
+
+def zoekbestanden(variant, namen):
+    """sitemap.xml en robots.txt. Zolang LIVE uit staat, blokkeert robots.txt
+    alles; de pagina's hebben dan ook noindex."""
+    import datetime
+    site = D.SITE_URL[variant]
+    vandaag = datetime.date.today().isoformat()
+    regels = []
+    for n in namen:
+        pad = "" if n == "index.html" else n
+        prio = "1.0" if n == "index.html" else ("0.3" if n == "privacy.html" else "0.7")
+        regels.append("  <url><loc>%s/%s</loc><lastmod>%s</lastmod><priority>%s</priority></url>"
+                      % (site, pad, vandaag, prio))
+    sitemap = ('<?xml version="1.0" encoding="UTF-8"?>\n'
+               '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n%s\n</urlset>\n'
+               % "\n".join(regels))
+    if D.LIVE:
+        robots = "User-agent: *\nAllow: /\n\nSitemap: %s/sitemap.xml\n" % site
+    else:
+        robots = "# Demo: niet indexeren. Bij livegang LIVE = True in bouwscript/data.py.\nUser-agent: *\nDisallow: /\n"
+    map_ = os.path.join(WORTEL, "variant-" + variant)
+    io.open(os.path.join(map_, "sitemap.xml"), "w", encoding="utf-8").write(sitemap)
+    io.open(os.path.join(map_, "robots.txt"), "w", encoding="utf-8").write(robots)

@@ -272,10 +272,69 @@ reviews en dezelfde mobiele navigatie.
 
 ---
 
+## Klaar voor livegang: drie schakelaars
+
+Bovenin `bouwscript/data.py` staan drie instellingen. Alle drie staan nog in
+demostand; bij livegang zet je ze om en draai je `python bouwscript/alles.py`.
+
+| schakelaar | nu | bij livegang |
+| --- | --- | --- |
+| `LIVE` | `False`: voorbeeldbalk, voetregel van Bjorn, `noindex` op elke pagina, `robots.txt` blokkeert alles | `True`: dat gaat allemaal weg, `robots.txt` wijst naar de sitemap |
+| `SITE_URL["aflak"]` | de GitHub Pages-map | het echte domein, zonder slash aan het eind |
+| `FORMULIER_ACTIE` | leeg: formulieren controleren en bevestigen, maar versturen niets | bijvoorbeeld `https://formsubmit.co/ajax/aribouw10@gmail.com` |
+
+### Formulieren
+
+Het contactformulier en de offerteflow sturen hun gegevens als JSON naar
+`FORMULIER_ACTIE`. Elke dienst die JSON per POST aanneemt en 2xx teruggeeft,
+werkt. FormSubmit heeft geen account nodig: de eerste aanvraag stuurt Ahmad een
+activatiemail die hij een keer bevestigt. Daarna komen aanvragen binnen als
+nette tabel met onderwerpregel.
+
+- De offerteflow stuurt elke klikvraag met een eigen label: werk, omvang,
+  kleurrichting, ondergrond, wanneer, plus naam, telefoon en plaats
+- Tijdens versturen staat er "Versturen..." op de knop en werkt een tweede
+  klik niet
+- Mislukt het, dan blijft alles ingevuld staan en staat eronder: bel of app
+  mij op 06 83 04 41 91
+- Een verborgen lokveld houdt spambots tegen: die krijgen een bevestiging,
+  maar er gaat niets weg
+- In demostand zegt de bevestiging eerlijk dat er nog niets de deur uit gaat.
+  Met een ontvanger valt die zin vanzelf weg
+
+Getest met een lokaal nep-endpoint (niets naar Ahmad gestuurd): beide
+formulieren kwamen compleet binnen, een serverfout geeft de foutmelding met
+behoud van de invoer, en het lokveld verstuurt niets. Test zelf zonder de code
+aan te passen met de omgevingsvariabele `ARIBOUW_FORMULIER`.
+
+### Privacyverklaring
+
+`privacy.html` in beide varianten, gelinkt vanuit de footer en onder elk
+formulier. Geschreven voor wat de site echt doet: geen cookies, geen
+analytics, lettertypen via Fontshare. Drie punten zijn een keuze en geen wet,
+dus even met Ahmad bevestigen:
+
+- aanvragen zonder opdracht verwijderen **binnen twaalf maanden** (de zeven
+  jaar voor opdrachten is de wettelijke bewaarplicht)
+- de naam van de formulierdienst (gemarkeerd op de pagina)
+- de naam van de hostingpartij (gemarkeerd op de pagina)
+
+Komt er ooit Google Analytics of een pixel bij, dan moet de verklaring mee en
+is er een cookiemelding nodig.
+
+### SEO-basis
+
+- `sitemap.xml` en `robots.txt` per variant, gegenereerd bij elke build
+- Canonical en `og:url` op elke pagina, met de eigen URL van die pagina
+- Favicon (het merkteken als SVG) en een `apple-touch-icon`
+- Deelafbeelding van 1200 bij 630 voor WhatsApp, Facebook en LinkedIn: de
+  strakke lijn uit de hero met ARIBOUW erop (`film.py`, functie `deelbeeld`)
+- Structuurdata van de home met url, afbeelding, adres, telefoon, e-mail, btw
+  en alle twaalf plaatsen
+
 ## Voor livegang vervangen of bevestigen
 
-De demo staat op `noindex,nofollow` en elke pagina heeft bovenin een balk die
-zegt dat het een voorstel is. Beide moeten eruit voordat de site echt live gaat.
+Naast de drie schakelaars hierboven:
 
 ### Harde blokkers
 
@@ -285,9 +344,8 @@ zegt dat het een voorstel is. Beide moeten eruit voordat de site echt live gaat.
 | `[NOG AANVULLEN: garantietermijnen]` | `data.py`, `VRAGEN` | Werkspot vermeldt wel dát er garantie is, niet hoe lang |
 | `[NOG AANVULLEN: gebruikelijke doorlooptijden]` | `data.py`, `VRAGEN` | zichtbaar gemarkeerd |
 | Het logo | `bouw.py`, constante `MARK` | er staat nu een diagonaal doorgesneden vierkant, het motief van de site. Ahmad stuurt het logo apart; een vectorbestand vervangt dit |
-| `noindex,nofollow` | `bouw.py`, functie `kop()` | weghalen bij livegang |
-| Voorbeeldbalk en voetregel | `bouw.py` | weghalen bij livegang |
-| Formulieren gaan nergens heen | `bouwscript/script.py` | controle en bevestiging werken; er is nog geen ontvanger. Voor livegang bijvoorbeeld naar aribouw10@gmail.com laten sturen |
+| Alleen Aflak overhouden | keuzepagina, `variant-grondlaag/` | Ahmad koos Aflak: die naar de hoofdmap, de rest eruit. De paden `../assets/` gaan dan mee |
+| Houtwerkfilm | `bouw.py`, `DIENST_FILM["houtwerk"]` | nu de kitwerk-film, die niet over hout gaat. Het Higgsfield-tegoed was op (0,97 credits); een nieuwe film kost ongeveer 11 credits |
 
 ### Nog te ontvangen of te bevestigen
 
@@ -296,7 +354,9 @@ zegt dat het een voorstel is. Beide moeten eruit voordat de site echt live gaat.
 | Socialmediapagina's | stuurt Ahmad apart. Het Instagram-account uit de eerste briefing is niet van dit bedrijf |
 | Certificaten en extra reviews | stuurt Ahmad apart |
 | De score | 5,0 uit 31 op 8 september 2026. Dat getal loopt op, voor livegang opnieuw kijken |
-| Adres op de site | Mommenkamp 27 staat nu in de footer, het contactblok en de structuurdata. Even checken of Ahmad dat woonadres openbaar wil hebben |
+| Adres op de site | Mommenkamp 27 staat nu in de footer, het contactblok, de privacyverklaring en de structuurdata. Even checken of Ahmad dat woonadres openbaar wil hebben |
+| Bewaartermijn aanvragen | twaalf maanden in de privacyverklaring, zie hierboven |
+| Domein | heeft Ahmad er al een? Nodig voor `SITE_URL` |
 | Prijzen | bewust nergens genoemd |
 
 Opgelost met de gegevens van 15 september: telefoonnummer, e-mail, adres,

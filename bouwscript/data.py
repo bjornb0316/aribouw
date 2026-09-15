@@ -29,6 +29,31 @@ Wat er NIET in staat:
   - Prijzen. Niet gevraagd, niet getoond.
 """
 
+import os
+
+# ---------------------------------------------------------------------
+# Livegang. Drie schakelaars, alle drie nog in demostand.
+# ---------------------------------------------------------------------
+# LIVE = False: voorbeeldbalk bovenin, voetregel van Bjorn, noindex op elke
+# pagina en een robots.txt die alles blokkeert. Op True gaat dat allemaal weg.
+LIVE = False
+
+# Het adres waar elke variant staat, zonder slash aan het eind. Voor
+# canonical, og:url, og:image en de sitemap. Bij livegang: het echte domein
+# bij "aflak".
+SITE_URL = {
+    "aflak": "https://bjornb0316.github.io/aribouw/variant-aflak",
+    "grondlaag": "https://bjornb0316.github.io/aribouw/variant-grondlaag",
+}
+
+# Waar formulieren naartoe gaan. Leeg: demostand, controle en bevestiging
+# werken maar er gaat niets de deur uit. Voor livegang bijvoorbeeld
+# "https://formsubmit.co/ajax/aribouw10@gmail.com": geen account nodig, de
+# eerste aanvraag stuurt Ahmad een activatiemail die hij een keer bevestigt.
+# Elk adres dat JSON per POST aanneemt en 2xx teruggeeft werkt. Voor een
+# test zonder de code aan te passen: omgevingsvariabele ARIBOUW_FORMULIER.
+FORMULIER_ACTIE = os.environ.get("ARIBOUW_FORMULIER", "")
+
 NAAM = "Aribouw"
 PERSOON = "Ahmad"
 EIGENAAR = "Ahmad Nikzad"
@@ -215,6 +240,8 @@ JSONLD = """{
   "@context": "https://schema.org",
   "@type": "HousePainter",
   "name": "Aribouw",
+  "url": "%s/",
+  "image": "%s/assets/og.jpg",
   "founder": {"@type": "Person", "name": "%s"},
   "description": "Schildersbedrijf voor binnen- en buitenschilderwerk, behangen en kleine houtreparaties in Westervoort, Arnhem, Nijmegen en omgeving.",
   "telephone": "%s",
@@ -224,7 +251,7 @@ JSONLD = """{
               "addressLocality": "%s", "addressCountry": "NL"},
   "areaServed": [%s],
   "sameAs": ["https://www.werkspot.nl/profiel/aribouw"]
-}""" % (EIGENAAR, TEL_LINK, MAIL, BTW, ADRES, POSTCODE, PLAATS,
+}""" % (SITE_URL["aflak"], SITE_URL["aflak"], EIGENAAR, TEL_LINK, MAIL, BTW, ADRES, POSTCODE, PLAATS,
         ", ".join('"%s"' % p for p in WERKGEBIED_ALLES))
 
 

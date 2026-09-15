@@ -72,6 +72,35 @@ def webp(im, pad, q=80):
     return os.path.getsize(pad)
 
 
+def deelbeeld():
+    """De afbeelding die WhatsApp, Facebook en LinkedIn tonen bij een gedeelde
+    link: het eindbeeld van de hero, de strakke lijn, met de naam erop.
+    1200 bij 630. alles.py kopieert hem naar elke variant als assets/og.jpg."""
+    from PIL import ImageDraw, ImageFont
+    bp = os.path.join(BRON, "e70.png")
+    if not os.path.exists(bp):
+        print("  mist: e70.png")
+        return
+    im = snij(Image.open(bp).convert("RGB"), 1200 / 630.0).resize((1200, 630), Image.LANCZOS)
+    d = ImageDraw.Draw(im)
+    # Supreme staat niet op elke machine; Segoe UI Bold wel op Windows.
+    def lettertype(namen, grootte):
+        for n in namen:
+            try:
+                return ImageFont.truetype(n, grootte)
+            except OSError:
+                continue
+        return ImageFont.load_default()
+    groot = lettertype(["segoeuib.ttf", "DejaVuSans-Bold.ttf", "arialbd.ttf"], 86)
+    klein = lettertype(["segoeui.ttf", "DejaVuSans.ttf", "arial.ttf"], 36)
+    # Linksonder staat het blauwe vlak: daar is wit goed leesbaar.
+    d.text((70, 420), "ARIBOUW", font=groot, fill="#FFFFFF")
+    d.text((74, 526), "Schilder in Westervoort en omgeving", font=klein, fill="#DCE6F2")
+    pad = os.path.join(IMG, "og-aribouw.jpg")
+    im.save(pad, "JPEG", quality=84, optimize=True, progressive=True)
+    print("  %-24s 1200x630   %6.1f kB  deelafbeelding" % ("og-aribouw.jpg", os.path.getsize(pad) / 1024.0))
+
+
 def main():
     os.makedirs(IMG, exist_ok=True)
     os.makedirs(FILM, exist_ok=True)
@@ -85,6 +114,8 @@ def main():
             im = im.resize((breedte, int(im.height * breedte / float(im.width))), Image.LANCZOS)
         kb = webp(im, os.path.join(IMG, doel), 78) / 1024.0
         print("  %-24s %4dx%-4d %6.1f kB  %s" % (doel, im.width, im.height, kb, wat))
+
+    deelbeeld()
 
     for bron, doel, breedte, crf in FILMS:
         bp = os.path.join(BRON, bron)

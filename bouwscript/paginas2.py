@@ -218,19 +218,20 @@ def offerte(variant):
           <div class="veld"><label for="of-plaats">Plaats</label>
             <input id="of-plaats" name="plaats" type="text" autocomplete="address-level2" required>
             <span class="fout">Vul uw plaats in.</span></div>
+          %(honing)s
           <button class="knop knop--vol" type="button" data-flow-verstuur>Offerte aanvragen</button>
+          %(verzendfout)s
           <p class="formulier-noot">Vrijblijvend. Foto&#39;s stuurt u daarna het makkelijkst via
-          WhatsApp; dat werkt sneller dan uploaden.</p>
+          WhatsApp; dat werkt sneller dan uploaden. Wat ik met uw gegevens doe, staat in de
+          <a href="privacy.html">privacyverklaring</a>.</p>
         </div>
 
         <div class="flow-klaar" data-klaar data-aan="0" role="status">
-          <b>Aanvraag genoteerd.</b>
+          <b>Aanvraag verstuurd.</b>
           <p>Ik bel u om een moment af te spreken. Met de knop hieronder staat uw situatie
-          al in een WhatsApp-bericht; u hoeft alleen nog op verzenden te drukken en er eventueel
-          foto&#39;s bij te doen.</p>
+          ook in een WhatsApp-bericht, handig als u er meteen foto&#39;s bij wilt doen.</p>
           <div class="flow-samen" data-flow-samen></div>
-          <p class="klein" style="color:var(--licht-3)">In deze voorbeeldpagina gaat er nog niets
-          echt de deur uit.</p>
+          %(demozin)s
           <div class="knopgroep" style="margin-top:1.2rem">
             <a class="knop knop--vol" data-wa href="#">Bericht openen in WhatsApp</a>
           </div>
@@ -238,7 +239,9 @@ def offerte(variant):
       </div>
     </div>
   </section>
-"""
+""" % dict(honing=B.HONING % ("honing-flow", "honing-flow"), verzendfout=B.verzendfout(),
+           demozin=('<p class="klein" style="color:var(--licht-3)">%s</p>' % B.demozin().strip())
+                   if B.demozin() else "")
     h += B.snee()
     h += '  <section class="sectie sectie--vlak">\n    <div class="wrap rail">\n'
     h += B.railkop("Daarna", "Wat er gebeurt na uw aanvraag", "Geen verkooptraject",
@@ -285,6 +288,107 @@ def contact(variant):
                    "rij.")
     h += B.vragen(D.VRAGEN, "alle-vragen")
     h += "      </div>\n    </div>\n  </section>\n"
+    return h + B.voet(variant)
+
+
+# =====================================================================
+# PRIVACYVERKLARING (beide varianten)
+# =====================================================================
+# Verplicht zodra de formulieren echt versturen: ze vragen naam, telefoon
+# en plaats. Geschreven voor wat de site nu doet: geen cookies, geen
+# analytics, fonts via Fontshare, films en foto's van de eigen server.
+# Wat een keuze van Ahmad is en niet uit de wet volgt, staat gemarkeerd.
+PRIVACY_DATUM = "15 september 2026"
+
+
+def privacy(variant):
+    h = B.kop(variant, "privacy.html",
+              "Privacyverklaring | Aribouw",
+              "Welke gegevens Aribouw verzamelt via de website, waarvoor, hoe lang ze bewaard "
+              "worden en welke rechten u heeft.",
+              "Hallo, ik heb een vraag over mijn gegevens.")
+    h += """
+  <section class="sectie">
+    <div class="wrap">
+      <div class="lopend">
+        <h1 class="display">Privacyverklaring</h1>
+        <p class="intro">Als u via deze website contact opneemt, krijg ik een paar gegevens van u.
+        Hieronder staat welke dat zijn, wat ik ermee doe en wat u kunt vragen. Laatst bijgewerkt op
+        %(datum)s.</p>
+
+        <h2>Wie ik ben</h2>
+        <dl>
+          <dt>Bedrijf</dt><dd>Aribouw, %(eigenaar)s</dd>
+          <dt>Adres</dt><dd>%(adres)s, %(postcode)s %(plaats)s</dd>
+          <dt>KvK</dt><dd>%(kvk)s</dd>
+          <dt>E-mail</dt><dd><a href="mailto:%(mail)s">%(mail)s</a></dd>
+          <dt>Telefoon</dt><dd><a href="tel:%(tellink)s">%(tel)s</a></dd>
+        </dl>
+        <p>Aribouw is verantwoordelijk voor de verwerking van de gegevens in deze verklaring.</p>
+
+        <h2>Welke gegevens</h2>
+        <p>Via het contactformulier of de offerteaanvraag:</p>
+        <ul>
+          <li>uw naam, telefoonnummer en woonplaats</li>
+          <li>waar de klus over gaat en wat u zelf over uw situatie schrijft</li>
+          <li>de keuzes die u in de offerteaanvraag aanklikt, zoals het soort werk, de kleurrichting
+          en wanneer het zou moeten gebeuren</li>
+        </ul>
+        <p>Neemt u contact op via WhatsApp, telefoon of e-mail, dan krijg ik de gegevens die u daar
+        zelf meestuurt, zoals foto&#39;s van de ruimte.</p>
+
+        <h2>Waarvoor</h2>
+        <ul>
+          <li>om u terug te bellen en een afspraak te maken om te komen kijken</li>
+          <li>om een offerte te maken</li>
+          <li>om de klus uit te voeren en af te rekenen, als u de opdracht geeft</li>
+        </ul>
+        <p>Dat mag omdat u zelf om contact of een offerte vraagt, en omdat het nodig is om een
+        opdracht uit te voeren (artikel 6 lid 1 onder b AVG). Voor de administratie geldt daarnaast
+        een wettelijke bewaarplicht. Ik gebruik uw gegevens niet voor nieuwsbrieven of reclame en
+        verkoop ze niet.</p>
+
+        <h2>Hoe lang</h2>
+        <ul>
+          <li>Een aanvraag die niet tot een opdracht leidt, verwijder ik binnen twaalf maanden.</li>
+          <li>Gegevens van een opdracht, zoals de offerte en de factuur, bewaar ik zeven jaar. Dat is
+          de wettelijke bewaarplicht voor de administratie.</li>
+        </ul>
+
+        <h2>Wie er nog meer bij kan</h2>
+        <ul>
+          <li><b>De formulierdienst.</b> Wat u in een formulier invult, gaat via een formulierdienst
+          naar mijn e-mail. %(formulierdienst)s</li>
+          <li><b>De hostingpartij</b> waar de website draait. %(hosting)s</li>
+          <li><b>WhatsApp</b>, als u zelf kiest om via WhatsApp contact op te nemen. Dan gelden ook
+          de voorwaarden van WhatsApp.</li>
+          <li><b>Fontshare</b> levert de lettertypen van deze website. Uw browser haalt die op bij
+          hun server, waarbij uw IP-adres wordt gezien.</li>
+        </ul>
+        <p>Verder deel ik uw gegevens alleen als de wet dat verplicht.</p>
+
+        <h2>Cookies</h2>
+        <p>Deze website plaatst geen cookies en gebruikt geen programma&#39;s die uw bezoek volgen
+        of meten.</p>
+
+        <h2>Beveiliging</h2>
+        <p>De website werkt via een beveiligde verbinding (https). Aanvragen komen binnen in mijn
+        e-mail, die met een wachtwoord is beveiligd.</p>
+
+        <h2>Uw rechten</h2>
+        <p>U mag vragen welke gegevens ik van u heb, ze laten aanpassen of laten verwijderen. U mag
+        ook bezwaar maken of vragen om ze aan u over te dragen. Stuur daarvoor een mail naar
+        <a href="mailto:%(mail)s">%(mail)s</a> of bel <a href="tel:%(tellink)s">%(tel)s</a>. U krijgt
+        binnen vier weken antwoord.</p>
+        <p>Bent u het niet eens met hoe ik met uw gegevens omga, dan kunt u een klacht indienen bij
+        de <a href="https://autoriteitpersoonsgegevens.nl">Autoriteit Persoonsgegevens</a>.</p>
+      </div>
+    </div>
+  </section>
+""" % dict(datum=PRIVACY_DATUM, eigenaar=D.EIGENAAR, adres=D.ADRES, postcode=D.POSTCODE,
+           plaats=D.PLAATS, kvk=D.KVK, mail=D.MAIL, tel=D.TEL_TOON, tellink=D.TEL_LINK,
+           formulierdienst=B.markeer("[NOG AANVULLEN: naam van de formulierdienst]"),
+           hosting=B.markeer("[NOG AANVULLEN: naam van de hostingpartij]"))
     return h + B.voet(variant)
 
 
