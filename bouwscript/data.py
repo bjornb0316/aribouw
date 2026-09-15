@@ -3,37 +3,46 @@
 
 Wat er gecontroleerd is en waar het vandaan komt:
 
+  - Op 15 september 2026 heeft Ahmad Nikzad zelf de gegevens aangeleverd:
+    telefoon, e-mail, adres, KvK, btw, werkgebied, werkzaamheden, wat hij
+    met de site wil en wat Aribouw volgens hem anders maakt. Dat is de bron
+    voor alles hieronder, tenzij er iets anders bij staat.
   - Het Werkspot-profiel is op 8 september 2026 bekeken. Daar stond 5 uit 5
-    op basis van 31 reviews, KvK-nummer 95128905, en de vermeldingen
-    "Geverifieerd door Werkspot" en "Biedt garantie".
-  - De dienstenlijst is hun eigen lijst van dat profiel, samengevoegd tot
-    vier groepen zodat het geen klusbedrijf met twintig diensten wordt.
+    op basis van 31 reviews, KvK-nummer 95128905 (klopt met wat Ahmad
+    opgaf), en de vermeldingen "Geverifieerd door Werkspot" en "Biedt
+    garantie".
   - De reviews hieronder staan letterlijk zo op Werkspot, met naam, plaats
     en datum erbij.
-  - Hun eigen omschrijving en hun eigen zin over vakwerk komen van het
-    Werkspot-profiel en de Facebookpagina.
+
+Wat Ahmad expliciet vroeg:
+  - Duidelijk een schilder, geen algemeen bouwbedrijf.
+  - Geen stucwerk of egaliseren. Dat staat er dus nergens als dienst, en
+    het staat als vraag in de lijst zodat niemand erop rekent.
+  - Ruimte voor eigen projectfoto's en voor-en-na. Die stuurt hij apart.
+  - Teksten natuurlijk en persoonlijk, niet commercieel. Daarom in de
+    ik-vorm: Ahmad is degene die komt kijken en het werk doet.
 
 Wat er NIET in staat:
-  - Telefoonnummer, e-mailadres en adres. Die waren nergens openbaar te
-    vinden, dus er staan zichtbare placeholders.
-  - Het Instagram-account @aribouw uit de briefing. Dat staat op naam van
-    "walid aribou", heeft nul volgers en geen posts. Er wordt dus nergens
-    naar gelinkt.
-  - Prijzen. De klant wil ze niet tonen.
+  - Het Instagram-account @aribouw uit de eerste briefing. Dat staat op naam
+    van "walid aribou", heeft nul volgers en geen posts. Ahmad stuurt zijn
+    eigen socialmediapagina's apart.
+  - Prijzen. Niet gevraagd, niet getoond.
 """
 
 NAAM = "Aribouw"
-ONDERTITEL = "Schilderen &middot; behangen &middot; renovatie"
 PERSOON = "Ahmad"
-PLAATS = "Zevenaar"
+EIGENAAR = "Ahmad Nikzad"
+PLAATS = "Westervoort"
+ADRES = "Mommenkamp 27"
+POSTCODE = "6932 HT"
 
-# Nog niet openbaar gevonden. Zichtbaar als placeholder laten staan.
-TEL_TOON = "[TELEFOONNUMMER]"
-TEL_LINK = "+31600000000"
-WA = "31600000000"
-MAIL = "[E-MAILADRES]"
+TEL_TOON = "06 83 04 41 91"
+TEL_LINK = "+31683044191"
+WA = "31683044191"
+MAIL = "aribouw10@gmail.com"
 
 KVK = "95128905"
+BTW = "NL005131384B93"
 WERKSPOT = "https://www.werkspot.nl/profiel/aribouw"
 FACEBOOK = "https://www.facebook.com/aribouw/?locale=nl_NL"
 BJORN_WA = "31614664161"
@@ -46,74 +55,79 @@ SCORE = "5,0"
 AANTAL_REVIEWS = "31"
 SCORE_DATUM = "8 september 2026"
 
-WERKGEBIED = ["Zevenaar", "Arnhem", "Duiven", "Westervoort"]
+# Het werkgebied zoals Ahmad het opgaf, in zijn volgorde. De eerste vier
+# krijgen in Aflak een eigen plaatspagina; meer bijna gelijke pagina's
+# helpen niet en lezen als opvulling.
+WERKGEBIED_ALLES = ["Westervoort", "Duiven", "Zevenaar", "Arnhem", "Doesburg", "Didam",
+                    "Dieren", "Velp", "Huissen", "Elst", "Ede", "Nijmegen"]
+WERKGEBIED = WERKGEBIED_ALLES[:4]
+BUITEN_REGIO = "Voor grotere projecten ook buiten deze regio."
 
-# De zeven diensten van hun Werkspot-profiel, teruggebracht tot vier groepen.
+# Zijn eigen lijst van werkzaamheden, in vier groepen.
 # (slug, naam, kort, lang, beeld, punten)
 DIENSTEN = [
     ("binnenschilderwerk", "Binnenschilderwerk",
-     "Muren, plafonds, deuren, kozijnen en trappen. Strak afgeplakt, netjes achtergelaten.",
-     "Binnen schilderen is vooral voorwerk. Ontvetten, schuren, plamuren, aftapen. Dat deel ziet "
-     "niemand terug, en juist daar zit het verschil tussen een muur die er twee jaar goed uitziet "
-     "en een die er tien jaar goed uitziet. Meubels worden afgedekt en aan het eind gaat alles "
-     "terug zoals het stond.",
+     "Wanden, plafonds, deuren, kozijnen en trappen. Strak afgeplakt en netjes achtergelaten.",
+     "Binnen schilderen is voor een groot deel voorbereiding. Ontvetten, schuren, kleine gaatjes "
+     "dichtzetten, afplakken. Dat ziet u later niet terug, maar juist daar zit het verschil tussen "
+     "een muur die twee jaar mooi blijft en een die tien jaar mooi blijft. Meubels en vloeren dek "
+     "ik af, en aan het eind staat alles weer zoals het stond.",
      "deur-na.webp",
-     ["Muren, plafonds en wanden",
-      "Deuren, kozijnen en plinten",
-      "Trapgangen en overlopen",
+     ["Wand- en plafondschilderwerk",
+      "Deuren, kozijnen en ander houtwerk",
+      "Trappen en trapgangen",
       "Alles afgedekt, aan het eind weer opgeruimd"]),
     ("buitenschilderwerk", "Buitenschilderwerk",
-     "Kozijnen, deuren, boeidelen en buitenhout. Eerst het houtwerk herstellen, dan pas verf.",
+     "Kozijnen, deuren, boeidelen en ander buitenhout. Eerst het hout in orde, dan pas verf.",
      "Buitenwerk gaat kapot op de plekken waar water blijft staan: onderdorpels, hoeken van "
-     "kozijnen, de onderkant van een deur. Verf daaroverheen zetten lost niets op. Eerst het "
-     "aangetaste hout eruit en herstellen, dan gronden en aflakken. Anders staat u over twee jaar "
-     "weer op dezelfde plek.",
+     "kozijnen, de onderkant van een deur. Verf daaroverheen zetten lost niets op. Aangetast hout "
+     "haal ik eerst weg en herstel ik, daarna komen de grondverf en de lak. Anders staat u over "
+     "twee jaar weer op dezelfde plek.",
      "kozijn-buiten.webp",
      ["Kozijnen, deuren en boeidelen",
-      "Houtherstel voordat er verf op gaat",
-      "Kitwerk langs beglazing vernieuwen",
-      "Ook bedrijfspanden en praktijkruimtes"]),
-    ("behang", "Behang en wandafwerking",
-     "Behangen, renovlies en glasvezel. Ook het oude behang eraf en de wand weer glad.",
-     "De helft van een goed behangresultaat zit in de ondergrond. Een wand met resten oud behang, "
-     "gaatjes of losse plekken geeft altijd naden die je later ziet. Oud behang eraf, wand "
-     "herstellen, en pas dan behangen. Bij renovlies en glasvezel komt daar nog een laag verf "
-     "overheen.",
+      "Kleine houtreparaties voordat er verf op gaat",
+      "Verf die past bij hout dat buiten staat",
+      "Woningen, bedrijfspanden en praktijkruimtes"]),
+    ("behang", "Behangen",
+     "Behang, renovlies en glasvezel. Oud behang gaat er eerst af.",
+     "Een goed behangresultaat begint bij de wand. Resten van oud behang of losse plekken zie je "
+     "later terug als naden. Oud behang gaat eraf, kleine gaatjes zet ik dicht, en pas dan wordt "
+     "er behangen. Bij renovlies en glasvezel komt er daarna nog verf overheen. Stucwerk en "
+     "egaliseren doe ik niet; is dat nodig, dan hoort u dat vooraf.",
      "wand-detail.webp",
      ["Behang aanbrengen en verwijderen",
       "Renovlies en glasvezelbehang",
-      "Wanden herstellen en gladmaken",
-      "Advies over materiaal bij uw ondergrond"]),
-    ("renovatie", "Kleine renovaties",
-     "Plinten, kitwerk, houtherstel en de afwerking waar andere partijen niet aan toekomen.",
-     "Vaak is het niet een grote klus maar een rij kleine dingen: plinten die vervangen moeten, "
-     "kitwerk dat zwart is geworden, een deur die klemt, een stuk houtrot. Los besteden bij vier "
-     "partijen kost meer tijd dan het werk zelf. Dat kan in een keer mee.",
+      "Renovlies en glasvezel afwerken met verf",
+      "Advies over het soort behang bij uw wand"]),
+    ("houtwerk", "Houtreparaties en onderhoud",
+     "Houtrot herstellen, een deur die klemt, klein onderhoud. Het werk dat vaak bij schilderwerk "
+     "hoort.",
+     "Vaak is het niet een grote klus maar een rij kleine dingen: een stuk houtrot in een kozijn, "
+     "een dorpel die zacht is geworden, een deur die klemt. Dat los uitbesteden kost meer tijd dan "
+     "het werk zelf. Ik neem het mee in dezelfde planning als het schilderwerk.",
      "pui-voetzorg.webp",
-     ["Plinten plaatsen of vervangen",
-      "Kitwerk in keuken, badkamer en langs kozijnen",
-      "Houtherstel en kleine reparaties",
-      "Meerdere klussen in een keer"]),
+     ["Houtrot uithalen en herstellen",
+      "Kleine reparaties aan deuren, kozijnen en trappen",
+      "Klein renovatie- en onderhoudswerk",
+      "In een planning met het schilderwerk"]),
 ]
 
-# Wat er gebeurt, van eerste bericht tot oplevering. Geen doorlooptijden,
-# want die zijn niet bevestigd.
+# Van eerste bericht tot oplevering. Geen doorlooptijden, want die zijn
+# nog niet bevestigd.
 STAPPEN = [
     ("01", "U stuurt foto's of belt",
-     "Een paar foto's van de ruimte of het kozijn zeggen vaak al genoeg. Vermeld erbij wat u wilt "
-     "en wanneer het ongeveer zou moeten."),
-    ("02", "Langskomen en opmeten",
-     "Er wordt gekeken naar de ondergrond, de staat van het hout en wat er aan voorwerk nodig is. "
-     "Daar zit vaak meer werk in dan mensen denken."),
-    ("03", "Offerte met het voorwerk erin",
-     "Op papier staat wat er gebeurt: schuren, plamuren, gronden, aflakken. Zo is te zien waar de "
-     "uren in gaan zitten en waarom."),
+     "Een paar foto's van de ruimte of het kozijn zeggen vaak al genoeg. Zet erbij wat u wilt en "
+     "wanneer het ongeveer zou moeten."),
+    ("02", "Ik kom langs en kijk",
+     "Ik bekijk de ondergrond, de staat van het hout en hoeveel voorbereiding er nodig is. Daar zit "
+     "vaak meer werk in dan mensen denken."),
+    ("03", "Een offerte met de voorbereiding erin",
+     "Op papier staat wat er gebeurt: schuren, gronden, lakken. Zo ziet u waar de uren in gaan "
+     "zitten en waarom."),
     ("04", "Uitvoeren",
-     "Afdekken, afplakken, werken. U hoort vooraf wanneer er wordt begonnen en of u thuis moet "
-     "zijn."),
+     "Afdekken, afplakken, schilderen. U hoort vooraf wanneer ik begin en of u thuis moet zijn."),
     ("05", "Opruimen en samen nalopen",
-     "Tape eraf, spullen terug, afvalmateriaal mee. Aan het eind wordt het werk samen "
-     "doorgelopen."),
+     "Tape eraf, spullen terug, afval mee. Aan het eind lopen we het werk samen na."),
 ]
 
 # Zo staan ze op Werkspot, met naam, plaats en datum. Ingekort tot maximaal
@@ -132,67 +146,86 @@ REVIEWS = [
      "Klant uit Huissen", "Buitenschilderwerk, 10 jul 2026"),
 ]
 
-# De bezwaren uit de briefing, eerlijk beantwoord.
+# De vragen die bij een eerste bezoek aan de keukentafel voorbijkomen.
 VRAGEN = [
     ("Wat gaat het kosten?",
-     "Dat hangt af van de oppervlakte, de staat van de ondergrond en hoeveel voorwerk er nodig "
-     "is. Twee kamers van dezelfde maat kunnen een factor twee schelen, puur door wat eronder "
-     "zit. Daarom komt er eerst iemand kijken en pas daarna een prijs."),
+     "Dat hangt af van de oppervlakte, de staat van de ondergrond en hoeveel voorbereiding er "
+     "nodig is. Twee kamers van dezelfde maat kunnen flink verschillen, puur door wat eronder zit. "
+     "Daarom kom ik eerst kijken en noem ik pas daarna een prijs."),
     ("Wordt mijn woning netjes achtergelaten?",
-     "Meubels worden afgedekt en vloeren beschermd. Tape gaat er aan het eind af, spullen gaan "
-     "terug zoals ze stonden en het afvalmateriaal gaat mee. Op Werkspot is dat het punt dat het "
-     "vaakst terugkomt in de reviews."),
+     "Meubels dek ik af en vloeren bescherm ik. Aan het eind gaat de tape eraf, gaan spullen terug "
+     "zoals ze stonden en neem ik het afval mee. Op Werkspot is dat het punt dat het vaakst "
+     "terugkomt in de reviews."),
     ("Hoe lang duurt het?",
      "Dat verschilt te veel per klus om er hier een getal aan te hangen. Bij de offerte hoort een "
-     "planning: wanneer er wordt begonnen, hoeveel dagen het ongeveer duurt en of u thuis moet "
-     "zijn. [NOG AANVULLEN: gebruikelijke doorlooptijden]"),
+     "planning: wanneer ik begin, hoeveel dagen het ongeveer duurt en of u thuis moet zijn. "
+     "[NOG AANVULLEN: gebruikelijke doorlooptijden]"),
     ("Welke verf of welk behang is geschikt?",
-     "Dat hangt af van de ruimte en de ondergrond. In een badkamer of keuken is een andere lak "
-     "nodig dan in een slaapkamer, en op een wand met scheurtjes werkt renovlies beter dan "
-     "gewoon behang. U krijgt advies, en de keuze blijft aan u."),
+     "Dat hangt af van de ruimte en de ondergrond. In een badkamer of keuken is een andere verf "
+     "nodig dan in een slaapkamer. Ik denk mee over materiaal en kleur, de keuze blijft aan u."),
     ("Moet ik zelf verf of behang regelen?",
      "Dat mag, en het hoeft niet. Koopt u zelf, dan hoort u vooraf hoeveel er nodig is en welk "
-     "type past. Wordt het meegenomen, dan staat het als post in de offerte."),
+     "type past. Neem ik het mee, dan staat het als post in de offerte."),
     ("Wordt beschadigd hout eerst hersteld?",
-     "Ja. Verf over rot hout is weggegooid geld. Aangetast hout wordt uitgehaald en hersteld "
-     "voordat er gegrond wordt. Zit er te veel in, dan hoort u dat bij de opname en niet pas als "
-     "het werk al loopt."),
-    ("Kan hij verschillende werkzaamheden combineren?",
-     "Ja, dat is juist waar Aribouw handig in is. Schilderwerk, behang, plinten en kitwerk in een "
-     "planning scheelt tijd en gedoe met meerdere partijen."),
+     "Ja. Verf over rot hout is weggegooid geld. Aangetast hout haal ik weg en herstel ik voordat "
+     "er gegrond wordt. Zit er te veel in, dan hoort u dat bij het kijken en niet pas als het werk "
+     "al loopt."),
+    ("Kunt u verschillende klussen combineren?",
+     "Ja. Schilderwerk, behang en kleine houtreparaties in een planning scheelt tijd en gedoe met "
+     "meerdere partijen."),
     ("Heb ik garantie op de afwerking?",
      "Op het Werkspot-profiel staat dat Aribouw garantie biedt. De precieze termijn en waar hij "
      "op geldt hoort bij de offerte. [NOG AANVULLEN: garantietermijnen]"),
     ("Hoe weet ik dat het goed komt?",
      "Op Werkspot staan %s reviews met een gemiddelde van %s. Die zijn openbaar, inclusief de "
-     "reacties eronder. Vraag bij de opname gerust naar een adres van een klus in de buurt."
+     "reacties eronder. Vraag gerust naar een adres van een klus bij u in de buurt."
      % (AANTAL_REVIEWS, SCORE)),
+    ("Doet u ook stucwerk of egaliseren?",
+     "Nee. Kleine gaatjes en naden zet ik dicht voordat er geschilderd of behangen wordt, maar "
+     "stucwerk en egaliseren doe ik niet. Is dat nodig, dan hoort u dat bij het kijken, zodat u "
+     "het op tijd kunt regelen."),
+    ("Werkt u ook voor aannemers en architecten?",
+     "Ja. Ik werk voor particulieren en voor aannemers, architecten en andere professionals, met "
+     "duidelijke afspraken over planning, materiaal en oplevering. Voor grotere projecten kan ik "
+     "ook buiten de regio werken."),
 ]
 
+# Welke vragen bij welke dienstpagina horen (indexen in VRAGEN).
+DIENST_VRAGEN = {
+    "binnenschilderwerk": [0, 1, 3, 4],
+    "buitenschilderwerk": [5, 0, 7, 10],
+    "behang": [9, 3, 4, 1],
+    "houtwerk": [5, 6, 0, 10],
+}
+
 ONBEVESTIGD = [
-    "Telefoonnummer, e-mailadres en adres. Nergens openbaar gevonden; er staan zichtbare "
-    "placeholders in de site en de WhatsApp-knoppen wijzen naar een leeg nummer.",
-    "Het Instagram-account @aribouw uit de briefing is niet van dit bedrijf. Het staat op naam "
-    "van 'walid aribou', heeft nul volgers en geen enkele post. Er wordt nergens naar gelinkt. "
-    "Vraag na of er een ander account is.",
+    "Eigen projectfoto's en voor-en-nafoto's: Ahmad stuurt ze apart. De site heeft er ruimte "
+    "voor; nu staan er negen beelden van Facebook en Werkspot.",
+    "Het logo als vectorbestand. Er staat nu een eigen merkteken als tijdelijke oplossing.",
+    "Garantietermijnen en gebruikelijke doorlooptijden: zichtbaar gemarkeerd in de vragenlijst.",
+    "Certificaten en extra reviews: stuurt Ahmad apart.",
+    "Socialmediapagina's: stuurt Ahmad apart. Het Instagram-account uit de eerste briefing is "
+    "niet van dit bedrijf.",
     "De score van %s uit %s reviews is op %s van Werkspot gehaald. Dat getal loopt op, dus voor "
     "livegang even opnieuw kijken." % (SCORE, AANTAL_REVIEWS, SCORE_DATUM),
-    "Garantietermijnen en gebruikelijke doorlooptijden: zichtbaar gemarkeerd in de vragenlijst.",
-    "Werkgebied: de reviews komen uit Driel, Apeldoorn, Kilder, Huissen en Westervoort. Er wordt "
-    "dus verder gereden dan Zevenaar en Arnhem. Even vaststellen wat het werkgebied echt is.",
-    "Prijzen: bewust nergens genoemd, conform de briefing.",
-    "Het logo is overgenomen van een foto op Facebook. Voor livegang is een vectorbestand nodig.",
+    "Formulieren hebben nog geen ontvanger. De WhatsApp-knoppen werken wel, met het echte nummer.",
 ]
 
 JSONLD = """{
   "@context": "https://schema.org",
   "@type": "HousePainter",
   "name": "Aribouw",
-  "description": "Schilderwerk, behang en kleine renovaties in Zevenaar, Arnhem en omgeving.",
-  "address": {"@type": "PostalAddress", "addressLocality": "Zevenaar", "addressCountry": "NL"},
-  "areaServed": ["Zevenaar", "Arnhem", "Duiven", "Westervoort"],
+  "founder": {"@type": "Person", "name": "%s"},
+  "description": "Schildersbedrijf voor binnen- en buitenschilderwerk, behangen en kleine houtreparaties in Westervoort, Arnhem, Nijmegen en omgeving.",
+  "telephone": "%s",
+  "email": "%s",
+  "vatID": "%s",
+  "address": {"@type": "PostalAddress", "streetAddress": "%s", "postalCode": "%s",
+              "addressLocality": "%s", "addressCountry": "NL"},
+  "areaServed": [%s],
   "sameAs": ["https://www.werkspot.nl/profiel/aribouw"]
-}"""
+}""" % (EIGENAAR, TEL_LINK, MAIL, BTW, ADRES, POSTCODE, PLAATS,
+        ", ".join('"%s"' % p for p in WERKGEBIED_ALLES))
 
 
 def wa_link(bericht):

@@ -457,56 +457,61 @@ h2.display{font-size:clamp(2rem,4vw,3.2rem);letter-spacing:-.025em}
 .sectie--vlak .score b{color:#fff}
 .tape{background:var(--blauw);border-bottom-color:var(--blauw)}
 
-/* ---------- hero over de volle breedte ---------- */
-.kop--over{background:transparent;backdrop-filter:none;border-bottom-color:transparent}
-.kop--over .nav a,.kop--over .kop-tel{color:#E7EAEE}
-.kop--over .nav a:hover,.kop--over .nav a[aria-current="page"]{color:#fff}
-.kop--over .merk b{color:#fff}
-.kop--over .merk small{color:rgba(231,234,238,.7)}
-.kop--over .merk-mark .m-blauw{fill:#7FB6E8}
-.kop--over .merk-mark .m-inkt{fill:#fff}
-.kop--over .menu-knop{border-color:rgba(231,234,238,.45)}
-.kop--over .menu-knop span{background:#fff}
-.kop--over .knop--vol{background:#fff;color:var(--blauw);border-color:#fff}
-.kop--over.vast{background:rgba(246,244,240,.94);backdrop-filter:blur(10px);
-  border-bottom-color:var(--lijn)}
-.kop--over.vast .nav a,.kop--over.vast .kop-tel{color:var(--inkt-2)}
-.kop--over.vast .nav a:hover,.kop--over.vast .nav a[aria-current="page"]{color:var(--inkt)}
-.kop--over.vast .merk b{color:var(--inkt)}
-.kop--over.vast .merk small{color:var(--inkt-3)}
-.kop--over.vast .merk-mark .m-blauw{fill:var(--blauw)}
-.kop--over.vast .merk-mark .m-inkt{fill:var(--inkt)}
-.kop--over.vast .menu-knop{border-color:var(--lijn-2)}
-.kop--over.vast .menu-knop span{background:var(--inkt)}
-.kop--over.vast .knop--vol{background:var(--blauw);color:#fff;border-color:var(--blauw)}
+/* ---------- films en beelden over de volle breedte ----------
+   De Higgsfield-films. Een poster staat er altijd; de film zelf laadt
+   pas als hij in beeld komt, en met minder beweging blijft de poster. */
+.film{position:absolute;inset:0;z-index:0;overflow:hidden;background:var(--nacht)}
+.film video,.film img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 
-.hero--vol{position:relative;min-height:min(88vh,44rem);display:flex;align-items:flex-end;
-  overflow:hidden;margin-top:-74px;padding-top:74px;
-  padding-bottom:clamp(2.5rem,5vw,4.5rem);background:var(--nacht)}
-@media (max-width:900px){.hero--vol{margin-top:-62px;padding-top:62px}}
-.hero--vol .wrap{position:relative;z-index:3;width:100%}
-.hero--vol h1{color:#fff;margin-top:.8rem;max-width:16ch;
-  text-shadow:0 2px 26px rgba(10,14,20,.5)}
-.hero--vol .intro{margin-top:1.1rem;max-width:42ch;color:#E4E8ED;
-  text-shadow:0 1px 14px rgba(10,14,20,.5)}
-.hero--vol .label{color:#9EC2E4}
-.hero--vol .knopgroep{margin-top:1.8rem}
-.hero--vol .knop--vol{background:#fff;color:var(--blauw);border-color:#fff}
-.hero--vol .knop--vol:hover{background:var(--licht);border-color:var(--licht)}
-.hero--vol .knop--lijn{color:#fff;border-color:rgba(255,255,255,.5);
-  background:rgba(10,14,20,.26);backdrop-filter:blur(2px)}
-.hero--vol .knop--lijn:hover{border-color:#fff;background:rgba(10,14,20,.42)}
+.hero--film{position:relative;min-height:min(86svh,48rem);display:flex;align-items:flex-end;
+  overflow:hidden;padding-block:clamp(3rem,6vw,5rem);background:var(--nacht);isolation:isolate}
+.hero--film .wrap{position:relative;z-index:3;width:100%}
+.hero--film::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:
+    linear-gradient(0deg,rgba(12,16,22,.82) 0%,rgba(12,16,22,.38) 38%,rgba(12,16,22,0) 64%),
+    linear-gradient(90deg,rgba(12,16,22,.62) 0%,rgba(12,16,22,.18) 52%,rgba(12,16,22,0) 78%)}
+.hero--film h1{color:#fff;margin-top:.8rem;max-width:16ch;
+  text-shadow:0 2px 30px rgba(10,14,20,.45)}
+.hero--film .intro{margin-top:1.1rem;max-width:44ch;color:#E4E8ED;
+  text-shadow:0 1px 16px rgba(10,14,20,.5)}
+.hero--film .label{color:#B5D2EE}
+.hero--film .label a{border-bottom:1px solid currentColor}
+.hero--film .knopgroep{margin-top:1.8rem}
+.hero--film .knop--vol{background:#fff;color:var(--blauw);border-color:#fff}
+.hero--film .knop--vol:hover{background:var(--licht);border-color:var(--licht)}
+.hero--film .knop--lijn{color:#fff;border-color:rgba(255,255,255,.55);
+  background:rgba(10,14,20,.28);backdrop-filter:blur(3px)}
+.hero--film .knop--lijn:hover{border-color:#fff;background:rgba(10,14,20,.45)}
+
+/* De home: de blauwe helft van de muur moet blauw blijven, dus alleen
+   onderaan een lichte waas voor de knoppen. Op mobiel valt de witte helft
+   achter de tekst, daar is de waas steviger. */
+.hero--home{min-height:min(90svh,52rem)}
+.hero--home::after{background:
+    linear-gradient(0deg,rgba(9,28,50,.7) 0%,rgba(9,28,50,.2) 34%,rgba(9,28,50,0) 58%),
+    linear-gradient(90deg,rgba(9,28,50,.35) 0%,rgba(9,28,50,0) 46%)}
+@media (max-width:760px){
+  .hero--home .film video,.hero--home .film img{object-position:30% 50%}
+  .hero--home::after{background:
+    linear-gradient(0deg,rgba(9,28,50,.92) 0%,rgba(9,28,50,.7) 42%,rgba(9,28,50,.1) 72%)}
+}
+.hero--kort{min-height:min(62svh,34rem)}
+.hero--dienst{min-height:min(78svh,42rem)}
+/* Op een telefoon moeten de knoppen in beeld staan zonder te scrollen. */
+@media (max-width:760px){.hero--film,.hero--home,.hero--dienst{min-height:68svh}
+  .hero--kort{min-height:52svh}}
+
+/* Heel licht inzoomen terwijl de kop wegscrolt: diepte, geen spektakel. */
+@supports (animation-timeline:view()){
+  @media (prefers-reduced-motion:no-preference){
+    .film--hero video,.film--hero img{animation:filmzoom linear both;
+      animation-timeline:view();animation-range:exit 0% exit 100%}
+    @keyframes filmzoom{to{transform:scale(1.08)}}
+  }
+}
 
 /* ---------- de voor-en-na schuif ---------- */
-.schuif{position:absolute;inset:0;z-index:1;overflow:hidden;touch-action:pan-y}
-.schuif img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .schuif-na{clip-path:inset(0 0 0 var(--x,50%))}
-.schuif::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
-  background:
-    linear-gradient(180deg,rgba(12,16,22,.78) 0%,rgba(12,16,22,.52) 12%,
-                    rgba(12,16,22,.20) 32%,rgba(12,16,22,.30) 54%,
-                    rgba(12,16,22,.76) 88%,rgba(12,16,22,.88) 100%),
-    linear-gradient(90deg,rgba(12,16,22,.6) 0%,rgba(12,16,22,.16) 58%,transparent 100%)}
 .schuif-greep{position:absolute;top:0;bottom:0;z-index:4;width:2px;background:rgba(255,255,255,.9);
   left:var(--x,50%);transform:translateX(-1px);cursor:ew-resize;touch-action:none}
 .schuif-greep::after{content:"";position:absolute;top:50%;left:50%;width:46px;height:46px;
@@ -597,6 +602,92 @@ h2.display{font-size:clamp(2rem,4vw,3.2rem);letter-spacing:-.025em}
 .regio-lijst b{font-family:Supreme,sans-serif;font-weight:700;font-size:1.08rem;display:block;
   margin-bottom:.3rem}
 .regio-lijst span{font-size:.88rem;color:var(--inkt-3)}
+
+/* ---------- dienstkaarten met film ----------
+   De kleurbaan wordt een smalle staalstreep onder een filmpje dat gaat
+   lopen als je erover gaat. Op een telefoon loopt het als het in beeld is. */
+/* Met een film erin zijn vier kolommen naast de rail te smal: dan twee
+   bij twee, en drie naast elkaar alleen als het er precies drie zijn. */
+@media (min-width:1080px){
+  .kaarten{grid-template-columns:1fr 1fr}
+  .kaarten--drie{grid-template-columns:repeat(3,1fr)}
+}
+.kaart-media{position:relative;display:block;aspect-ratio:16/9;overflow:hidden;
+  background:var(--nacht)}
+.rail-in > .vergelijk{margin-top:clamp(1.6rem,3vw,2.4rem)}
+.vergelijk + .werk{margin-top:clamp(1rem,2vw,1.5rem)}
+.kaart-film{position:absolute;inset:0}
+.kaart-film video{width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .9s var(--soepel)}
+.kaart:hover .kaart-film video{transform:scale(1.045)}
+.kaart-media + .kaart-baan{height:6px}
+
+/* ---------- kleurkiezer met beeld ---------- */
+.kiezer{display:grid;gap:clamp(1.2rem,2.6vw,2.2rem)}
+@media (min-width:900px){.kiezer{grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);
+  align-items:start}}
+.kiezer-vlak{position:relative;aspect-ratio:4/3;border-radius:var(--r);overflow:hidden;
+  background:var(--zand)}
+.kiezer-vlak img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;
+  transform:scale(1.035);transition:opacity .55s var(--soepel),transform 1.4s var(--soepel)}
+.kiezer-vlak img[data-aan="1"]{opacity:1;transform:none}
+.kiezer-beeld figcaption{font-size:.8rem;color:var(--inkt-3);margin-top:.55rem}
+@media (min-width:900px){.kiezer-beeld{position:sticky;top:6.5rem}}
+.kiezer .stalen{grid-template-columns:repeat(2,1fr)}
+.kiezer .staal-vlak{height:92px}
+.kiezer .stalen-uit{margin-top:1rem}
+
+/* ---------- werkwijze met beelden ---------- */
+.stap-beeld{width:100%;max-width:24rem;aspect-ratio:4/3;object-fit:cover;
+  border-radius:var(--r);margin-bottom:1.1rem;box-shadow:0 18px 40px rgba(6,22,40,.28)}
+@media (min-width:900px){
+  .stappen--beeld .stap:nth-child(odd) .stap-beeld{margin-left:auto}
+  .stappen--beeld .stap:nth-child(even){margin-top:9rem}
+  .stappen--beeld .stap{padding-bottom:3.2rem}
+}
+
+/* ---------- contactblok met film ----------
+   Een woning in de schemer die in het donker van de sectie overloopt. */
+.sectie--film{position:relative;overflow:hidden;isolation:isolate;
+  padding-top:clamp(15rem,34vw,28rem)}
+.film--contact{bottom:auto;height:clamp(24rem,50vw,42rem)}
+.film--contact::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(23,26,31,.1) 0%,rgba(23,26,31,.3) 45%,
+             rgba(23,26,31,.85) 80%,var(--nacht) 100%)}
+.sectie--film > .wrap{position:relative;z-index:2}
+.sectie--film .sectie-kop .display{color:#fff;text-shadow:0 2px 24px rgba(10,14,20,.5)}
+
+/* ---------- over Ahmad en zakelijk ----------
+   Links wie er komt, rechts een wit paneel voor aannemers en architecten. */
+.over{display:grid;gap:clamp(1.8rem,4vw,3.4rem)}
+@media (min-width:1000px){.over{grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);
+  align-items:start}}
+.over-tekst h2.display{font-size:clamp(1.8rem,2.9vw,2.45rem);max-width:20ch}
+.over-tekst p{margin-top:1rem;color:var(--inkt-2);max-width:58ch}
+.over-tekst .intro{margin-top:1.1rem;color:var(--inkt)}
+.over-naam{font-family:Supreme,sans-serif;font-weight:700;color:var(--inkt) !important;
+  padding-top:.9rem;border-top:2px solid var(--blauw);display:inline-block}
+.zakelijk{background:var(--wit);border:1px solid var(--lijn);border-radius:var(--r);
+  padding:clamp(1.4rem,3vw,2rem);position:relative;overflow:hidden}
+.zakelijk::before{content:"";position:absolute;left:0;right:0;top:0;height:6px;
+  background:var(--blauw)}
+.zakelijk p{color:var(--inkt-2);margin-top:.6rem;font-size:.95rem}
+.zakelijk .knopgroep{margin-top:1.4rem}
+.regio-lijst div{background:var(--wit);padding:1.3rem}
+/* Plaatsen met een eigen pagina herken je aan de blauwe naam en de pijl. */
+.regio-lijst a b{color:var(--blauw);display:flex;align-items:center;gap:.45rem}
+.regio-lijst a b svg{width:14px;height:9px;transition:transform .25s var(--soepel)}
+.regio-lijst a:hover b svg{transform:translateX(3px)}
+.voorna-kop{margin-top:clamp(2.4rem,4vw,3.2rem)}
+.voorna-kop + .klein{margin-top:.25rem}
+
+/* ---------- offerte: kaart over de kop heen ---------- */
+.hero--kort{padding-bottom:clamp(4rem,7vw,6rem)}
+.sectie--flow{padding-top:0;margin-top:clamp(-3.5rem,-4vw,-2rem);position:relative;z-index:4}
+.sectie--flow .flow{box-shadow:0 24px 60px rgba(23,26,31,.16)}
+.keuze--beeld{display:grid;grid-template-columns:4.4rem minmax(0,1fr);align-items:center;
+  gap:.95rem;padding:.45rem 1rem .45rem .45rem}
+.keuze--beeld img{width:4.4rem;height:3.3rem;object-fit:cover;border-radius:2px}
 """
 
 

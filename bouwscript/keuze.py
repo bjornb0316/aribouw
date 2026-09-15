@@ -23,9 +23,14 @@ GRONDLAAG = [
 ]
 
 AFLAK = [
-    ("Cinematische hero met voor-en-na",
-     "Dezelfde binnendeur voor en na het schilderen, sleepbaar met muis, vinger en toetsenbord. "
-     "Bij een deur zie je het verschil scherper dan bij een hele kamer."),
+    ("Filmhero en films per dienst",
+     "Tape die van de muur gaat en een strakke lijn achterlaat. Elke dienstpagina opent met een "
+     "eigen film, gemaakt met Higgsfield."),
+    ("Voor-en-na en ruimte voor eigen werk",
+     "Sleepbare voor-en-na van eigen klussen. Elk nieuw paar foto&#39;s krijgt vanzelf een eigen "
+     "schuif."),
+    ("Route voor aannemers en architecten",
+     "Een eigen blok en een aanvraag die meteen als zakelijk project begint."),
     ("Kleurkiezer",
      "Vier richtingen. De bezoeker klikt wat hem aanspreekt en leest meteen waar bij die keuze op "
      "gelet moet worden. De keuze gaat mee de aanvraag in."),
@@ -38,7 +43,7 @@ AFLAK = [
      "Waar Grondlaag alles op papier houdt, wisselt Aflak hele secties af in diepblauw. De vlakken "
      "raken elkaar in de schuine snijlijn."),
     ("Vier dienstpagina&#39;s en vier plaatspagina&#39;s",
-     "Elk met eigen tekst en eigen vragen. Dat is waar Google op zoekt bij 'schilder Zevenaar'."),
+     "Elk met eigen tekst en eigen vragen. Dat is waar Google op zoekt bij 'schilder Westervoort'."),
 ]
 
 
@@ -225,9 +230,9 @@ ul{list-style:none}
 
   <section class="kolom kolom--aflak op op-3">
     <div class="kolom-beeld">
-      <img src="assets/img/deur-na-breed.webp" width="1100" height="825"
-           alt="Binnendeur na het schilderen in gebroken wit">
-      <p class="kolom-bij">De hero van Aflak, met de voor-en-na eroverheen.</p>
+      <img src="assets/film/snijlijn.webp" width="1600" height="893"
+           alt="Hand die afplaktape langs een strakke lijn tussen blauw en wit van de muur trekt">
+      <p class="kolom-bij">De hero van Aflak: een film die de tape van de muur trekt.</p>
     </div>
     <div class="kolom-kop">
       <div>

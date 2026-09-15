@@ -109,7 +109,8 @@ def kop(variant, actief, titel, omschrijving, wa_bericht, extra="", kopklasse=""
 
 def voet(variant):
     links = "\n".join('        <a href="%s">%s</a>' % (b, n) for b, n in paginas(variant))
-    gebied = "<br>".join(D.WERKGEBIED) + "<br>en omgeving"
+    gebied = (", ".join(D.WERKGEBIED_ALLES[:-1]) + " en " + D.WERKGEBIED_ALLES[-1] + ". " +
+              D.BUITEN_REGIO)
     return """</main>
 
 <footer class="voet">
@@ -117,9 +118,10 @@ def voet(variant):
     <div class="voet-in">
       <div>
         <span class="voet-merk">ARIBOUW</span>
-        <p style="margin-top:.9rem;max-width:34ch">Schilderwerk, behang en kleine renovaties.
+        <p style="margin-top:.9rem;max-width:34ch">Schilderwerk, behang en houtreparaties.
         Strak afgewerkt, netjes achtergelaten.</p>
-        <p style="margin-top:.9rem">KvK %(kvk)s</p>
+        <p style="margin-top:.9rem">%(eigenaar)s<br>%(adres)s<br>%(postcode)s %(plaats)s</p>
+        <p style="margin-top:.9rem">KvK %(kvk)s<br>Btw %(btw)s</p>
       </div>
       <div>
         <p class="voet-kop">Pagina&#39;s</p>
@@ -134,11 +136,11 @@ def voet(variant):
       </div>
       <div>
         <p class="voet-kop">Werkgebied</p>
-        <p>%(gebied)s</p>
+        <p style="max-width:30ch">%(gebied)s</p>
       </div>
     </div>
     <div class="voet-onder">
-      <span>%(plaats)s &nbsp;&middot;&nbsp; Werken op afspraak, op locatie</span>
+      <span>Schildersbedrijf uit %(plaats)s. Werken op afspraak, op locatie.</span>
       <span>Voorbeeldontwerp van Bjorn, Capital BB. <a href="https://wa.me/%(bjorn)s" style="display:inline;text-decoration:underline">Reageren</a></span>
     </div>
   </div>
@@ -153,7 +155,8 @@ def voet(variant):
 </body>
 </html>
 """ % dict(links=links, tel=D.TEL_TOON, tellink=D.TEL_LINK, mail=D.MAIL, kvk=D.KVK,
-           werkspot=D.WERKSPOT, gebied=gebied, plaats=D.PLAATS, bjorn=D.BJORN_WA)
+           werkspot=D.WERKSPOT, gebied=gebied, plaats=D.PLAATS, bjorn=D.BJORN_WA,
+           eigenaar=D.EIGENAAR, adres=D.ADRES, postcode=D.POSTCODE, btw=D.BTW)
 
 
 def snee(om=False, zand=False):
@@ -184,21 +187,74 @@ def gebiedstrip():
 %s      <span>en omgeving</span>
     </div>
   </section>
-""" % "".join("      <span>%s</span>\n" % p for p in D.WERKGEBIED)
+""" % "".join("      <span>%s</span>\n" % p for p in D.WERKGEBIED_ALLES[:8])
 
 
-def kaarten(variant, hoeveel=4):
-    h = '        <div class="kaarten op" data-stagger>\n'
-    for slug, naam, kort, lang, beeld, punten in D.DIENSTEN[:hoeveel]:
+# Aflak: welke Higgsfield-film bij welke dienst hoort. Zie film.py.
+DIENST_FILM = {"binnenschilderwerk": "binnen", "buitenschilderwerk": "buiten",
+               "behang": "behang", "houtwerk": "kitwerk"}
+
+
+def film(naam, gedrag="lus", klasse="film"):
+    """Een stille film met poster. De bron staat in data-src en wordt pas
+    geladen als hij in beeld komt (of bij hover). Zonder JS of met minder
+    beweging blijft de poster staan. Decoratief, dus aria-hidden."""
+    return ('<div class="%s" aria-hidden="true"><video muted playsinline preload="none"%s '
+            'poster="../assets/film/%s.webp" data-film="%s">'
+            '<source data-src="../assets/film/%s.mp4" type="video/mp4"></video></div>'
+            % (klasse, "" if gedrag == "eenmaal" else " loop", naam, gedrag, naam))
+
+
+def filmhero(tekst, filmnaam=None, beeld=None, alt="", klasse=""):
+    """Aflak: kop over een film of een beeld over de volle breedte."""
+    if filmnaam:
+        media = film(filmnaam, "eenmaal" if filmnaam == "snijlijn" else "lus", "film film--hero")
+    else:
+        media = ('<div class="film film--hero"><img src="../assets/img/%s" width="1920" '
+                 'height="1080" fetchpriority="high" alt="%s"></div>' % (beeld, alt))
+    return """
+  <section class="hero--film%s">
+    %s
+    <div class="wrap">
+%s    </div>
+  </section>
+""" % ((" " + klasse) if klasse else "", media, tekst)
+
+
+def kaart(variant, dienst, meer="Wat dat inhoudt", link=None):
+    slug, naam, kort = dienst[0], dienst[1], dienst[2]
+    if link is None:
         link = ("dienst-%s.html" % slug) if variant == "aflak" else "diensten.html"
-        h += ('          <a class="kaart" href="%s"><span class="kaart-baan"></span>'
-              '<span class="kaart-in"><h3 class="display">%s</h3><p>%s</p>'
-              '<span class="meer">Wat dat inhoudt %s</span></span></a>\n'
-              % (link, naam, kort, PIJL))
+    if variant == "aflak":
+        kopje = ('<span class="kaart-media">%s</span><span class="kaart-baan"></span>'
+                 % film(DIENST_FILM[slug], "hover", "kaart-film"))
+    else:
+        kopje = '<span class="kaart-baan"></span>'
+    return ('          <a class="kaart" href="%s">%s'
+            '<span class="kaart-in"><h3 class="display">%s</h3><p>%s</p>'
+            '<span class="meer">%s %s</span></span></a>\n'
+            % (link, kopje, naam, kort, meer, PIJL))
+
+
+def kaarten(variant, hoeveel=4, lijst=None):
+    lijst = lijst if lijst is not None else D.DIENSTEN[:hoeveel]
+    h = '        <div class="kaarten%s op" data-stagger>\n' % (" kaarten--drie" if len(lijst) == 3 else "")
+    for dienst in lijst:
+        h += kaart(variant, dienst)
     return h + "        </div>\n"
 
 
-# (beeld, titel, onder)
+# Voor-en-na paren van eigen klussen. Nieuwe paren van Ahmad hier
+# toevoegen; de werkpagina van Aflak maakt voor elk paar een schuif.
+# (voor, na, titel, onder, alt voor, alt na)
+VOORNA = [
+    ("deur-voor-breed.webp", "deur-na-breed.webp",
+     "Een binnendeur in een kantoorpand", "Van houtlook naar gebroken wit",
+     "Binnendeur met houtlook voor het schilderen",
+     "Dezelfde deur na het schilderen in gebroken wit"),
+]
+
+# Eigen projectfoto's. (beeld, titel, onder)
 WERK = [
     ("pui-voetzorg.webp", "Pui van een praktijkruimte",
      "Voormalige garage, kozijnen en deur in antraciet"),
@@ -224,17 +280,33 @@ def werkraster(hoeveel=6):
     return h + "        </div>\n"
 
 
-def werkwijze(klasse=""):
+# Aflak: een beeld per stap. Gegenereerde procesbeelden, geen eigen klussen.
+STAP_BEELDEN = [
+    ("stap-fotos.webp", "Iemand maakt met een telefoon een foto van een scheur in de muur"),
+    ("stap-opname.webp", "Vochtmeting onderaan een houten kozijn"),
+    ("stap-offerte.webp", "Keukentafel met een kleurwaaier en een offerte"),
+    ("stap-uitvoeren.webp", "Kamer afgedekt en afgeplakt voor het schilderen"),
+    ("stap-opgeleverd.webp", "Opgeruimde, net geschilderde woonkamer in middaglicht"),
+]
+
+
+def werkwijze(klasse="", beelden=False):
     h = """  <section class="sectie%s">
     <div class="wrap rail">
 """ % (" " + klasse if klasse else "")
     h += railkop("Werkwijze", "Het meeste werk zit in wat u later niet ziet",
-                 "Vijf stappen", "Schuren, plamuren en aftapen kosten de meeste uren. Precies "
-                 "daar zit het verschil tussen twee jaar mooi en tien jaar mooi.")
-    h += '        <div class="stappen op" data-stagger>\n'
-    for nr, titel, tekst in D.STAPPEN:
-        h += ('          <div class="stap"><b>%s</b><h3>%s</h3><p>%s</p></div>\n'
-              % (nr, titel, tekst))
+                 "Vijf stappen", "Goed schilderwerk begint bij een goede ondergrond. Schuren, "
+                 "gaatjes dichtzetten en afplakken kosten de meeste uren, en precies daar zit het "
+                 "verschil tussen twee jaar mooi en tien jaar mooi.")
+    h += '        <div class="stappen%s op" data-stagger>\n' % (" stappen--beeld" if beelden else "")
+    for i, (nr, titel, tekst) in enumerate(D.STAPPEN):
+        beeld = ""
+        if beelden:
+            b, alt = STAP_BEELDEN[i]
+            beeld = ('<img class="stap-beeld" src="../assets/img/%s" width="1000" height="750" '
+                     'loading="lazy" alt="%s">' % (b, alt))
+        h += ('          <div class="stap">%s<b>%s</b><h3>%s</h3><p>%s</p></div>\n'
+              % (beeld, nr, titel, tekst))
     h += "        </div>\n      </div>\n    </div>\n  </section>\n"
     return h
 
@@ -269,14 +341,21 @@ def vragen(lijst, kop_id="vragen"):
     return h + "        </div>\n"
 
 
-def contactblok(titel, intro, onderwerpen=None):
-    keuzes = onderwerpen or ["Binnenschilderwerk", "Buitenschilderwerk", "Behang",
-                             "Kleine renovatie", "Meerdere dingen tegelijk"]
+def contactblok(titel, intro, onderwerpen=None, variant=None):
+    keuzes = onderwerpen or ["Binnenschilderwerk", "Buitenschilderwerk", "Behangen",
+                             "Houtreparatie of onderhoud", "Meerdere dingen tegelijk",
+                             "Project voor aannemer of architect"]
     opties = ('              <option value="" disabled selected>Maak een keuze</option>\n' +
               "\n".join('              <option>%s</option>' % k for k in keuzes))
+    # Aflak: het contactblok opent met een woning in de schemer, die in het
+    # donker van de sectie overloopt.
+    extra, filmpje = "", ""
+    if variant == "aflak":
+        extra = " sectie--film"
+        filmpje = "    " + film("schemer", "lus", "film film--contact") + "\n"
     return """
-  <section class="sectie sectie--nacht" id="contact">
-    <div class="wrap">
+  <section class="sectie sectie--nacht%(extra)s" id="contact">
+%(filmpje)s    <div class="wrap">
       <div class="sectie-kop op">
         <h2 class="display">%(titel)s</h2>
         <p class="intro">%(intro)s</p>
@@ -317,14 +396,14 @@ def contactblok(titel, intro, onderwerpen=None):
               <span class="hulp">Niet verplicht. Hoe meer u kwijt wilt, hoe gerichter het antwoord.</span>
             </div>
             <button class="knop knop--vol" type="submit">Offerte aanvragen</button>
-            <p class="formulier-noot">Vrijblijvend. Er wordt eerst gekeken en pas daarna komt er
-            een prijs. Foto&#39;s stuurt u het makkelijkst via WhatsApp.</p>
+            <p class="formulier-noot">Vrijblijvend. Ik kom eerst kijken, daarna pas een prijs.
+            Foto&#39;s stuurt u het makkelijkst via WhatsApp.</p>
           </form>
           <div class="gelukt op" data-gelukt role="status">
             <b>Aanvraag genoteerd.</b>
-            <p>U wordt gebeld om een moment af te spreken. Stuur gerust alvast een paar foto&#39;s
-            van de ruimte, dan kan er meteen worden meegedacht. In deze voorbeeldpagina gaat er
-            nog niets echt de deur uit.</p>
+            <p>Ik bel u om een moment af te spreken. Stuur gerust alvast een paar foto&#39;s van de
+            ruimte, dan kan ik meteen meedenken. In deze voorbeeldpagina gaat er nog niets echt de
+            deur uit.</p>
             <div class="knopgroep" style="margin-top:1.1rem">
               <a class="knop knop--lijn knop--klein" href="#" data-wa-pagina>Foto&#39;s sturen</a>
             </div>
@@ -332,13 +411,14 @@ def contactblok(titel, intro, onderwerpen=None):
         </div>
         <div class="op">
           <h3 class="display" style="color:#fff">Liever meteen contact</h3>
-          <p style="margin-bottom:1.2rem;color:var(--licht-2)">Bellen of appen kan altijd. Een paar
+          <p style="margin-bottom:1.2rem;color:var(--licht-2)">Bel of app mij gerust. Een paar
           foto&#39;s van de ruimte zeggen vaak al genoeg om te weten waar het over gaat.</p>
           <dl>
             <div class="contactrij"><dt>Telefoon</dt><dd><a href="tel:%(tellink)s">%(tel)s</a></dd></div>
             <div class="contactrij"><dt>WhatsApp</dt><dd><a href="#" data-wa-pagina>%(tel)s</a></dd></div>
             <div class="contactrij"><dt>E-mail</dt><dd><a href="mailto:%(mail)s">%(mail)s</a></dd></div>
-            <div class="contactrij"><dt>Werkgebied</dt><dd>%(plaats)s en omgeving</dd></div>
+            <div class="contactrij"><dt>Adres</dt><dd>%(adres)s, %(postcode)s %(plaats)s</dd></div>
+            <div class="contactrij"><dt>Werkgebied</dt><dd>%(plaats)s, Arnhem, Nijmegen en omgeving</dd></div>
             <div class="contactrij"><dt>Reviews</dt><dd><a href="%(werkspot)s">%(score)s op Werkspot</a></dd></div>
           </dl>
           <div class="knopgroep" style="margin-top:1.4rem">
@@ -350,7 +430,8 @@ def contactblok(titel, intro, onderwerpen=None):
     </div>
   </section>
 """ % dict(titel=titel, intro=intro, opties=opties, tel=D.TEL_TOON, tellink=D.TEL_LINK,
-           mail=D.MAIL, plaats=D.PLAATS, werkspot=D.WERKSPOT, score=D.SCORE)
+           mail=D.MAIL, plaats=D.PLAATS, werkspot=D.WERKSPOT, score=D.SCORE,
+           extra=extra, filmpje=filmpje, adres=D.ADRES, postcode=D.POSTCODE)
 
 
 def stijlbladen():

@@ -205,7 +205,7 @@ window.abExtra = function (WA) {
       kop: "Wit en gebroken wit",
       uitleg: "De meest gekozen richting, en meteen de lastigste om goed te krijgen. Gebroken " +
         "wit op een muur die eerst zuiver wit was ziet er vlekkerig uit als de ondergrond niet " +
-        "klopt. Daarom gaat er bij deze kleuren extra tijd naar het voorwerk.",
+        "klopt. Daarom besteed ik bij deze kleuren extra tijd aan de voorbereiding.",
       wa: "Hallo, ik denk aan wit of gebroken wit. Kunt u meedenken over de kleur?"
     },
     warm: {
@@ -223,8 +223,8 @@ window.abExtra = function (WA) {
     },
     weetniet: {
       kop: "Nog geen idee",
-      uitleg: "Prima. De meeste mensen weten het pas als er een staal op de muur hangt. Bij de " +
-        "opname wordt meegedacht over wat past bij het licht in de ruimte en bij wat er al staat.",
+      uitleg: "Prima. De meeste mensen weten het pas als er een staal op de muur hangt. Als ik " +
+        "kom kijken, denk ik mee over wat past bij het licht in de ruimte en bij wat er al staat.",
       wa: "Hallo, ik weet de kleur nog niet. Kunt u meedenken?"
     }
   };
@@ -233,10 +233,26 @@ window.abExtra = function (WA) {
     var bak = document.querySelector("[data-stalen]");
     if (!bak) return;
     var uit = bak.querySelector("[data-stalen-uit]");
+    var gekozen = "weetniet";
+    /* Het beeld links volgt de richting: bij hover als voorproefje, bij
+       klikken blijft het staan. */
+    function beeld(naam) {
+      bak.querySelectorAll("[data-kleur-beeld]").forEach(function (img) {
+        img.setAttribute("data-aan", img.getAttribute("data-kleur-beeld") === naam ? "1" : "0");
+      });
+    }
     bak.querySelectorAll("[data-staal]").forEach(function (b) {
+      b.addEventListener("pointerenter", function (e) {
+        if (e.pointerType === "mouse") beeld(b.getAttribute("data-staal"));
+      });
+      b.addEventListener("pointerleave", function (e) {
+        if (e.pointerType === "mouse") beeld(gekozen);
+      });
       b.addEventListener("click", function () {
         var k = KLEUR[b.getAttribute("data-staal")];
         if (!k || !uit) return;
+        gekozen = b.getAttribute("data-staal");
+        beeld(gekozen);
         bak.querySelectorAll("[data-staal]").forEach(function (a) {
           a.setAttribute("aria-pressed", a === b ? "true" : "false");
         });
@@ -343,7 +359,8 @@ window.abExtra = function (WA) {
          kleur al heeft gekozen hoeft hem niet nog een keer aan te
          klikken. */
       var p = new URLSearchParams(location.search);
-      var vooraf = [p.get("werk"), p.get("kleur")].filter(Boolean);
+      var vooraf = [p.get("werk"), p.get("kleur"),
+                    p.get("soort") === "zakelijk" ? "een zakelijk project" : ""].filter(Boolean);
       var gebruikt = {};
       if (vooraf.length) {
         var oudeToon = toon;
@@ -362,7 +379,61 @@ window.abExtra = function (WA) {
     });
   }
 
-  schuiven(); stalen(); flows();
+  /* ---- films ----
+     Drie soorten: "eenmaal" (de hero: tape eraf en blijven staan op de
+     lijn), "lus" (loopt zolang hij in beeld is) en "hover" (dienstkaarten:
+     lopen onder de muis, op een aanraakscherm zodra ze in beeld zijn).
+     De bron laadt pas bij eerste gebruik. Met minder beweging of met
+     databesparing aan blijft de poster staan. */
+  function films() {
+    var alle = [].slice.call(document.querySelectorAll("video[data-film]"));
+    if (!alle.length) return;
+    var zuinig = navigator.connection && navigator.connection.saveData;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || zuinig) return;
+    var muis = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+    function laad(v) {
+      if (v.getAttribute("data-geladen")) return;
+      v.setAttribute("data-geladen", "1");
+      v.querySelectorAll("source[data-src]").forEach(function (s) {
+        s.setAttribute("src", s.getAttribute("data-src"));
+      });
+      v.load();
+    }
+    function speel(v) {
+      laad(v); v.muted = true;
+      var p = v.play();
+      if (p && p.catch) p.catch(function () {});
+    }
+
+    var kijker = "IntersectionObserver" in window ? new IntersectionObserver(function (rijen) {
+      rijen.forEach(function (r) {
+        var v = r.target;
+        if (r.isIntersecting) {
+          if (v.getAttribute("data-film") === "eenmaal" && v.getAttribute("data-klaar")) return;
+          speel(v);
+        } else if (!v.paused) v.pause();
+      });
+    }, { threshold: 0.2 }) : null;
+
+    alle.forEach(function (v) {
+      var soort = v.getAttribute("data-film");
+      if (soort === "eenmaal") {
+        v.addEventListener("ended", function () { v.setAttribute("data-klaar", "1"); });
+      }
+      if (soort === "hover" && muis) {
+        var kaart = v.closest(".kaart") || v.parentNode;
+        kaart.addEventListener("pointerenter", function () { speel(v); });
+        kaart.addEventListener("pointerleave", function () { v.pause(); });
+        kaart.addEventListener("focusin", function () { speel(v); });
+        kaart.addEventListener("focusout", function () { v.pause(); });
+        return;
+      }
+      if (kijker) kijker.observe(v); else speel(v);
+    });
+  }
+
+  schuiven(); stalen(); flows(); films();
 };
 """
 
