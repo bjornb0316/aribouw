@@ -272,6 +272,49 @@ reviews en dezelfde mobiele navigatie.
 
 ---
 
+## Verbeterplan: wat er staat
+
+**Home.** De h1 bevat "Schilder in Westervoort, Arnhem en omgeving" plus de merkzin.
+Direct onder de hero een vertrouwensstrook: 5,0 uit 31 Werkspot-reviews, eigen werk,
+vrijblijvend langskomen, gevestigd in Westervoort. Volgorde: hero, vertrouwen,
+diensten, eigen werk, kleurhulp, werkwijze, Ahmad, reviews, vragen, aanvraag. Bij
+diensten, werk en reviews een CTA die past bij wat de bezoeker net zag. Mobiel
+onderaan Bellen, WhatsApp en Offerte.
+
+**Dienstpagina's** (`DIENST_INHOUD` in `data.py`). Elke dienst heeft nu: waar de uren
+in gaan zitten, wanneer het tijd is, waar u zelf op kunt letten, welk materiaal en
+waarom, waar de prijs van afhangt, de werkwijze, alleen de reviews die over dat soort
+werk gaan, vragen, andere diensten. Algemene vakkennis; geen prijzen, geen termijnen,
+geen verzonnen feiten over Aribouw.
+
+**Plaatspagina's** (`REGIO` in `data.py`). Westervoort, Duiven, Zevenaar, Arnhem en
+Huissen. Alleen echt lokaal bewijs: Westervoort toont de pui van de praktijkruimte met
+Cindy's review, Huissen de review over de herstelde deuren en kozijnen. Waar nog niets
+uit die plaats is, staat dat er eerlijk: reviews uit de regio, met de plaats erbij.
+Zodra er een project of review uit een plaats is, gaat die in `REGIO`.
+
+**Project doorgeven** (`project-doorgeven.html`, niet in menu of sitemap). Voor Ahmad,
+na elke klus op zijn telefoon: plaats, maand, soort werk, wat er gedaan is, hoe het
+ervoor was, de aanpak, het resultaat en of de foto's online mogen. De knop zet alles in
+een WhatsApp-bericht naar Bjorn; de foto's gaan in hetzelfde gesprek. Daaruit worden de
+projectpagina's gemaakt.
+
+**Structured data.** Een entiteit met `@id`: `HousePainter` met eigenaar, KvK, btw,
+diensten en alle twaalf plaatsen, plus `WebSite`. Elke dienstpagina een `Service`,
+elke subpagina een `BreadcrumbList`. Bewust geen `aggregateRating`: de reviews staan
+op Werkspot, niet op deze site.
+
+**Nog niet gedaan, en waarom:**
+
+- Nieuwe URL's (`/binnenschilderwerk/`, `/schilder-westervoort/`): samen met de
+  verhuizing naar het eigen domein, anders gaan alle links twee keer om
+- Aparte pagina's voor kozijnen, deuren en renovlies: pas met echte foto's en
+  projecten, anders worden het bijna gelijke pagina's
+- Projectpagina's: wachten op de eerste projecten via het formulier
+- Google Bedrijfsprofiel, Search Console, Bing: na het domein, door Ahmad
+- Analytics: kies iets zonder cookies (Cloudflare Web Analytics of Plausible), dan
+  blijft de privacyverklaring kloppen
+
 ## Klaar voor livegang: drie schakelaars
 
 Bovenin `bouwscript/data.py` staan drie instellingen. Alle drie staan nog in
@@ -343,7 +386,7 @@ Naast de drie schakelaars hierboven:
 | Eigen projectfoto's en voor-en-na | `bron/`, dan `VOORNA` en `WERK` in `bouw.py` | Ahmad stuurt ze apart. Nu staan er negen beelden van Facebook en Werkspot |
 | `[NOG AANVULLEN: garantietermijnen]` | `data.py`, `VRAGEN` | Werkspot vermeldt wel dát er garantie is, niet hoe lang |
 | `[NOG AANVULLEN: gebruikelijke doorlooptijden]` | `data.py`, `VRAGEN` | zichtbaar gemarkeerd |
-| Het logo | `bouw.py`, constante `MARK` | er staat nu een diagonaal doorgesneden vierkant, het motief van de site. Ahmad stuurt het logo apart; een vectorbestand vervangt dit |
+| Logo als vector | `bron/logo-aribouw.jpg`, `bouwscript/logo.py` | het logo van Ahmad staat erin (kop, voet, favicons, deelafbeelding, structured data), gemaakt uit een JPG met het wit transparant. Een SVG of PDF maakt het scherper; dan alleen `logo.py` aanpassen |
 | Alleen Aflak overhouden | keuzepagina, `variant-grondlaag/` | Ahmad koos Aflak: die naar de hoofdmap, de rest eruit. De paden `../assets/` gaan dan mee |
 | Houtwerkfilm | `bouw.py`, `DIENST_FILM["houtwerk"]` | nu de kitwerk-film, die niet over hout gaat. Het Higgsfield-tegoed was op (0,97 credits); een nieuwe film kost ongeveer 11 credits |
 

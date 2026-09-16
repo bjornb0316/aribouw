@@ -28,28 +28,34 @@ def vergelijk(x, paar=None):
 def index(variant):
     aflak = variant == "aflak"
     h = B.kop(variant, "index.html",
-              "Aribouw | Schilder in Westervoort, Arnhem en Nijmegen",
-              "Schildersbedrijf uit Westervoort. Binnen- en buitenschilderwerk, behangen en "
-              "houtreparaties, voor particulieren en professionals. %s uit %s reviews op Werkspot."
-              % (D.SCORE, D.AANTAL_REVIEWS),
+              "Schilder in Westervoort, Arnhem en omgeving | Aribouw",
+              "Aribouw is het schildersbedrijf van %s uit Westervoort. Binnen- en "
+              "buitenschilderwerk, behangen en houtreparaties. %s uit %s reviews op Werkspot."
+              % (D.EIGENAAR, D.SCORE, D.AANTAL_REVIEWS),
               "Hallo, ik wil graag een offerte voor schilderwerk.",
-              extra=('<script type="application/ld+json">%s</script>' % D.JSONLD) +
+              extra=('<script type="application/ld+json">%s</script>' % D.bedrijf_jsonld(variant)) +
                     ('\n<link rel="preload" as="image" href="../assets/film/snijlijn.webp" '
                      'fetchpriority="high">' if aflak else ""))
+
+    # De zoekterm hoort in de h1: "schilder" plus de plaats. De merkzin blijft
+    # de grote regel, de zoekterm staat er als label boven, maar binnen
+    # dezelfde h1. Zo leest Google "Schilder in Westervoort, Arnhem en
+    # omgeving. Strak schilderwerk, tot in de hoek waar niemand kijkt."
+    kop = """      <h1 class="hero-h1 op"><span class="label">Schilder in Westervoort, Arnhem en omgeving</span>
+      <span class="display">Strak schilderwerk, tot in de hoek waar niemand kijkt.</span></h1>
+      <p class="intro op">Binnen- en buitenschilderwerk, behangen en houtreparaties. Persoonlijk
+      uitgevoerd door %s.</p>
+      <div class="knopgroep op">
+        <a class="knop knop--vol" href="offerte.html">Offerte aanvragen</a>
+        <a class="knop knop--lijn" href="%s">Stuur foto&#39;s via WhatsApp</a>
+      </div>
+""" % (D.EIGENAAR, WA_FOTO)
 
     if aflak:
         # De snijlijn als film: tape eraf, en wat overblijft is een
         # kaarsrechte rand tussen blauw en wit. Dat is wat een schilder
         # verkoopt. De film speelt een keer en blijft op die lijn staan.
-        h += B.filmhero("""      <p class="label op">Westervoort &middot; Arnhem &middot; Nijmegen</p>
-      <h1 class="display op">Strak tot in de hoek waar niemand kijkt.</h1>
-      <p class="intro op">Binnen- en buitenschilderwerk, behangen en houtreparaties. %s uit %s
-      reviews op Werkspot.</p>
-      <div class="knopgroep op">
-        <a class="knop knop--vol" href="offerte.html">Offerte aanvragen</a>
-        <a class="knop knop--lijn" href="%s">Stuur foto&#39;s via WhatsApp</a>
-      </div>
-""" % (D.SCORE, D.AANTAL_REVIEWS, WA_FOTO), "snijlijn", klasse="hero--home")
+        h += B.filmhero(kop, "snijlijn", klasse="hero--home")
     else:
         # Rustiger: kop op de rail, beeld in een hoge kolom die rechts van
         # het scherm afloopt.
@@ -57,85 +63,113 @@ def index(variant):
   <section class="hero">
     <div class="hero-in">
       <div class="hero-tekst">
-        <p class="label op">Westervoort &middot; Arnhem &middot; Nijmegen</p>
-        <h1 class="display op">Strak tot in de hoek waar niemand kijkt.</h1>
-        <p class="intro op">Binnen- en buitenschilderwerk, behangen en houtreparaties. %s uit %s
-        reviews op Werkspot.</p>
-        <div class="knopgroep op">
-          <a class="knop knop--vol" href="offerte.html">Offerte aanvragen</a>
-          <a class="knop knop--lijn" href="%s">Stuur foto&#39;s via WhatsApp</a>
-        </div>
-      </div>
+%s      </div>
       <div class="hero-beeld op">
         <img src="../assets/img/pui-voetzorg.webp" width="1600" height="1000" fetchpriority="high"
              alt="Geschilderde pui en deur van een praktijkruimte in antraciet">
       </div>
     </div>
   </section>
-""" % (D.SCORE, D.AANTAL_REVIEWS, WA_FOTO)
+""" % kop
 
-    h += B.gebiedstrip()
+    if not aflak:
+        h += B.gebiedstrip()
+        h += diensten_blok(variant)
+        h += B.snee(om=True, zand=True)
+        h += werk_blok(variant)
+        h += B.werkwijze(" sectie--zand")
+        h += reviews_blok(variant)
+        h += vragen_blok(variant)
+        h += B.contactblok(
+            "Laat mij eerst even kijken",
+            "Aan het langskomen en de offerte zitten geen kosten. Daarna weet u wat er nodig is "
+            "en waar de uren in gaan zitten.", variant=variant)
+        return h + B.voet(variant)
 
-    if aflak:
-        h += kleurkiezer()
-        h += B.snee()
+    # Aflak: eerst overtuigen, dan pas spelen. Hero, vertrouwen, diensten,
+    # eigen werk, kleurhulp, werkwijze, Ahmad, reviews, vragen, aanvraag.
+    h += B.vertrouwen()
+    h += diensten_blok(variant)
+    h += B.snee(om=True)
+    h += werk_blok(variant)
+    h += B.snee()
+    h += kleurkiezer()
+    h += B.werkwijze(" sectie--vlak", beelden=True)
+    h += over_ahmad()
+    h += B.snee(om=True)
+    h += reviews_blok(variant)
+    h += vragen_blok(variant)
+    h += B.contactblok(
+        "Laat mij eerst even kijken",
+        "Aan het langskomen en de offerte zitten geen kosten. Daarna weet u wat er nodig is en "
+        "waar de uren in gaan zitten.", variant=variant)
+    return h + B.voet(variant)
 
-    # ---- diensten als kleurstalen ----
-    h += '  <section class="sectie%s">\n    <div class="wrap rail">\n' % (
+
+def diensten_blok(variant):
+    aflak = variant == "aflak"
+    h = '  <section class="sectie%s">\n    <div class="wrap rail">\n' % (
         "" if aflak else " sectie--zand")
     h += B.railkop("Wat ik doe", "Vier dingen, en die goed",
                    "Schilderen, behangen, houtwerk",
                    "Aribouw is een schilder, geen algemeen bouwbedrijf. Dit is waar ik voor word "
                    "gebeld, en waar de reviews over gaan.")
     h += B.kaarten(variant)
+    if aflak:
+        h += B.ctaregel("Benieuwd wat dit bij uw woning kost? Ik kom vrijblijvend kijken.",
+                        [("Offerte aanvragen", "offerte.html", "vol")])
     h += "      </div>\n    </div>\n  </section>\n"
+    return h
 
-    h += B.snee(om=True, zand=not aflak)
 
-    # ---- werk ----
-    h += '  <section class="sectie">\n    <div class="wrap rail">\n'
+def werk_blok(variant):
+    aflak = variant == "aflak"
+    h = '  <section class="sectie">\n    <div class="wrap rail">\n'
     h += B.railkop("Werk", "Foto&#39;s van eigen klussen", "Uit de regio",
                    "Wat hier staat is eigen werk, geen ingekocht beeld." +
                    (" Begin bij de deur: sleep de lijn en zie het verschil." if aflak else ""))
     if aflak:
-        # De echte voor-en-na stond eerst in de hero, maar een foto van
-        # Facebook houdt schermbreedte niet. Hier op 4:3 is hij scherp.
         h += vergelijk("55")
     h += B.werkraster(3)
-    h += ('        <p class="klein" style="margin-top:1.6rem"><a href="werk.html" '
-          'style="text-decoration:underline;text-underline-offset:3px">Alle foto&#39;s</a></p>\n')
-    h += "      </div>\n    </div>\n  </section>\n"
-
-    h += B.werkwijze(" sectie--vlak" if aflak else " sectie--zand", beelden=aflak)
-
     if aflak:
-        h += over_ahmad()
-        h += B.snee(om=True)
+        h += B.ctaregel("Een vergelijkbare klus? Stuur een foto, dan zeg ik wat er nodig is.",
+                        [("Stuur een foto via WhatsApp",
+                          D.wa_link("Hallo, ik heb een vergelijkbare klus. Ik stuur een foto."),
+                          "vol"),
+                         ("Alle foto&#39;s", "werk.html", "lijn")])
+    else:
+        h += ('        <p class="klein" style="margin-top:1.6rem"><a href="werk.html" '
+              'style="text-decoration:underline;text-underline-offset:3px">Alle foto&#39;s</a></p>\n')
+    h += "      </div>\n    </div>\n  </section>\n"
+    return h
 
-    # ---- reviews ----
-    h += '  <section class="sectie">\n    <div class="wrap rail">\n'
+
+def reviews_blok(variant):
+    aflak = variant == "aflak"
+    h = '  <section class="sectie">\n    <div class="wrap rail">\n'
     h += B.railkop("Reviews", "Wat klanten op Werkspot schrijven",
                    "%s uit %s" % (D.SCORE, D.AANTAL_REVIEWS),
                    "Deze staan er letterlijk zo, met naam en datum erbij. Ze zijn openbaar na te "
                    "lezen.")
     h += B.reviews(4)
     h += B.scoreblok()
+    if aflak:
+        h += B.ctaregel("Ook uw schilderwerk laten bekijken?",
+                        [("Offerte aanvragen", "offerte.html", "vol"),
+                         ("Bel %s" % D.TEL_TOON, "tel:" + D.TEL_LINK, "lijn")])
     h += "      </div>\n    </div>\n  </section>\n"
+    return h
 
-    # ---- vragen ----
-    h += '  <section class="sectie sectie--zand">\n    <div class="wrap rail">\n'
+
+def vragen_blok(variant):
+    h = '  <section class="sectie sectie--zand">\n    <div class="wrap rail">\n'
     h += B.railkop("Vragen", "Waar mensen meestal over twijfelen", "Vijf van de %d" % len(D.VRAGEN))
     h += B.vragen(D.VRAGEN[:5])
     h += ('        <p class="klein" style="margin-top:1.5rem"><a href="contact.html" '
           'style="text-decoration:underline;text-underline-offset:3px">Alle vragen en '
           'antwoorden</a></p>\n')
     h += "      </div>\n    </div>\n  </section>\n"
-
-    h += B.contactblok(
-        "Laat mij eerst even kijken",
-        "Aan het langskomen en de offerte zitten geen kosten. Daarna weet u wat er nodig is en "
-        "waar de uren in gaan zitten.", variant=variant)
-    return h + B.voet(variant)
+    return h
 
 
 # =====================================================================

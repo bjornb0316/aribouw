@@ -102,7 +102,9 @@ h3.display{font-size:clamp(1.1rem,1.6vw,1.3rem);font-weight:700}
 @media (max-width:900px){.kop-in{height:62px}}
 
 .merk{flex-shrink:0;display:flex;align-items:center;gap:.65rem;line-height:1}
-.merk-mark{width:28px;height:28px;flex-shrink:0}
+.merk-logo{height:40px;width:auto;display:block}
+@media (max-width:900px){.merk-logo{height:34px}}
+.voet-merk .merk-logo{height:44px}
 .merk b{font-family:Supreme,sans-serif;font-weight:700;font-size:1.18rem;
   letter-spacing:.02em;display:block}
 .merk small{display:block;font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;
@@ -205,6 +207,30 @@ h3.display{font-size:clamp(1.1rem,1.6vw,1.3rem);font-weight:700}
 }
 
 /* ---------- werkgebiedstrip ---------- */
+/* De h1 van de home: zoekterm als label, merkzin als grote regel. */
+.hero-h1 .label{display:block;margin-bottom:.85rem}
+.hero-h1 .display{display:block;font-size:clamp(2.1rem,4.2vw,3.4rem)}
+
+/* ---------- vertrouwen onder de hero ---------- */
+.vertrouwen{background:var(--wit);border-bottom:1px solid var(--lijn)}
+.vertrouwen-in{display:grid;grid-template-columns:1fr 1fr;list-style:none}
+@media (min-width:900px){.vertrouwen-in{grid-template-columns:repeat(4,1fr)}}
+.vertrouwen-in li{padding:1.05rem 1rem 1.1rem 0;display:flex;flex-direction:column;gap:.15rem;
+  font-size:.86rem;color:var(--inkt-3)}
+@media (min-width:900px){.vertrouwen-in li + li{padding-left:1.4rem;border-left:1px solid var(--lijn)}}
+@media (max-width:899px){.vertrouwen-in li:nth-child(even){padding-left:1rem;
+  border-left:1px solid var(--lijn)}
+  .vertrouwen-in li:nth-child(n+3){border-top:1px solid var(--lijn)}}
+.vertrouwen-in b{font-family:Supreme,sans-serif;font-weight:700;font-size:1rem;color:var(--inkt)}
+.vertrouwen-in a{text-decoration:underline;text-underline-offset:3px}
+.sterren{color:#B7791F;letter-spacing:.08em;font-size:.95rem;line-height:1}
+
+/* ---------- CTA die past bij de sectie ---------- */
+.ctaregel{margin-top:clamp(1.8rem,3vw,2.4rem);padding-top:1.4rem;border-top:1px solid var(--lijn);
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem 1.6rem}
+.ctaregel p{font-family:Supreme,sans-serif;font-weight:700;font-size:1.08rem;max-width:40ch}
+.sectie--vlak .ctaregel{border-color:rgba(255,255,255,.2)}
+
 .gebied{background:var(--wit);border-bottom:1px solid var(--lijn);padding:.95rem 0}
 .gebied-in{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem 1.5rem;font-size:.92rem;
   color:var(--inkt-2)}
@@ -414,7 +440,7 @@ h3.display{font-size:clamp(1.1rem,1.6vw,1.3rem);font-weight:700}
 .balk{position:fixed;left:0;right:0;bottom:0;z-index:45;display:none;gap:.5rem;
   padding:.6rem var(--marge);background:rgba(246,244,240,.96);backdrop-filter:blur(10px);
   border-top:1px solid var(--lijn)}
-.balk .knop{flex:1;min-height:48px}
+.balk .knop{flex:1;min-height:48px;padding-inline:.4rem;font-size:.92rem}
 @media (max-width:760px){
   .balk{display:flex}body{padding-bottom:5.2rem}
   .contactrij dd a,.klein a,.voorstel a,.voet-onder a,.merk{min-height:44px;
@@ -519,6 +545,8 @@ h2.display{font-size:clamp(2rem,4vw,3.2rem);letter-spacing:-.025em}
   .hero--home::after{background:
     linear-gradient(0deg,rgba(9,28,50,.92) 0%,rgba(9,28,50,.7) 42%,rgba(9,28,50,.1) 72%)}
 }
+.hero--film .hero-h1{max-width:none}
+.hero--film .hero-h1 .display{font-size:clamp(2.3rem,4.4vw,3.7rem);max-width:21ch;color:#fff}
 .hero--kort{min-height:min(62svh,34rem)}
 .hero--dienst{min-height:min(78svh,42rem)}
 /* Op een telefoon moeten de knoppen in beeld staan zonder te scrollen. */
@@ -680,6 +708,40 @@ h2.display{font-size:clamp(2rem,4vw,3.2rem);letter-spacing:-.025em}
              rgba(23,26,31,.85) 80%,var(--nacht) 100%)}
 .sectie--film > .wrap{position:relative;z-index:2}
 .sectie--film .sectie-kop .display{color:#fff;text-shadow:0 2px 24px rgba(10,14,20,.5)}
+
+/* ---------- dienstpagina: kennis voor de aanvraag ----------
+   Drie vormen, zodat de pagina niet een rij gelijke blokken wordt:
+   wanneer als drie kolommen met een blauwe streep, signalen als
+   afvinklijst op wit, materiaal als genummerde rij op zand, kosten als
+   genummerde lijst. */
+.kennis{display:grid;gap:clamp(1.2rem,2.5vw,2rem);margin-top:clamp(1.6rem,3vw,2.2rem)}
+@media (min-width:820px){.kennis{grid-template-columns:repeat(3,1fr)}}
+.kennis > div{border-top:3px solid var(--blauw);padding-top:1rem}
+.kennis h3,.materiaal h3{font-family:Supreme,sans-serif;font-weight:700;font-size:1.05rem}
+.kennis p,.materiaal p{color:var(--inkt-2);font-size:.95rem;margin-top:.4rem}
+.signalen{margin-top:clamp(1.8rem,3vw,2.4rem);background:var(--wit);border:1px solid var(--lijn);
+  border-radius:var(--r);padding:clamp(1.3rem,3vw,2rem)}
+.signalen h3{font-size:clamp(1.15rem,1.8vw,1.35rem)}
+.signalen ul{margin-top:1rem;display:grid;gap:.55rem}
+@media (min-width:820px){.signalen ul{grid-template-columns:1fr 1fr;column-gap:2rem}}
+.signalen li{position:relative;padding-left:1.7rem;color:var(--inkt-2);font-size:.95rem}
+.signalen li::before{content:"";position:absolute;left:.3rem;top:.12em;width:.5rem;height:.9rem;
+  border:solid var(--blauw);border-width:0 2px 2px 0;transform:rotate(45deg)}
+.materiaal{display:grid;gap:1px;background:var(--lijn-2);border:1px solid var(--lijn-2);
+  border-radius:var(--r);overflow:hidden;margin-top:clamp(1.6rem,3vw,2.2rem);counter-reset:m}
+@media (min-width:820px){.materiaal{grid-template-columns:repeat(3,1fr)}}
+.materiaal > div{background:var(--zand);padding:1.3rem 1.3rem 1.5rem;counter-increment:m}
+.materiaal > div::before{content:counter(m, decimal-leading-zero);display:block;
+  font-family:Supreme,sans-serif;font-weight:700;color:var(--blauw);font-size:.85rem;
+  letter-spacing:.1em;margin-bottom:.6rem}
+.kosten{margin-top:clamp(1.4rem,3vw,2rem);counter-reset:k;display:grid;gap:0;max-width:44rem}
+.kosten li{counter-increment:k;display:grid;grid-template-columns:2.6rem 1fr;align-items:baseline;
+  padding:.8rem 0;border-bottom:1px solid var(--lijn);color:var(--inkt)}
+.kosten li::before{content:counter(k);font-family:Supreme,sans-serif;font-weight:700;
+  font-size:1.35rem;color:var(--blauw)}
+.reviews--een{max-width:34rem;grid-template-columns:1fr !important}
+.werk--lokaal{margin-block:clamp(1.4rem,3vw,2rem) clamp(1.2rem,2.5vw,1.8rem)}
+@media (min-width:820px){.werk--lokaal{grid-template-columns:minmax(0,26rem)}}
 
 /* ---------- over Ahmad en zakelijk ----------
    Links wie er komt, rechts een wit paneel voor aannemers en architecten. */
