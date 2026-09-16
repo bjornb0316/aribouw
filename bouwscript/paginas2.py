@@ -396,37 +396,138 @@ def privacy(variant):
 # =====================================================================
 # DIENSTPAGINA (alleen Aflak)
 # =====================================================================
+# =====================================================================
+# PROJECT INVULLEN (alleen Aflak, voor Ahmad, niet in menu of sitemap)
+# =====================================================================
+# Na elke klus vult Ahmad dit op zijn telefoon in. Er is geen server nodig:
+# de knop zet alles in een WhatsApp-bericht naar Bjorn, en de foto's gaan
+# in hetzelfde gesprek. Zo komt elk project binnen in het formaat dat een
+# projectpagina nodig heeft: plaats, werk, situatie, aanpak, resultaat.
+def project_invullen(variant):
+    extra = '<meta name="robots" content="noindex,nofollow">' if D.LIVE else ""
+    h = B.kop(variant, "", "Project doorgeven | Aribouw",
+              "Na een klus de gegevens voor een projectpagina doorgeven.",
+              "Hallo Bjorn, ik heb een vraag over het projectformulier.", extra=extra)
+    opties = "\n".join('                <option>%s</option>' % d[1] for d in D.DIENSTEN)
+    h += """
+  <section class="sectie">
+    <div class="wrap" style="max-width:46rem">
+      <h1 class="display op">Project doorgeven</h1>
+      <p class="intro op" style="margin-top:1rem">Na elke klus, vijf minuten. Hier wordt later een
+      projectpagina van gemaakt, met de plaats en het soort werk erin. Dat is wat mensen overtuigt,
+      en waar Google op zoekt.</p>
+
+      <div class="signalen op">
+        <h3 class="display">Zo maak je de foto&#39;s</h3>
+        <ul>
+          <li>Voor en na vanaf dezelfde plek en in dezelfde hoek</li>
+          <li>Bij daglicht, liggend, zonder flits</li>
+          <li>Ook een foto van een detail: een hoek, een naad, een dorpel</li>
+          <li>Geen mensen, kentekens of huisnummers in beeld</li>
+          <li>Eerst de klant vragen of de foto&#39;s online mogen</li>
+          <li>Na afloop de klant om een review vragen</li>
+        </ul>
+      </div>
+
+      <form class="flow op" style="margin-top:2rem" data-projectformulier data-naar="%(bjorn)s" novalidate>
+        <div class="velden-2">
+          <div class="veld">
+            <label for="pr-plaats">Plaats</label>
+            <input id="pr-plaats" name="plaats" type="text" required>
+            <span class="fout">Vul de plaats in.</span>
+          </div>
+          <div class="veld">
+            <label for="pr-wanneer">Wanneer was de klus</label>
+            <input id="pr-wanneer" name="wanneer" type="month">
+            <span class="hulp">Maand is genoeg.</span>
+          </div>
+        </div>
+        <div class="veld">
+          <label for="pr-werk">Soort werk</label>
+          <select id="pr-werk" name="werk" required>
+              <option value="" disabled selected>Maak een keuze</option>
+%(opties)s
+              <option>Meerdere dingen</option>
+          </select>
+          <span class="fout">Kies het soort werk.</span>
+        </div>
+        <div class="veld">
+          <label for="pr-onderdelen">Wat is er geschilderd of hersteld</label>
+          <input id="pr-onderdelen" name="onderdelen" type="text" required
+                 placeholder="Bijvoorbeeld: vier buitenkozijnen en de voordeur">
+          <span class="fout">Vul in wat er is gedaan.</span>
+        </div>
+        <div class="veld">
+          <label for="pr-situatie">Hoe was het ervoor</label>
+          <textarea id="pr-situatie" name="situatie" rows="3" required
+                    placeholder="Bijvoorbeeld: lak bladderde op de onderdorpels, houtrot in twee hoeken"></textarea>
+          <span class="fout">Beschrijf hoe het ervoor was.</span>
+        </div>
+        <div class="veld">
+          <label for="pr-aanpak">Wat heb je gedaan</label>
+          <textarea id="pr-aanpak" name="aanpak" rows="3" required
+                    placeholder="Bijvoorbeeld: rot hout eruit, gevuld, geschuurd, gegrond en twee keer gelakt"></textarea>
+          <span class="fout">Beschrijf de aanpak.</span>
+        </div>
+        <div class="veld">
+          <label for="pr-resultaat">Resultaat of bijzonderheden</label>
+          <textarea id="pr-resultaat" name="resultaat" rows="2"
+                    placeholder="Bijvoorbeeld: kleur, merk verf, wat de klant ervan vond"></textarea>
+          <span class="hulp">Niet verplicht.</span>
+        </div>
+        <div class="veld">
+          <label for="pr-toestemming">Mogen de foto&#39;s online</label>
+          <select id="pr-toestemming" name="toestemming" required>
+            <option value="" disabled selected>Maak een keuze</option>
+            <option>Ja, de klant vindt het goed</option>
+            <option>Ja, maar zonder plaatsnaam</option>
+            <option>Nog niet gevraagd</option>
+          </select>
+          <span class="fout">Kies of de foto&#39;s online mogen.</span>
+        </div>
+        <button class="knop knop--vol" type="submit">Verstuur via WhatsApp</button>
+        <p class="formulier-noot">WhatsApp opent met alles erin. Stuur daarna de voor- en
+        nafoto&#39;s in hetzelfde gesprek.</p>
+      </form>
+    </div>
+  </section>
+""" % dict(bjorn=D.BJORN_WA, opties=opties)
+    return h + B.voet(variant)
+
+
 def dienstpagina(variant, dienst):
     slug, naam, kort, lang, beeld, punten = dienst
     andere = [d for d in D.DIENSTEN if d[0] != slug]
     vraagset = [D.VRAGEN[i] for i in D.DIENST_VRAGEN[slug]]
+    inhoud = D.DIENST_INHOUD[slug]
 
     h = B.kop(variant, "diensten.html",
-              "%s in Westervoort, Arnhem en Nijmegen | Aribouw" % naam,
-              "%s Werkgebied Westervoort, Duiven, Zevenaar, Arnhem, Nijmegen en omgeving." % kort,
+              "%s in Westervoort, Arnhem en omgeving | Aribouw" % naam,
+              "%s Waar u op let, welk materiaal en waar de prijs van afhangt. Aribouw, schilder in "
+              "Westervoort." % kort,
               "Hallo, ik heb een vraag over %s." % naam.lower(),
               extra=('<script type="application/ld+json">%s</script>\n'
                      '<script type="application/ld+json">%s</script>'
                      % (D.dienst_jsonld(variant, dienst), D.vraag_jsonld(vraagset))))
 
     werk = slug if slug in ("binnenschilderwerk", "buitenschilderwerk", "behang") else "meerdere dingen"
+    wa = D.wa_link("Hallo, ik stuur een foto voor %s." % naam.lower())
     h += B.filmhero("""      <p class="label op"><a href="diensten.html">Diensten</a></p>
-      <h1 class="display op" style="max-width:16ch">%(naam)s</h1>
+      <h1 class="display op" style="max-width:18ch">%(naam)s in Westervoort en omgeving</h1>
       <p class="intro op">%(kort)s</p>
       <div class="knopgroep op">
         <a class="knop knop--vol" href="offerte.html?werk=%(werk)s">Offerte aanvragen</a>
         <a class="knop knop--lijn" href="%(wa)s">Foto sturen via WhatsApp</a>
       </div>
-""" % dict(naam=naam, kort=kort, werk=werk,
-           wa=D.wa_link("Hallo, ik stuur een foto voor %s." % naam.lower())),
-        B.DIENST_FILM[slug], klasse="hero--dienst")
+""" % dict(naam=naam, kort=kort, werk=werk, wa=wa), B.DIENST_FILM[slug], klasse="hero--dienst")
 
+    # Waar de uren in gaan zitten, met een eigen foto.
     h += """
   <section class="sectie sectie--zand">
     <div class="wrap">
       <div class="blok op" style="border:0;padding-top:0">
         <div class="blok-beeld">
-          <img src="../assets/img/%(beeld)s" width="1000" height="750" fetchpriority="high"
+          <img src="../assets/img/%(beeld)s" width="1000" height="750" loading="lazy"
                alt="%(kort)s">
         </div>
         <div>
@@ -440,15 +541,59 @@ def dienstpagina(variant, dienst):
 """ % dict(kort=kort, lang=lang, beeld=beeld,
            punten="".join("<li>%s</li>" % p for p in punten))
 
-    h += B.werkwijze(" sectie--vlak", beelden=True)
-    h += B.snee()
-
+    # Wanneer, waar u op let, welk materiaal: de vragen voor de aanvraag.
+    h += B.snee(om=True, zand=True)
     h += '  <section class="sectie">\n    <div class="wrap rail">\n'
-    h += B.railkop("Vragen", "Vragen over %s" % naam.lower(), "Vier stuks")
-    h += B.vragen(vraagset, "vragen-" + slug)
+    h += B.railkop("Wanneer", "Wanneer is het tijd voor %s?" % naam.lower(), "Voor de aanvraag")
+    h += '        <div class="kennis op" data-stagger>\n'
+    for titel, tekst in inhoud["wanneer"]:
+        h += '          <div><h3>%s</h3><p>%s</p></div>\n' % (titel, tekst)
+    h += "        </div>\n"
+    h += ('        <div class="signalen op">\n          <h3 class="display">Waar u zelf op kunt '
+          'letten</h3>\n          <ul>%s</ul>\n        </div>\n'
+          % "".join("<li>%s</li>" % s for s in inhoud["signalen"]))
+    h += B.ctaregel("Herkent u iets hiervan? Stuur een foto, dan zeg ik wat er nodig is.",
+                    [("Foto sturen via WhatsApp", wa, "vol")])
     h += "      </div>\n    </div>\n  </section>\n"
 
     h += '  <section class="sectie sectie--zand">\n    <div class="wrap rail">\n'
+    h += B.railkop("Materiaal", "Welk materiaal, en waarom", "Advies bij het kijken",
+                   "Welke verf of welk behang het wordt, hangt af van de ruimte en de ondergrond. "
+                   "Dit zijn de keuzes die meestal voorbijkomen.")
+    h += '        <div class="materiaal op" data-stagger>\n'
+    for titel, tekst in inhoud["materiaal"]:
+        h += '          <div><h3>%s</h3><p>%s</p></div>\n' % (titel, tekst)
+    h += "        </div>\n      </div>\n    </div>\n  </section>\n"
+
+    # Geen prijzen, wel eerlijk waar de prijs van afhangt.
+    h += '  <section class="sectie">\n    <div class="wrap rail">\n'
+    h += B.railkop("Kosten", "Waar de prijs van afhangt", "Geen prijslijst",
+                   "Een prijs noemen zonder te kijken zou gokken zijn. Dit zijn de dingen die het "
+                   "verschil maken.")
+    h += ('        <ol class="kosten op">%s</ol>\n'
+          % "".join("<li>%s</li>" % k for k in inhoud["kosten"]))
+    h += B.ctaregel("Benieuwd wat dit bij uw woning kost? Ik kom vrijblijvend kijken.",
+                    [("Offerte aanvragen", "offerte.html?werk=%s" % werk, "vol")])
+    h += "      </div>\n    </div>\n  </section>\n"
+
+    h += B.werkwijze(" sectie--vlak", beelden=True)
+    h += B.snee()
+
+    if inhoud["reviews"]:
+        h += '  <section class="sectie">\n    <div class="wrap rail">\n'
+        h += B.railkop("Reviews", "Wat klanten op Werkspot schrijven",
+                       "%s uit %s" % (D.SCORE, D.AANTAL_REVIEWS),
+                       "Letterlijk overgenomen, met het soort werk en de plaats erbij.")
+        h += B.reviews(indexen=inhoud["reviews"])
+        h += "      </div>\n    </div>\n  </section>\n"
+
+    h += '  <section class="sectie sectie--zand">\n    <div class="wrap rail">\n'
+    h += B.railkop("Vragen", "Vragen over %s" % naam.lower(), "%d stuks" % len(vraagset))
+    h += B.vragen(vraagset, "vragen-" + slug)
+    h += "      </div>\n    </div>\n  </section>\n"
+
+    h += B.snee(om=True, zand=True)
+    h += '  <section class="sectie">\n    <div class="wrap rail">\n'
     h += B.railkop("En verder", "Vaak in dezelfde klus", "Drie andere diensten")
     h += B.kaarten(variant, lijst=andere)
     h += "      </div>\n    </div>\n  </section>\n"
@@ -465,36 +610,61 @@ def dienstpagina(variant, dienst):
 # =====================================================================
 def regiopagina(variant, plaats):
     anderen = [p for p in D.WERKGEBIED if p != plaats]
+    regio = D.REGIO[plaats]
     h = B.kop(variant, "werkgebied.html",
               "Schilder in %s | Aribouw" % plaats,
-              "Schilderwerk, behangen en houtreparaties in %s. Aribouw zit in Westervoort en "
-              "werkt in de hele regio." % plaats,
+              "Schilder in %s: binnen- en buitenschilderwerk, behangen en houtreparaties door "
+              "Aribouw uit Westervoort. %s uit %s reviews op Werkspot."
+              % (plaats, D.SCORE, D.AANTAL_REVIEWS),
               "Hallo, ik woon in %s en heb een vraag." % plaats)
 
-    if plaats == D.PLAATS:
-        waar = "Aribouw zit in %s zelf, aan de Mommenkamp." % plaats
-    else:
-        waar = "Aribouw zit in Westervoort, dus %s ligt in de buurt." % plaats
     h += B.filmhero("""      <p class="label op"><a href="werkgebied.html">Werkgebied</a></p>
       <h1 class="display op" style="max-width:16ch">Schilder in %(plaats)s</h1>
-      <p class="intro op">%(waar)s %(score)s uit %(aantal)s reviews op Werkspot.</p>
+      <p class="intro op">%(intro)s</p>
       <div class="knopgroep op">
         <a class="knop knop--vol" href="offerte.html">Offerte aanvragen</a>
-        <a class="knop knop--lijn" href="werk.html">Bekijk eerder werk</a>
+        <a class="knop knop--lijn" href="%(wa)s">Stuur foto&#39;s via WhatsApp</a>
       </div>
-""" % dict(plaats=plaats, waar=waar, score=D.SCORE, aantal=D.AANTAL_REVIEWS),
+""" % dict(plaats=plaats, intro=regio["intro"],
+           wa=D.wa_link("Hallo, ik woon in %s en stuur wat foto's." % plaats)),
         beeld="straat-liemers.webp", alt="Straat met bakstenen rijtjeshuizen en witte kozijnen",
         klasse="hero--kort")
 
+    # Lokaal bewijs, alleen als het er echt is.
+    if regio["projecten"] or regio["reviews"]:
+        h += '  <section class="sectie">\n    <div class="wrap rail">\n'
+        h += B.railkop("Uit %s" % plaats, "Werk en reviews uit %s" % plaats, "Eigen werk",
+                       regio.get("project_tekst", ""))
+        if regio["projecten"]:
+            werk = [w for w in B.WERK if w[0] in regio["projecten"]]
+            h += '        <div class="werk werk--lokaal op" data-stagger>\n'
+            for beeld, titel, onder in werk:
+                h += ('          <figure><img src="../assets/img/%s" width="1000" height="750" '
+                      'loading="lazy" alt="%s in %s"><figcaption><h3>%s</h3><p>%s</p></figcaption>'
+                      '</figure>\n' % (beeld, titel, plaats, titel, onder))
+            h += "        </div>\n"
+        if regio["reviews"]:
+            h += B.reviews(indexen=regio["reviews"])
+        h += "      </div>\n    </div>\n  </section>\n"
+        h += B.snee(zand=False)
+    else:
+        h += '  <section class="sectie">\n    <div class="wrap rail">\n'
+        h += B.railkop("Reviews", "Reviews uit de regio", "%s uit %s" % (D.SCORE, D.AANTAL_REVIEWS),
+                       "Uit %s staat er nog geen review op Werkspot. Dit zijn reviews uit de "
+                       "regio, met de plaats erbij." % plaats)
+        h += B.reviews(indexen=[2, 3])
+        h += "      </div>\n    </div>\n  </section>\n"
+        h += B.snee(zand=False)
+
     h += '  <section class="sectie sectie--zand">\n    <div class="wrap rail">\n'
-    h += B.railkop("Wat ik doe", "In %s ook" % plaats, "Vier diensten",
-                   "Dezelfde vier dingen als in de rest van het werkgebied.")
+    h += B.railkop("Wat ik doe", "Diensten in %s" % plaats, "Vier diensten")
     h += B.kaarten(variant)
     h += "      </div>\n    </div>\n  </section>\n"
 
     h += B.snee(om=True, zand=True)
     h += '  <section class="sectie">\n    <div class="wrap rail">\n'
-    h += B.railkop("In de buurt", "Ook hier", "Drie plaatsen")
+    h += B.railkop("In de buurt", "Ook in deze plaatsen", "%d plaatsen" % len(anderen),
+                   "Het hele werkgebied staat op de <a href=\"werkgebied.html\">werkgebiedpagina</a>.")
     h += '        <div class="regio-lijst op" data-stagger>\n'
     for p in anderen:
         h += ('          <a href="regio-%s.html"><b>%s %s</b><span>Schilderwerk, behangen en '

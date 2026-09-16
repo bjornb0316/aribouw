@@ -42,8 +42,9 @@ AFLAK = [
     ("Blauwe kleurvlakken",
      "Waar Grondlaag alles op papier houdt, wisselt Aflak hele secties af in diepblauw. De vlakken "
      "raken elkaar in de schuine snijlijn."),
-    ("Vier dienstpagina&#39;s en vier plaatspagina&#39;s",
-     "Elk met eigen tekst en eigen vragen. Dat is waar Google op zoekt bij 'schilder Westervoort'."),
+    ("Vier dienstpagina&#39;s en vijf plaatspagina&#39;s",
+     "Diensten met wanneer, waar u op let, materiaal en waar de prijs van afhangt. Plaatsen met "
+     "echt werk en reviews uit die plaats. Dat is waar Google op zoekt bij 'schilder Westervoort'."),
 ]
 
 

@@ -707,6 +707,40 @@ h2.display{font-size:clamp(2rem,4vw,3.2rem);letter-spacing:-.025em}
 .sectie--film > .wrap{position:relative;z-index:2}
 .sectie--film .sectie-kop .display{color:#fff;text-shadow:0 2px 24px rgba(10,14,20,.5)}
 
+/* ---------- dienstpagina: kennis voor de aanvraag ----------
+   Drie vormen, zodat de pagina niet een rij gelijke blokken wordt:
+   wanneer als drie kolommen met een blauwe streep, signalen als
+   afvinklijst op wit, materiaal als genummerde rij op zand, kosten als
+   genummerde lijst. */
+.kennis{display:grid;gap:clamp(1.2rem,2.5vw,2rem);margin-top:clamp(1.6rem,3vw,2.2rem)}
+@media (min-width:820px){.kennis{grid-template-columns:repeat(3,1fr)}}
+.kennis > div{border-top:3px solid var(--blauw);padding-top:1rem}
+.kennis h3,.materiaal h3{font-family:Supreme,sans-serif;font-weight:700;font-size:1.05rem}
+.kennis p,.materiaal p{color:var(--inkt-2);font-size:.95rem;margin-top:.4rem}
+.signalen{margin-top:clamp(1.8rem,3vw,2.4rem);background:var(--wit);border:1px solid var(--lijn);
+  border-radius:var(--r);padding:clamp(1.3rem,3vw,2rem)}
+.signalen h3{font-size:clamp(1.15rem,1.8vw,1.35rem)}
+.signalen ul{margin-top:1rem;display:grid;gap:.55rem}
+@media (min-width:820px){.signalen ul{grid-template-columns:1fr 1fr;column-gap:2rem}}
+.signalen li{position:relative;padding-left:1.7rem;color:var(--inkt-2);font-size:.95rem}
+.signalen li::before{content:"";position:absolute;left:.3rem;top:.12em;width:.5rem;height:.9rem;
+  border:solid var(--blauw);border-width:0 2px 2px 0;transform:rotate(45deg)}
+.materiaal{display:grid;gap:1px;background:var(--lijn-2);border:1px solid var(--lijn-2);
+  border-radius:var(--r);overflow:hidden;margin-top:clamp(1.6rem,3vw,2.2rem);counter-reset:m}
+@media (min-width:820px){.materiaal{grid-template-columns:repeat(3,1fr)}}
+.materiaal > div{background:var(--zand);padding:1.3rem 1.3rem 1.5rem;counter-increment:m}
+.materiaal > div::before{content:counter(m, decimal-leading-zero);display:block;
+  font-family:Supreme,sans-serif;font-weight:700;color:var(--blauw);font-size:.85rem;
+  letter-spacing:.1em;margin-bottom:.6rem}
+.kosten{margin-top:clamp(1.4rem,3vw,2rem);counter-reset:k;display:grid;gap:0;max-width:44rem}
+.kosten li{counter-increment:k;display:grid;grid-template-columns:2.6rem 1fr;align-items:baseline;
+  padding:.8rem 0;border-bottom:1px solid var(--lijn);color:var(--inkt)}
+.kosten li::before{content:counter(k);font-family:Supreme,sans-serif;font-weight:700;
+  font-size:1.35rem;color:var(--blauw)}
+.reviews--een{max-width:34rem;grid-template-columns:1fr !important}
+.werk--lokaal{margin-block:clamp(1.4rem,3vw,2rem) clamp(1.2rem,2.5vw,1.8rem)}
+@media (min-width:820px){.werk--lokaal{grid-template-columns:minmax(0,26rem)}}
+
 /* ---------- over Ahmad en zakelijk ----------
    Links wie er komt, rechts een wit paneel voor aannemers en architecten. */
 .over{display:grid;gap:clamp(1.8rem,4vw,3.4rem)}

@@ -356,9 +356,10 @@ def werkwijze(klasse="", beelden=False):
     return h
 
 
-def reviews(hoeveel=4, klasse=""):
-    h = '        <div class="reviews op" data-stagger>\n'
-    for tekst, wie, wat in D.REVIEWS[:hoeveel]:
+def reviews(hoeveel=4, klasse="", indexen=None):
+    lijst = [D.REVIEWS[i] for i in indexen] if indexen is not None else D.REVIEWS[:hoeveel]
+    h = '        <div class="reviews%s op" data-stagger>\n' % (" reviews--een" if len(lijst) == 1 else "")
+    for tekst, wie, wat in lijst:
         h += ('          <blockquote class="review"><p>%s</p>'
               '<div class="review-onder"><b>%s</b><span>%s</span></div></blockquote>\n'
               % (tekst, wie, wat))

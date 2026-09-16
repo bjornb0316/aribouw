@@ -85,7 +85,8 @@ SCORE_DATUM = "8 september 2026"
 # helpen niet en lezen als opvulling.
 WERKGEBIED_ALLES = ["Westervoort", "Duiven", "Zevenaar", "Arnhem", "Doesburg", "Didam",
                     "Dieren", "Velp", "Huissen", "Elst", "Ede", "Nijmegen"]
-WERKGEBIED = WERKGEBIED_ALLES[:4]
+# Huissen erbij omdat daar een echte review vandaan komt.
+WERKGEBIED = ["Westervoort", "Duiven", "Zevenaar", "Arnhem", "Huissen"]
 BUITEN_REGIO = "Voor grotere projecten ook buiten deze regio."
 
 # Zijn eigen lijst van werkzaamheden, in vier groepen.
@@ -136,6 +137,159 @@ DIENSTEN = [
       "Klein renovatie- en onderhoudswerk",
       "In een planning met het schilderwerk"]),
 ]
+
+# Wat een dienstpagina meer vertelt dan de kaart: de vragen die iemand heeft
+# voordat hij een aanvraag doet. Algemene vakkennis, geen verzonnen feiten
+# over Aribouw, geen prijzen en geen termijnen.
+# reviews: indexen in REVIEWS die echt over dit soort werk gaan.
+DIENST_INHOUD = {
+    "binnenschilderwerk": {
+        "wanneer": [
+            ("Muren en plafonds", "Bij vlekken, verkleuring of beschadigingen die met schoonmaken "
+             "niet meer weggaan. Of gewoon omdat er een nieuwe kleur moet, bijvoorbeeld bij een "
+             "verhuizing."),
+            ("Deuren, kozijnen en trappen", "Als de lak dof wordt, afbladdert of versleten is op de "
+             "plekken waar veel wordt vastgepakt of gelopen."),
+            ("Keuken en badkamer", "Bij loslatende verf of plekjes door vocht. Daar is een verf "
+             "nodig die daar tegen kan."),
+        ],
+        "signalen": ["Verf die loslaat of bladdert", "Gele verkleuring van oude lak op deuren en "
+                     "kozijnen", "Doorschijnende of vlekkerige plekken na een eerdere laag",
+                     "Vocht- of rookvlekken die door de verf heen blijven komen",
+                     "Kleine gaatjes en naden van pluggen of oude schilderijhaken"],
+        "materiaal": [
+            ("Muurverf", "Voor wanden en plafonds. Mat verbergt oneffenheden het best, een "
+             "zijdeglans is makkelijker af te nemen."),
+            ("Lak voor houtwerk", "Watergedragen lak vergeelt minder, terpentinegedragen lak vloeit "
+             "vaak mooier uit. Welke past, hangt af van de ondergrond en de ruimte."),
+            ("Vochtbestendige verf", "Voor keuken en badkamer, waar gewone muurverf het niet lang "
+             "volhoudt."),
+        ],
+        "kosten": ["De oppervlakte van muren en plafonds",
+                   "Hoeveel houtwerk erbij komt: deuren, kozijnen, plinten, een trap",
+                   "De staat van de ondergrond en hoeveel voorbereiding nodig is",
+                   "Het aantal lagen, bijvoorbeeld bij een lichte kleur over een donkere",
+                   "Of de ruimte leeg is of eerst alles afgedekt moet worden"],
+        "reviews": [1, 0],
+    },
+    "buitenschilderwerk": {
+        "wanneer": [
+            ("Het hangt af van de kant van het huis", "De zon- en regenkant heeft het veel zwaarder "
+             "dan de kant in de schaduw. Kijk daarom liever naar de signalen hieronder dan naar het "
+             "aantal jaren."),
+            ("Liever iets te vroeg", "Zolang de verf nog heel is, is opnieuw schilderen vooral "
+             "schuren en lakken. Zit er eenmaal water in het hout, dan komt er herstel bij."),
+            ("Het seizoen", "Buitenwerk gaat het best bij droog weer en niet te lage temperaturen. "
+             "Het voorjaar en de zomer raken daardoor snel vol."),
+        ],
+        "signalen": ["Verf die bladdert of scheurt, vooral op onderdorpels en in de hoeken",
+                     "Hout dat zacht aanvoelt als u er met een schroevendraaier op drukt",
+                     "Donkere verkleuring of schimmel in de hoeken van een kozijn",
+                     "Open naden tussen het kozijn en het glas of de muur",
+                     "Kaal of grijs geworden hout waar de verf weg is"],
+        "materiaal": [
+            ("Grondverf", "Op kaal of hersteld hout. Zonder grondlaag hecht de lak niet goed en "
+             "laat hij sneller los."),
+            ("Buitenlak", "Een lak die tegen zon, regen en temperatuurverschil kan, in de glansgraad "
+             "die bij het huis past."),
+            ("Houtrotvuller of nieuw hout", "Voor aangetaste plekken, voordat er verf op gaat. "
+             "Verf over rot hout is weggegooid geld."),
+        ],
+        "kosten": ["Het aantal kozijnen, deuren en boeidelen",
+                   "Hoeveel houtrot er hersteld moet worden",
+                   "Of de oude laklaag alleen geschuurd of helemaal verwijderd moet worden",
+                   "Hoe goed hoge delen bereikbaar zijn",
+                   "Het aantal lagen"],
+        "reviews": [0, 2, 3],
+    },
+    "behang": {
+        "wanneer": [
+            ("Behang", "Voor een patroon of structuur die u met verf niet krijgt."),
+            ("Renovlies", "Een glad vlies dat na het behangen wordt geschilderd. Het verbergt "
+             "kleine oneffenheden en haarscheurtjes en maakt de wand steviger."),
+            ("Glasvezelbehang", "Sterker dan renovlies, met een zichtbare structuur. Handig op "
+             "plekken waar vaak iets tegen de muur komt, zoals een gang of trapgat."),
+        ],
+        "signalen": ["Naden die loslaten of openstaan", "Bobbels of luchtbellen in het behang",
+                     "Verkleuring of vlekken die niet meer weggaan",
+                     "Scheurtjes waar de wand eronder doorheen komt",
+                     "Oud behang waar u liever een geschilderde wand voor terug wilt"],
+        "materiaal": [
+            ("De juiste lijm", "Vliesbehang, papierbehang en glasvezel vragen elk een andere lijm "
+             "en een andere manier van aanbrengen."),
+            ("Voorstrijk", "Op een wand die veel vocht opzuigt, zodat het behang goed hecht."),
+            ("Muurverf erover", "Renovlies en glasvezel krijgen na het behangen meestal twee lagen "
+             "verf."),
+        ],
+        "kosten": ["Het aantal vierkante meters wand",
+                   "Of oud behang eerst verwijderd moet worden",
+                   "De staat van de wand eronder",
+                   "Het soort behang, en bij patroonbehang het laten doorlopen van het patroon",
+                   "Of renovlies of glasvezel daarna nog geschilderd wordt"],
+        "reviews": [1, 0],
+    },
+    "houtwerk": {
+        "wanneer": [
+            ("Zodra hout zacht wordt", "Hoe eerder houtrot wordt aangepakt, hoe kleiner de reparatie "
+             "blijft. Wachten maakt het bijna altijd duurder."),
+            ("Als verf steeds op dezelfde plek loslaat", "Dat is vaak een teken dat er vocht in het "
+             "hout zit. Opnieuw schilderen zonder te herstellen helpt dan niet lang."),
+            ("Samen met het schilderwerk", "Kleine reparaties vallen het minst op als ze in dezelfde "
+             "klus worden meegenomen en er meteen verf overheen gaat."),
+        ],
+        "signalen": ["Een onderdorpel die zacht aanvoelt of waar de verf steeds bladdert",
+                     "Houtrot aan de onderkant van een deur of kozijnstijl",
+                     "Donker of vochtig hout rond hoeken en naden",
+                     "Een deur die klemt of niet meer goed sluit",
+                     "Scheuren in het hout waar water in kan lopen"],
+        "materiaal": [
+            ("Houtrotvuller", "Voor kleine plekken: het rotte hout eruit, vullen, schuren en "
+             "schilderen."),
+            ("Een nieuw stuk hout", "Als de schade te groot is voor vuller, wordt er een stuk nieuw "
+             "hout ingezet."),
+            ("Grondverf en lak", "Zodat de reparatie beschermd is en niet opvalt naast de rest van "
+             "het kozijn."),
+        ],
+        "kosten": ["Hoeveel plekken er hersteld moeten worden en hoe groot de schade is",
+                   "Vullen of een stuk hout vervangen",
+                   "Of het hele kozijn of de hele deur meteen wordt geschilderd",
+                   "Hoe goed de plek bereikbaar is"],
+        "reviews": [3, 2],
+    },
+}
+
+# Lokaal bewijs per plaats. Alleen wat echt uit die plaats komt: een review
+# (index in REVIEWS) of een eigen project (beeld uit bouw.WERK). Waar niets
+# is, staat niets, en dan tonen we reviews uit de regio met hun eigen plaats.
+REGIO = {
+    "Westervoort": {
+        "intro": "Aribouw is gevestigd aan de Mommenkamp in Westervoort. Binnen- en "
+                 "buitenschilderwerk, behangen en houtreparaties, voor woningen en bedrijfspanden.",
+        "reviews": [2], "projecten": ["pui-voetzorg.webp"],
+        "project_tekst": "De pui hieronder is van een praktijkruimte in Westervoort: een voormalige "
+                         "garage. Cindy schreef er de review bij.",
+    },
+    "Duiven": {
+        "intro": "Duiven grenst aan Westervoort, dus u woont vlak bij Aribouw. Binnen- en "
+                 "buitenschilderwerk, behangen en houtreparaties.",
+        "reviews": [], "projecten": [],
+    },
+    "Zevenaar": {
+        "intro": "Zevenaar ligt net als Westervoort in de Liemers. Binnen- en buitenschilderwerk, "
+                 "behangen en houtreparaties.",
+        "reviews": [], "projecten": [],
+    },
+    "Arnhem": {
+        "intro": "Arnhem grenst aan Westervoort. Binnen- en buitenschilderwerk, behangen en "
+                 "houtreparaties, voor woningen, bedrijfspanden en praktijkruimtes.",
+        "reviews": [], "projecten": [],
+    },
+    "Huissen": {
+        "intro": "In Huissen heeft Aribouw deuren en kozijnen hersteld en geschilderd. Binnen- en "
+                 "buitenschilderwerk, behangen en houtreparaties.",
+        "reviews": [3], "projecten": [],
+    },
+}
 
 # Van eerste bericht tot oplevering. Geen doorlooptijden, want die zijn
 # nog niet bevestigd.

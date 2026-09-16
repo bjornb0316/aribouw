@@ -501,7 +501,40 @@ window.abExtra = function (WA) {
     });
   }
 
-  schuiven(); stalen(); flows(); films();
+  /* ---- project doorgeven (voor Ahmad) ----
+     Geen server: alles gaat als een WhatsApp-bericht naar Bjorn, de
+     foto's stuurt Ahmad er in hetzelfde gesprek achteraan. */
+  function projectformulier() {
+    var f = document.querySelector("[data-projectformulier]");
+    if (!f) return;
+    f.addEventListener("submit", function (e) {
+      e.preventDefault();
+      if (window.abControleer && !window.abControleer(f)) return;
+      function w(n) { var i = f.querySelector('[name="' + n + '"]'); return i ? i.value.trim() : ""; }
+      var regels = [
+        "Nieuw project voor de website",
+        "",
+        "Plaats: " + w("plaats"),
+        "Wanneer: " + (w("wanneer") || "niet ingevuld"),
+        "Soort werk: " + w("werk"),
+        "Gedaan: " + w("onderdelen"),
+        "Ervoor: " + w("situatie"),
+        "Aanpak: " + w("aanpak"),
+        "Resultaat: " + (w("resultaat") || "niet ingevuld"),
+        "Foto's online: " + w("toestemming"),
+        "",
+        "De voor- en nafoto's stuur ik hierna."
+      ];
+      window.location.href = "https://wa.me/" + f.getAttribute("data-naar") +
+        "?text=" + encodeURIComponent(regels.join("\n"));
+    });
+    f.addEventListener("input", function (e) {
+      var v = e.target.closest(".veld");
+      if (v && e.target.value.trim()) v.removeAttribute("data-fout");
+    });
+  }
+
+  schuiven(); stalen(); flows(); films(); projectformulier();
 };
 """
 

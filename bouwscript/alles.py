@@ -49,9 +49,11 @@ def main():
     for plaats in D.WERKGEBIED:
         pagina.append(("regio-%s.html" % plaats.lower(), P2.regiopagina("aflak", plaats)))
     pagina.append(("privacy.html", P2.privacy("aflak")))
+    # Alleen voor Ahmad: niet in het menu en niet in de sitemap.
+    pagina.append(("project-doorgeven.html", P2.project_invullen("aflak")))
     for naam, inhoud in pagina:
         B.schrijf("aflak", naam, inhoud)
-    B.zoekbestanden("aflak", [n for n, _ in pagina])
+    B.zoekbestanden("aflak", [n for n, _ in pagina if n != "project-doorgeven.html"])
     print("variant-aflak       %2d pagina's" % len(pagina))
     totaal += len(pagina)
 
