@@ -41,33 +41,46 @@ def kop(variant, actief, titel, omschrijving, wa_bericht, extra="", kopklasse=""
                     % (b, ' aria-current="page"' if b == actief else "", n)
                     for b, n in paginas(variant))
     nav_m = "\n".join('      <a href="%s">%s</a>' % (b, n) for b, n in paginas(variant))
+    # De voorbeeldbalk en noindex staan er zolang LIVE uit staat. De eigen
+    # URL van de pagina kent kop() niet (dienstpagina's geven "diensten.html"
+    # mee voor het menu), dus die vult schrijf() in op __PAGINA__.
+    robots = "" if D.LIVE else '<meta name="robots" content="noindex,nofollow">\n'
+    balk = "" if D.LIVE else """<div class="voorstel">
+  <div class="wrap">
+    <span><b>Voorbeeldpagina.</b> Voorstel voor Aribouw, gemaakt door Bjorn van Capital BB. Dit is niet de offici&euml;le website.</span>
+    <span><a href="https://wa.me/%s">Reageren via WhatsApp</a></span>
+  </div>
+</div>
+""" % D.BJORN_WA
     return """<!doctype html>
 <html lang="nl">
 <head>
 <script>document.documentElement.className+=" js";</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex,nofollow">
-<title>%(titel)s</title>
+%(robots)s<title>%(titel)s</title>
 <meta name="description" content="%(omschrijving)s">
+<link rel="canonical" href="%(site)s/__PAGINA__">
 <meta property="og:title" content="%(titel)s">
 <meta property="og:description" content="%(omschrijving)s">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="nl_NL">
+<meta property="og:site_name" content="Aribouw">
+<meta property="og:url" content="%(site)s/__PAGINA__">
+<meta property="og:image" content="%(site)s/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#F6F4F0">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 %(fonts)s
 <link rel="stylesheet" href="assets/css/stijl.css">
 %(extra)s
 </head>
 <body data-wa-bericht="%(wa)s">
 
-<div class="voorstel">
-  <div class="wrap">
-    <span><b>Voorbeeldpagina.</b> Voorstel voor Aribouw, gemaakt door Bjorn van Capital BB. Dit is niet de offici&euml;le website.</span>
-    <span><a href="https://wa.me/%(bjorn)s">Reageren via WhatsApp</a></span>
-  </div>
-</div>
-
+%(balk)s
 <header class="kop%(kopklasse)s">
   <div class="wrap kop-in">
     <a class="merk" href="index.html">
@@ -103,13 +116,15 @@ def kop(variant, actief, titel, omschrijving, wa_bericht, extra="", kopklasse=""
 
 <main>
 """ % dict(titel=titel, omschrijving=omschrijving, fonts=FONTS, extra=extra, nav=nav,
-           nav_m=nav_m, wa=wa_bericht, bjorn=D.BJORN_WA, tel=D.TEL_TOON, tellink=D.TEL_LINK,
-           mark=MARK, kopklasse=(" " + kopklasse) if kopklasse else "")
+           nav_m=nav_m, wa=wa_bericht, tel=D.TEL_TOON, tellink=D.TEL_LINK,
+           mark=MARK, kopklasse=(" " + kopklasse) if kopklasse else "",
+           robots=robots, balk=balk, site=D.SITE_URL[variant])
 
 
 def voet(variant):
     links = "\n".join('        <a href="%s">%s</a>' % (b, n) for b, n in paginas(variant))
-    gebied = "<br>".join(D.WERKGEBIED) + "<br>en omgeving"
+    gebied = (", ".join(D.WERKGEBIED_ALLES[:-1]) + " en " + D.WERKGEBIED_ALLES[-1] + ". " +
+              D.BUITEN_REGIO)
     return """</main>
 
 <footer class="voet">
@@ -117,9 +132,10 @@ def voet(variant):
     <div class="voet-in">
       <div>
         <span class="voet-merk">ARIBOUW</span>
-        <p style="margin-top:.9rem;max-width:34ch">Schilderwerk, behang en kleine renovaties.
+        <p style="margin-top:.9rem;max-width:34ch">Schilderwerk, behang en houtreparaties.
         Strak afgewerkt, netjes achtergelaten.</p>
-        <p style="margin-top:.9rem">KvK %(kvk)s</p>
+        <p style="margin-top:.9rem">%(eigenaar)s<br>%(adres)s<br>%(postcode)s %(plaats)s</p>
+        <p style="margin-top:.9rem">KvK %(kvk)s<br>Btw %(btw)s</p>
       </div>
       <div>
         <p class="voet-kop">Pagina&#39;s</p>
@@ -134,12 +150,12 @@ def voet(variant):
       </div>
       <div>
         <p class="voet-kop">Werkgebied</p>
-        <p>%(gebied)s</p>
+        <p style="max-width:30ch">%(gebied)s</p>
       </div>
     </div>
     <div class="voet-onder">
-      <span>%(plaats)s &nbsp;&middot;&nbsp; Werken op afspraak, op locatie</span>
-      <span>Voorbeeldontwerp van Bjorn, Capital BB. <a href="https://wa.me/%(bjorn)s" style="display:inline;text-decoration:underline">Reageren</a></span>
+      <span>Schildersbedrijf uit %(plaats)s. Werken op afspraak, op locatie.</span>
+      <span><a class="voet-inline" href="privacy.html">Privacyverklaring</a>%(ontwerp)s</span>
     </div>
   </div>
 </footer>
@@ -153,7 +169,11 @@ def voet(variant):
 </body>
 </html>
 """ % dict(links=links, tel=D.TEL_TOON, tellink=D.TEL_LINK, mail=D.MAIL, kvk=D.KVK,
-           werkspot=D.WERKSPOT, gebied=gebied, plaats=D.PLAATS, bjorn=D.BJORN_WA)
+           werkspot=D.WERKSPOT, gebied=gebied, plaats=D.PLAATS,
+           eigenaar=D.EIGENAAR, adres=D.ADRES, postcode=D.POSTCODE, btw=D.BTW,
+           ontwerp="" if D.LIVE else (
+               ' &nbsp;&middot;&nbsp; Voorbeeldontwerp van Bjorn, Capital BB. <a class="voet-inline" '
+               'href="https://wa.me/%s">Reageren</a>' % D.BJORN_WA))
 
 
 def snee(om=False, zand=False):
@@ -184,21 +204,74 @@ def gebiedstrip():
 %s      <span>en omgeving</span>
     </div>
   </section>
-""" % "".join("      <span>%s</span>\n" % p for p in D.WERKGEBIED)
+""" % "".join("      <span>%s</span>\n" % p for p in D.WERKGEBIED_ALLES[:8])
 
 
-def kaarten(variant, hoeveel=4):
-    h = '        <div class="kaarten op" data-stagger>\n'
-    for slug, naam, kort, lang, beeld, punten in D.DIENSTEN[:hoeveel]:
+# Aflak: welke Higgsfield-film bij welke dienst hoort. Zie film.py.
+DIENST_FILM = {"binnenschilderwerk": "binnen", "buitenschilderwerk": "buiten",
+               "behang": "behang", "houtwerk": "kitwerk"}
+
+
+def film(naam, gedrag="lus", klasse="film"):
+    """Een stille film met poster. De bron staat in data-src en wordt pas
+    geladen als hij in beeld komt (of bij hover). Zonder JS of met minder
+    beweging blijft de poster staan. Decoratief, dus aria-hidden."""
+    return ('<div class="%s" aria-hidden="true"><video muted playsinline preload="none"%s '
+            'poster="../assets/film/%s.webp" data-film="%s">'
+            '<source data-src="../assets/film/%s.mp4" type="video/mp4"></video></div>'
+            % (klasse, "" if gedrag == "eenmaal" else " loop", naam, gedrag, naam))
+
+
+def filmhero(tekst, filmnaam=None, beeld=None, alt="", klasse=""):
+    """Aflak: kop over een film of een beeld over de volle breedte."""
+    if filmnaam:
+        media = film(filmnaam, "eenmaal" if filmnaam == "snijlijn" else "lus", "film film--hero")
+    else:
+        media = ('<div class="film film--hero"><img src="../assets/img/%s" width="1920" '
+                 'height="1080" fetchpriority="high" alt="%s"></div>' % (beeld, alt))
+    return """
+  <section class="hero--film%s">
+    %s
+    <div class="wrap">
+%s    </div>
+  </section>
+""" % ((" " + klasse) if klasse else "", media, tekst)
+
+
+def kaart(variant, dienst, meer="Wat dat inhoudt", link=None):
+    slug, naam, kort = dienst[0], dienst[1], dienst[2]
+    if link is None:
         link = ("dienst-%s.html" % slug) if variant == "aflak" else "diensten.html"
-        h += ('          <a class="kaart" href="%s"><span class="kaart-baan"></span>'
-              '<span class="kaart-in"><h3 class="display">%s</h3><p>%s</p>'
-              '<span class="meer">Wat dat inhoudt %s</span></span></a>\n'
-              % (link, naam, kort, PIJL))
+    if variant == "aflak":
+        kopje = ('<span class="kaart-media">%s</span><span class="kaart-baan"></span>'
+                 % film(DIENST_FILM[slug], "hover", "kaart-film"))
+    else:
+        kopje = '<span class="kaart-baan"></span>'
+    return ('          <a class="kaart" href="%s">%s'
+            '<span class="kaart-in"><h3 class="display">%s</h3><p>%s</p>'
+            '<span class="meer">%s %s</span></span></a>\n'
+            % (link, kopje, naam, kort, meer, PIJL))
+
+
+def kaarten(variant, hoeveel=4, lijst=None):
+    lijst = lijst if lijst is not None else D.DIENSTEN[:hoeveel]
+    h = '        <div class="kaarten%s op" data-stagger>\n' % (" kaarten--drie" if len(lijst) == 3 else "")
+    for dienst in lijst:
+        h += kaart(variant, dienst)
     return h + "        </div>\n"
 
 
-# (beeld, titel, onder)
+# Voor-en-na paren van eigen klussen. Nieuwe paren van Ahmad hier
+# toevoegen; de werkpagina van Aflak maakt voor elk paar een schuif.
+# (voor, na, titel, onder, alt voor, alt na)
+VOORNA = [
+    ("deur-voor-breed.webp", "deur-na-breed.webp",
+     "Een binnendeur in een kantoorpand", "Van houtlook naar gebroken wit",
+     "Binnendeur met houtlook voor het schilderen",
+     "Dezelfde deur na het schilderen in gebroken wit"),
+]
+
+# Eigen projectfoto's. (beeld, titel, onder)
 WERK = [
     ("pui-voetzorg.webp", "Pui van een praktijkruimte",
      "Voormalige garage, kozijnen en deur in antraciet"),
@@ -224,17 +297,33 @@ def werkraster(hoeveel=6):
     return h + "        </div>\n"
 
 
-def werkwijze(klasse=""):
+# Aflak: een beeld per stap. Gegenereerde procesbeelden, geen eigen klussen.
+STAP_BEELDEN = [
+    ("stap-fotos.webp", "Iemand maakt met een telefoon een foto van een scheur in de muur"),
+    ("stap-opname.webp", "Vochtmeting onderaan een houten kozijn"),
+    ("stap-offerte.webp", "Keukentafel met een kleurwaaier en een offerte"),
+    ("stap-uitvoeren.webp", "Kamer afgedekt en afgeplakt voor het schilderen"),
+    ("stap-opgeleverd.webp", "Opgeruimde, net geschilderde woonkamer in middaglicht"),
+]
+
+
+def werkwijze(klasse="", beelden=False):
     h = """  <section class="sectie%s">
     <div class="wrap rail">
 """ % (" " + klasse if klasse else "")
     h += railkop("Werkwijze", "Het meeste werk zit in wat u later niet ziet",
-                 "Vijf stappen", "Schuren, plamuren en aftapen kosten de meeste uren. Precies "
-                 "daar zit het verschil tussen twee jaar mooi en tien jaar mooi.")
-    h += '        <div class="stappen op" data-stagger>\n'
-    for nr, titel, tekst in D.STAPPEN:
-        h += ('          <div class="stap"><b>%s</b><h3>%s</h3><p>%s</p></div>\n'
-              % (nr, titel, tekst))
+                 "Vijf stappen", "Goed schilderwerk begint bij een goede ondergrond. Schuren, "
+                 "gaatjes dichtzetten en afplakken kosten de meeste uren, en precies daar zit het "
+                 "verschil tussen twee jaar mooi en tien jaar mooi.")
+    h += '        <div class="stappen%s op" data-stagger>\n' % (" stappen--beeld" if beelden else "")
+    for i, (nr, titel, tekst) in enumerate(D.STAPPEN):
+        beeld = ""
+        if beelden:
+            b, alt = STAP_BEELDEN[i]
+            beeld = ('<img class="stap-beeld" src="../assets/img/%s" width="1000" height="750" '
+                     'loading="lazy" alt="%s">' % (b, alt))
+        h += ('          <div class="stap">%s<b>%s</b><h3>%s</h3><p>%s</p></div>\n'
+              % (beeld, nr, titel, tekst))
     h += "        </div>\n      </div>\n    </div>\n  </section>\n"
     return h
 
@@ -254,13 +343,36 @@ def scoreblok():
             % (D.SCORE, D.AANTAL_REVIEWS, D.SCORE_DATUM))
 
 
+def markeer(tekst):
+    """[NOG AANVULLEN: iets] wordt een zichtbare markering op de pagina."""
+    import re
+    return re.sub(r"\[NOG AANVULLEN: ([^\]]+)\]",
+                  lambda m: '<span class="markering">Nog aanvullen: %s</span>' % m.group(1), tekst)
+
+
+# ---- formulieren ----
+# Een verborgen veld dat mensen niet zien en spambots wel invullen.
+HONING = ('<div class="honing" aria-hidden="true"><label for="%s">Laat dit veld leeg</label>'
+          '<input id="%s" name="_honey" type="text" tabindex="-1" autocomplete="off"></div>')
+
+
+def verzendfout():
+    """Als versturen mislukt, is er altijd nog bellen of appen."""
+    return ('<p class="verzendfout" data-verzendfout role="alert">Versturen lukte niet. Bel of app '
+            'mij op <a href="tel:%s">%s</a>, dan kijk ik er meteen naar.</p>'
+            % (D.TEL_LINK, D.TEL_TOON))
+
+
+def demozin():
+    """Zolang er geen ontvanger is ingesteld, zegt de bevestiging dat eerlijk."""
+    return "" if D.FORMULIER_ACTIE else " In deze voorbeeldpagina gaat er nog niets echt de deur uit."
+
+
 def vragen(lijst, kop_id="vragen"):
     h = '        <div class="vragen op" id="%s">\n' % kop_id
     for v, a in lijst:
-        a = (a.replace("[NOG AANVULLEN: garantietermijnen]",
-                       '<span class="markering">Nog aanvullen: garantietermijnen</span>')
-              .replace("[NOG AANVULLEN: gebruikelijke doorlooptijden]",
-                       '<span class="markering">Nog aanvullen: doorlooptijden</span>'))
+        a = markeer(a.replace("[NOG AANVULLEN: gebruikelijke doorlooptijden]",
+                              "[NOG AANVULLEN: doorlooptijden]"))
         h += ('          <div class="vraag" data-open="0">\n'
               '            <button type="button" aria-expanded="false">'
               '<span>%s</span><span class="vraag-teken" aria-hidden="true"></span></button>\n'
@@ -269,14 +381,21 @@ def vragen(lijst, kop_id="vragen"):
     return h + "        </div>\n"
 
 
-def contactblok(titel, intro, onderwerpen=None):
-    keuzes = onderwerpen or ["Binnenschilderwerk", "Buitenschilderwerk", "Behang",
-                             "Kleine renovatie", "Meerdere dingen tegelijk"]
+def contactblok(titel, intro, onderwerpen=None, variant=None):
+    keuzes = onderwerpen or ["Binnenschilderwerk", "Buitenschilderwerk", "Behangen",
+                             "Houtreparatie of onderhoud", "Meerdere dingen tegelijk",
+                             "Project voor aannemer of architect"]
     opties = ('              <option value="" disabled selected>Maak een keuze</option>\n' +
               "\n".join('              <option>%s</option>' % k for k in keuzes))
+    # Aflak: het contactblok opent met een woning in de schemer, die in het
+    # donker van de sectie overloopt.
+    extra, filmpje = "", ""
+    if variant == "aflak":
+        extra = " sectie--film"
+        filmpje = "    " + film("schemer", "lus", "film film--contact") + "\n"
     return """
-  <section class="sectie sectie--nacht" id="contact">
-    <div class="wrap">
+  <section class="sectie sectie--nacht%(extra)s" id="contact">
+%(filmpje)s    <div class="wrap">
       <div class="sectie-kop op">
         <h2 class="display">%(titel)s</h2>
         <p class="intro">%(intro)s</p>
@@ -316,15 +435,17 @@ def contactblok(titel, intro, onderwerpen=None):
               <textarea id="bericht" name="bericht" rows="4" placeholder="Bijvoorbeeld: woonkamer en gang schilderen, muren zijn nu behangen, plafond mag mee."></textarea>
               <span class="hulp">Niet verplicht. Hoe meer u kwijt wilt, hoe gerichter het antwoord.</span>
             </div>
+            %(honing)s
             <button class="knop knop--vol" type="submit">Offerte aanvragen</button>
-            <p class="formulier-noot">Vrijblijvend. Er wordt eerst gekeken en pas daarna komt er
-            een prijs. Foto&#39;s stuurt u het makkelijkst via WhatsApp.</p>
+            %(verzendfout)s
+            <p class="formulier-noot">Vrijblijvend. Ik kom eerst kijken, daarna pas een prijs.
+            Foto&#39;s stuurt u het makkelijkst via WhatsApp. Wat ik met uw gegevens doe, staat in
+            de <a href="privacy.html">privacyverklaring</a>.</p>
           </form>
           <div class="gelukt op" data-gelukt role="status">
-            <b>Aanvraag genoteerd.</b>
-            <p>U wordt gebeld om een moment af te spreken. Stuur gerust alvast een paar foto&#39;s
-            van de ruimte, dan kan er meteen worden meegedacht. In deze voorbeeldpagina gaat er
-            nog niets echt de deur uit.</p>
+            <b>Aanvraag verstuurd.</b>
+            <p>Ik bel u om een moment af te spreken. Stuur gerust alvast een paar foto&#39;s van de
+            ruimte, dan kan ik meteen meedenken.%(demozin)s</p>
             <div class="knopgroep" style="margin-top:1.1rem">
               <a class="knop knop--lijn knop--klein" href="#" data-wa-pagina>Foto&#39;s sturen</a>
             </div>
@@ -332,13 +453,14 @@ def contactblok(titel, intro, onderwerpen=None):
         </div>
         <div class="op">
           <h3 class="display" style="color:#fff">Liever meteen contact</h3>
-          <p style="margin-bottom:1.2rem;color:var(--licht-2)">Bellen of appen kan altijd. Een paar
+          <p style="margin-bottom:1.2rem;color:var(--licht-2)">Bel of app mij gerust. Een paar
           foto&#39;s van de ruimte zeggen vaak al genoeg om te weten waar het over gaat.</p>
           <dl>
             <div class="contactrij"><dt>Telefoon</dt><dd><a href="tel:%(tellink)s">%(tel)s</a></dd></div>
             <div class="contactrij"><dt>WhatsApp</dt><dd><a href="#" data-wa-pagina>%(tel)s</a></dd></div>
             <div class="contactrij"><dt>E-mail</dt><dd><a href="mailto:%(mail)s">%(mail)s</a></dd></div>
-            <div class="contactrij"><dt>Werkgebied</dt><dd>%(plaats)s en omgeving</dd></div>
+            <div class="contactrij"><dt>Adres</dt><dd>%(adres)s, %(postcode)s %(plaats)s</dd></div>
+            <div class="contactrij"><dt>Werkgebied</dt><dd>%(plaats)s, Arnhem, Nijmegen en omgeving</dd></div>
             <div class="contactrij"><dt>Reviews</dt><dd><a href="%(werkspot)s">%(score)s op Werkspot</a></dd></div>
           </dl>
           <div class="knopgroep" style="margin-top:1.4rem">
@@ -350,19 +472,66 @@ def contactblok(titel, intro, onderwerpen=None):
     </div>
   </section>
 """ % dict(titel=titel, intro=intro, opties=opties, tel=D.TEL_TOON, tellink=D.TEL_LINK,
-           mail=D.MAIL, plaats=D.PLAATS, werkspot=D.WERKSPOT, score=D.SCORE)
+           mail=D.MAIL, plaats=D.PLAATS, werkspot=D.WERKSPOT, score=D.SCORE,
+           extra=extra, filmpje=filmpje, adres=D.ADRES, postcode=D.POSTCODE,
+           honing=HONING % ("honing-contact", "honing-contact"), verzendfout=verzendfout(),
+           demozin=demozin())
+
+
+# Het merkteken als favicon: hetzelfde doorgesneden vierkant als in de kop.
+FAVICON = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28">'
+           '<rect width="28" height="28" rx="5" fill="#23262B"/>'
+           '<path d="M0 28V5a5 5 0 0 1 5-5h23z" fill="#14508C"/></svg>\n')
 
 
 def stijlbladen():
+    import shutil
+    from PIL import Image, ImageDraw
     for variant in ("grondlaag", "aflak"):
         for soort, inhoud, naam in (("css", stijl.blad(variant), "stijl.css"),
-                                    ("js", JS.blad(variant, D.WA), "main.js")):
+                                    ("js", JS.blad(variant, D.WA, D.FORMULIER_ACTIE), "main.js")):
             map_ = os.path.join(WORTEL, "variant-" + variant, "assets", soort)
             os.makedirs(map_, exist_ok=True)
             io.open(os.path.join(map_, naam), "w", encoding="utf-8").write(inhoud)
+        assets = os.path.join(WORTEL, "variant-" + variant, "assets")
+        io.open(os.path.join(assets, "favicon.svg"), "w", encoding="utf-8").write(FAVICON)
+        # Voor iOS een PNG; iOS rondt de hoeken zelf af.
+        im = Image.new("RGB", (180, 180), "#23262B")
+        ImageDraw.Draw(im).polygon([(0, 0), (180, 0), (0, 180)], fill="#14508C")
+        im.save(os.path.join(assets, "apple-touch-icon.png"))
+        # De deelafbeelding voor WhatsApp, Facebook en LinkedIn. Gemaakt
+        # door film.py; hier alleen naar de variant gekopieerd.
+        og = os.path.join(WORTEL, "assets", "img", "og-aribouw.jpg")
+        if os.path.exists(og):
+            shutil.copyfile(og, os.path.join(assets, "og.jpg"))
 
 
 def schrijf(variant, naam, inhoud):
     map_ = os.path.join(WORTEL, "variant-" + variant)
     os.makedirs(map_, exist_ok=True)
+    inhoud = inhoud.replace("__PAGINA__", "" if naam == "index.html" else naam)
     io.open(os.path.join(map_, naam), "w", encoding="utf-8").write(inhoud)
+
+
+def zoekbestanden(variant, namen):
+    """sitemap.xml en robots.txt. Zolang LIVE uit staat, blokkeert robots.txt
+    alles; de pagina's hebben dan ook noindex."""
+    import datetime
+    site = D.SITE_URL[variant]
+    vandaag = datetime.date.today().isoformat()
+    regels = []
+    for n in namen:
+        pad = "" if n == "index.html" else n
+        prio = "1.0" if n == "index.html" else ("0.3" if n == "privacy.html" else "0.7")
+        regels.append("  <url><loc>%s/%s</loc><lastmod>%s</lastmod><priority>%s</priority></url>"
+                      % (site, pad, vandaag, prio))
+    sitemap = ('<?xml version="1.0" encoding="UTF-8"?>\n'
+               '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n%s\n</urlset>\n'
+               % "\n".join(regels))
+    if D.LIVE:
+        robots = "User-agent: *\nAllow: /\n\nSitemap: %s/sitemap.xml\n" % site
+    else:
+        robots = "# Demo: niet indexeren. Bij livegang LIVE = True in bouwscript/data.py.\nUser-agent: *\nDisallow: /\n"
+    map_ = os.path.join(WORTEL, "variant-" + variant)
+    io.open(os.path.join(map_, "sitemap.xml"), "w", encoding="utf-8").write(sitemap)
+    io.open(os.path.join(map_, "robots.txt"), "w", encoding="utf-8").write(robots)

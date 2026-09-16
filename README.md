@@ -1,8 +1,9 @@
 # Aribouw, twee websitevoorstellen
 
-Twee uitgewerkte demo's voor Aribouw uit Zevenaar: schilderwerk, behang en
-kleine renovaties. Beide varianten delen huisstijl, fotografie en teksten. Het
-verschil zit in scope en in designniveau, niet in kwaliteit.
+Twee uitgewerkte demo's voor Aribouw, het schildersbedrijf van Ahmad Nikzad
+uit Westervoort: schilderwerk, behangen en houtreparaties. Beide varianten
+delen huisstijl, fotografie en teksten. Het verschil zit in scope en in
+designniveau, niet in kwaliteit. Ahmad heeft gekozen voor variant 2, Aflak.
 
 Live: **https://bjornb0316.github.io/aribouw/**
 
@@ -15,6 +16,7 @@ Of open `index.html` lokaal om ze naast elkaar te zien.
 ```
 index.html                keuzepagina: beide varianten naast elkaar
 assets/img/               gedeelde foto's (WebP)
+assets/film/              Higgsfield-films voor Aflak (MP4 + poster)
 variant-grondlaag/        Professional, 6 pagina's
 variant-aflak/            Performance, 14 pagina's
   assets/css/stijl.css    per variant, uit dezelfde tokens gegenereerd
@@ -35,6 +37,50 @@ bytes, vandaar een eigen servertje.
 
 ## Wat er gecontroleerd en overgenomen is
 
+### Van Ahmad zelf, 15 september 2026
+
+Ahmad heeft zijn gegevens en wensen aangeleverd. Die staan allemaal in
+`bouwscript/data.py` en zijn verwerkt:
+
+| wat | waarde |
+| --- | --- |
+| Eigenaar | Ahmad Nikzad |
+| Telefoon en WhatsApp | 06 83 04 41 91 |
+| E-mail | aribouw10@gmail.com |
+| Adres | Mommenkamp 27, 6932 HT Westervoort |
+| KvK en btw | 95128905, NL005131384B93 |
+| Werkgebied | Westervoort, Duiven, Zevenaar, Arnhem, Doesburg, Didam, Dieren, Velp, Huissen, Elst, Ede, Nijmegen. Grotere projecten ook daarbuiten |
+
+Wat dat in de site heeft veranderd:
+
+- **Westervoort in plaats van Zevenaar** als vestigingsplaats, overal: titels,
+  footer, structuurdata, plaatspagina's. Westervoort heeft nu de eerste
+  plaatspagina
+- **Diensten volgens zijn eigen lijst**: wanden en plafonds, trappen en kleine
+  houtreparaties erbij. De vierde dienst heet nu *Houtreparaties en onderhoud*
+  (`dienst-houtwerk.html`, was `dienst-renovatie.html`). Plinten en kitwerk
+  staan er niet meer als dienst, want die noemde hij niet
+- **Geen stucwerk of egaliseren**: nergens als dienst, "gladmaken" is uit de
+  behangtekst, en het staat als vraag in de lijst zodat niemand erop rekent
+- **Aannemers en architecten**: een eigen blok op de home met de knop
+  *Project voorleggen*. Die opent de aanvraag met `?soort=zakelijk`, waardoor
+  de vraag "om hoeveel gaat het" al op *een zakelijk project* staat. Er is een
+  vraag over zakelijk werk bij, en het contactformulier heeft die keuze ook
+- **Persoonlijke toon**: de teksten staan in de ik-vorm. Ahmad komt kijken en
+  doet het werk, dus "ik kom langs" in plaats van "er wordt gekeken". De home
+  van Aflak heeft een blok *Over Aribouw* met zijn eigen woorden, licht
+  ingekort, en de Over-pagina van Grondlaag is herschreven met hetzelfde verhaal
+- **Positionering**: "Aribouw is een schilder, geen algemeen bouwbedrijf", met
+  zijn eigen zinnen over voorbereiding, materiaal en netjes werken
+- **Ruimte voor eigen foto's**: de voor-en-na paren staan in `VOORNA` in
+  `bouwscript/bouw.py`. Elk paar dat erbij komt krijgt op de werkpagina van
+  Aflak vanzelf een eigen schuif. Projectfoto's gaan in `WERK`
+
+Er is bewust niets verzonnen over een team: Ahmad schrijft dat hij daar naartoe
+wil groeien, en zo staat het er ook.
+
+### Werkspot
+
 Het Werkspot-profiel is op **8 september 2026** bekeken. Daar stond:
 
 - **5,0 uit 31 reviews**
@@ -52,10 +98,10 @@ veranderen.
 
 ### Belangrijk: het Instagram-account uit de briefing klopt niet
 
-De briefing noemt `instagram.com/aribouw`. Dat account staat op naam van
+De eerste briefing noemde `instagram.com/aribouw`. Dat account staat op naam van
 **"walid aribou"**, heeft **nul volgers en geen enkele post**. Dat is niet dit
-bedrijf. Er wordt daarom nergens naar gelinkt. Vraag na of er een ander account
-is.
+bedrijf. Er wordt daarom nergens naar gelinkt. Ahmad stuurt zijn eigen
+socialmediapagina's apart.
 
 ---
 
@@ -80,6 +126,42 @@ allebei op dezelfde plek in beeld staat. Daarna klopt de schuif wel.
 
 De pui hoort bij de review van Cindy uit Westervoort: een voormalige garage die
 praktijkruimte werd.
+
+### Aflak: films en sfeerbeelden met Higgsfield
+
+Aflak heeft er gegenereerd beeld bij gekregen. De regel die daarbij is
+aangehouden: **gegenereerd beeld laat het vak zien, nooit een klus.** Handen,
+tape, een kwast, een kamer. Geen gezichten, geen "dit hebben wij gedaan". Alles
+onder Werk en de voor-en-na blijven eigen foto's. In de kleurkiezer staat er
+letterlijk onder dat het een sfeerbeeld is.
+
+| wat | waar | model |
+| --- | --- | --- |
+| Hero-film: tape gaat van de muur, er blijft een kaarsrechte lijn over | home | Kling 3.0 Pro, start- en eindbeeld |
+| Vier dienstfilms: roller, kwast op een kozijn, behang, kitwerk | dienstkaarten (lopen bij hover) en de kop van elke dienstpagina | Kling 3.0 Pro vanaf Nano Banana Pro-stills |
+| Woning in de schemer | bovenin elk contactblok | Kling 3.0 Pro |
+| Vier kamers per kleurrichting | kleurkiezer (wisselt mee bij hover en klik) en als duimnagel in de offerteflow | Soul 2.0 en Nano Banana Pro |
+| Vijf procesbeelden | werkwijze, bij elke stap | Soul 2.0 en Nano Banana Pro |
+| Straat met rijtjeshuizen, keukentafel | kop van werkgebied, plaatspagina's en offerte | Soul 2.0 en Nano Banana Pro |
+
+Elke still is bekeken voordat hij erin ging. Afgekeurd: een roller zonder
+rol, een verfblik met een verzonnen merknaam, een "afgewerkte" muur met een
+scheur erin, en een offerte met nephandschrift. Die zijn opnieuw gemaakt.
+
+De films laden pas als ze in beeld komen, spelen zonder geluid en staan stil
+bij `prefers-reduced-motion` of databesparing; dan blijft de poster staan.
+Samen zijn de zes films ongeveer 4 MB.
+
+De eerste hero-poging is ook bewaard (`bron/higgsfield/v61.mp4`): mooi, maar de
+tape kwam nauwelijks los. Daarom is de uiteindelijke versie gemaakt met een
+begin- en eindbeeld.
+
+```bash
+python bouwscript/film.py         # ruwe Higgsfield-bestanden omzetten
+```
+
+De ruwe bestanden (ruim 150 MB) staan in `bron/higgsfield/` en gaan niet mee
+in git. `film.py` heeft ffmpeg nodig, of `FFMPEG=pad/naar/ffmpeg`.
 
 ---
 
@@ -140,20 +222,25 @@ Geen Grondlaag met extra pagina's, maar een andere uitvoering.
 
 **En wat er functioneel bij komt**
 
-- **Cinematische hero** met de voor-en-na van dezelfde binnendeur, sleepbaar
-  met muis, vinger en toetsenbord (pijltjes, Home en End), met een
-  `aria-valuenow` die meeloopt
-- **Kleurkiezer**: vier richtingen, met per richting waar op gelet moet worden.
-  De keuze gaat mee de aanvraag in
+- **Filmhero**: tape die van de muur gaat, speelt een keer en blijft op de
+  strakke lijn staan. Elke dienstpagina opent met een eigen film
+- **Voor-en-na** van dezelfde binnendeur op home en werk, sleepbaar met muis,
+  vinger en toetsenbord (pijltjes, Home en End), met een `aria-valuenow` die
+  meeloopt
+- **Kleurkiezer met beeld**: vier richtingen, bij elke richting een kamer in
+  die kleur en waar op gelet moet worden. De keuze gaat mee de aanvraag in
+- **Werkwijze in beeld** en een contactblok dat opent met een woning in de schemer
+- **Over Aribouw en een route voor aannemers en architecten** op de home
 - **Aanvraag in zes stappen**: wat, hoeveel, kleur, ondergrond, wanneer, en pas
   op het eind drie velden
 - **Slimme prefill**: wie via de kleurkiezer binnenkomt slaat de kleurvraag
   over, maar de kleur staat wel in het eindbericht. Via een dienstpagina wordt
-  de eerste vraag overgeslagen
+  de eerste vraag overgeslagen, via *Project voorleggen* de tweede
 - **WhatsApp-bericht dat al is ingevuld**: de klikantwoorden plus naam, plaats
   en telefoonnummer
 - **Vier dienstpagina's** met eigen tekst, eigen vragen en FAQ-structuurdata
-- **Vier plaatspagina's**: Zevenaar, Arnhem, Duiven, Westervoort
+- **Vier plaatspagina's**: Westervoort, Duiven, Zevenaar, Arnhem. De werkgebiedpagina
+  noemt alle twaalf plaatsen; meer bijna gelijke plaatspagina's lezen als opvulling
 
 Wat Grondlaag niet minder heeft: dezelfde foto's, dezelfde typografie, dezelfde
 reviews en dezelfde mobiele navigatie.
@@ -185,29 +272,92 @@ reviews en dezelfde mobiele navigatie.
 
 ---
 
+## Klaar voor livegang: drie schakelaars
+
+Bovenin `bouwscript/data.py` staan drie instellingen. Alle drie staan nog in
+demostand; bij livegang zet je ze om en draai je `python bouwscript/alles.py`.
+
+| schakelaar | nu | bij livegang |
+| --- | --- | --- |
+| `LIVE` | `False`: voorbeeldbalk, voetregel van Bjorn, `noindex` op elke pagina, `robots.txt` blokkeert alles | `True`: dat gaat allemaal weg, `robots.txt` wijst naar de sitemap |
+| `SITE_URL["aflak"]` | de GitHub Pages-map | het echte domein, zonder slash aan het eind |
+| `FORMULIER_ACTIE` | leeg: formulieren controleren en bevestigen, maar versturen niets | bijvoorbeeld `https://formsubmit.co/ajax/aribouw10@gmail.com` |
+
+### Formulieren
+
+Het contactformulier en de offerteflow sturen hun gegevens als JSON naar
+`FORMULIER_ACTIE`. Elke dienst die JSON per POST aanneemt en 2xx teruggeeft,
+werkt. FormSubmit heeft geen account nodig: de eerste aanvraag stuurt Ahmad een
+activatiemail die hij een keer bevestigt. Daarna komen aanvragen binnen als
+nette tabel met onderwerpregel.
+
+- De offerteflow stuurt elke klikvraag met een eigen label: werk, omvang,
+  kleurrichting, ondergrond, wanneer, plus naam, telefoon en plaats
+- Tijdens versturen staat er "Versturen..." op de knop en werkt een tweede
+  klik niet
+- Mislukt het, dan blijft alles ingevuld staan en staat eronder: bel of app
+  mij op 06 83 04 41 91
+- Een verborgen lokveld houdt spambots tegen: die krijgen een bevestiging,
+  maar er gaat niets weg
+- In demostand zegt de bevestiging eerlijk dat er nog niets de deur uit gaat.
+  Met een ontvanger valt die zin vanzelf weg
+
+Getest met een lokaal nep-endpoint (niets naar Ahmad gestuurd): beide
+formulieren kwamen compleet binnen, een serverfout geeft de foutmelding met
+behoud van de invoer, en het lokveld verstuurt niets. Test zelf zonder de code
+aan te passen met de omgevingsvariabele `ARIBOUW_FORMULIER`.
+
+### Privacyverklaring
+
+`privacy.html` in beide varianten, gelinkt vanuit de footer en onder elk
+formulier. Geschreven voor wat de site echt doet: geen cookies, geen
+analytics, lettertypen via Fontshare. Drie punten zijn een keuze en geen wet,
+dus even met Ahmad bevestigen:
+
+- aanvragen zonder opdracht verwijderen **binnen twaalf maanden** (de zeven
+  jaar voor opdrachten is de wettelijke bewaarplicht)
+- de naam van de formulierdienst (gemarkeerd op de pagina)
+- de naam van de hostingpartij (gemarkeerd op de pagina)
+
+Komt er ooit Google Analytics of een pixel bij, dan moet de verklaring mee en
+is er een cookiemelding nodig.
+
+### SEO-basis
+
+- `sitemap.xml` en `robots.txt` per variant, gegenereerd bij elke build
+- Canonical en `og:url` op elke pagina, met de eigen URL van die pagina
+- Favicon (het merkteken als SVG) en een `apple-touch-icon`
+- Deelafbeelding van 1200 bij 630 voor WhatsApp, Facebook en LinkedIn: de
+  strakke lijn uit de hero met ARIBOUW erop (`film.py`, functie `deelbeeld`)
+- Structuurdata van de home met url, afbeelding, adres, telefoon, e-mail, btw
+  en alle twaalf plaatsen
+
 ## Voor livegang vervangen of bevestigen
 
-De demo staat op `noindex,nofollow` en elke pagina heeft bovenin een balk die
-zegt dat het een voorstel is. Beide moeten eruit voordat de site echt live gaat.
+Naast de drie schakelaars hierboven:
 
 ### Harde blokkers
 
 | wat | waar | opmerking |
 | --- | --- | --- |
-| `[TELEFOONNUMMER]` en `[E-MAILADRES]` | `bouwscript/data.py` | nergens openbaar gevonden. De WhatsApp-knoppen wijzen nu naar een leeg nummer |
+| Eigen projectfoto's en voor-en-na | `bron/`, dan `VOORNA` en `WERK` in `bouw.py` | Ahmad stuurt ze apart. Nu staan er negen beelden van Facebook en Werkspot |
 | `[NOG AANVULLEN: garantietermijnen]` | `data.py`, `VRAGEN` | Werkspot vermeldt wel dát er garantie is, niet hoe lang |
 | `[NOG AANVULLEN: gebruikelijke doorlooptijden]` | `data.py`, `VRAGEN` | zichtbaar gemarkeerd |
-| Het logo | `bouw.py`, constante `MARK` | er staat nu een diagonaal doorgesneden vierkant, het motief van de site. Hun echte logo bestaat alleen als foto op Facebook; een vectorbestand vervangt dit |
-| `noindex,nofollow` | `bouw.py`, functie `kop()` | weghalen bij livegang |
-| Voorbeeldbalk en voetregel | `bouw.py` | weghalen bij livegang |
-| Formulieren gaan nergens heen | `bouwscript/script.py` | controle en bevestiging werken; er is nog geen ontvanger |
+| Het logo | `bouw.py`, constante `MARK` | er staat nu een diagonaal doorgesneden vierkant, het motief van de site. Ahmad stuurt het logo apart; een vectorbestand vervangt dit |
+| Alleen Aflak overhouden | keuzepagina, `variant-grondlaag/` | Ahmad koos Aflak: die naar de hoofdmap, de rest eruit. De paden `../assets/` gaan dan mee |
+| Houtwerkfilm | `bouw.py`, `DIENST_FILM["houtwerk"]` | nu de kitwerk-film, die niet over hout gaat. Het Higgsfield-tegoed was op (0,97 credits); een nieuwe film kost ongeveer 11 credits |
 
-### Nog te bevestigen
+### Nog te ontvangen of te bevestigen
 
 | wat | opmerking |
 | --- | --- |
-| Instagram | het account uit de briefing is niet van dit bedrijf, zie hierboven |
+| Socialmediapagina's | stuurt Ahmad apart. Het Instagram-account uit de eerste briefing is niet van dit bedrijf |
+| Certificaten en extra reviews | stuurt Ahmad apart |
 | De score | 5,0 uit 31 op 8 september 2026. Dat getal loopt op, voor livegang opnieuw kijken |
-| Het werkgebied | de reviews komen uit Driel, Apeldoorn, Kilder, Huissen en Westervoort. Er wordt dus verder gereden dan Zevenaar en Arnhem |
-| Adres | alleen de plaats Zevenaar is bekend, er staat nergens een straat |
-| Prijzen | bewust nergens genoemd, conform de briefing |
+| Adres op de site | Mommenkamp 27 staat nu in de footer, het contactblok, de privacyverklaring en de structuurdata. Even checken of Ahmad dat woonadres openbaar wil hebben |
+| Bewaartermijn aanvragen | twaalf maanden in de privacyverklaring, zie hierboven |
+| Domein | heeft Ahmad er al een? Nodig voor `SITE_URL` |
+| Prijzen | bewust nergens genoemd |
+
+Opgelost met de gegevens van 15 september: telefoonnummer, e-mail, adres,
+btw-nummer en werkgebied.

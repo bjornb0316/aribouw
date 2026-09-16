@@ -1,6 +1,6 @@
 (function () {
   "use strict";
-  var WA = "31600000000";
+  var WA = "31683044191";
 
   /* ---- binnenkomen bij scrollen ----
      Met drie vangnetten, want een reveal die niet vuurt laat een lege
@@ -89,9 +89,44 @@
     });
   }
 
-  /* ---- veldcontrole. Er gaat in deze demo niets naar een server; de
-     controle en de bevestiging werken wel, zodat de klant ziet wat een
-     bezoeker krijgt. ---- */
+  /* ---- versturen ----
+     ACTIE is het adres uit bouwscript/data.py (FORMULIER_ACTIE). Leeg is
+     de demostand: dan telt het als gelukt zonder dat er iets weggaat. Het
+     verborgen veld _honey vullen alleen spambots in; die krijgen een
+     bevestiging, maar er wordt niets verstuurd. */
+  var ACTIE = "";
+  function verstuur(bak, gegevens) {
+    var honing = bak.querySelector('[name="_honey"]');
+    if (!ACTIE || (honing && honing.value)) return Promise.resolve(true);
+    gegevens._template = "table";
+    gegevens._captcha = "false";
+    gegevens.pagina = location.pathname;
+    return fetch(ACTIE, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify(gegevens)
+    }).then(function (r) { return r.ok; }).catch(function () { return false; });
+  }
+
+  /* De knop laat zien dat er iets gebeurt, en een tweede klik tijdens het
+     versturen doet niets. Mislukt het, dan blijft alles staan wat is
+     ingevuld en staat eronder hoe het wel lukt. */
+  function bezig(knop, aan) {
+    if (!knop) return;
+    if (aan) { knop.setAttribute("data-tekst", knop.textContent); knop.textContent = "Versturen..."; }
+    else if (knop.getAttribute("data-tekst")) knop.textContent = knop.getAttribute("data-tekst");
+    knop.disabled = aan;
+    knop.setAttribute("aria-busy", aan ? "true" : "false");
+  }
+  function verzendfout(bak, aan) {
+    var f = bak.querySelector("[data-verzendfout]");
+    if (f) f.setAttribute("data-aan", aan ? "1" : "0");
+  }
+  window.abVerstuur = verstuur;
+  window.abBezig = bezig;
+  window.abVerzendfout = verzendfout;
+
+  /* ---- veldcontrole ---- */
   function controleer(bak) {
     var ok = true;
     var velden = bak.querySelectorAll(".veld");
@@ -118,13 +153,27 @@
                    document.querySelector("[data-gelukt]");
       f.addEventListener("submit", function (e) {
         e.preventDefault();
+        var knop = f.querySelector('[type="submit"]');
+        if (knop && knop.disabled) return;
+        verzendfout(f, false);
         if (!controleer(f)) return;
-        f.style.display = "none";
-        if (gelukt) {
-          gelukt.setAttribute("data-aan", "1");
-          gelukt.setAttribute("tabindex", "-1");
-          gelukt.focus();
-        }
+        function waarde(n) { var i = f.querySelector('[name="' + n + '"]'); return i ? i.value.trim() : ""; }
+        var gegevens = {
+          _subject: "Aanvraag via de website: " + (waarde("wat") || "contactformulier"),
+          naam: waarde("naam"), telefoon: waarde("tel"), plaats: waarde("plaats"),
+          onderwerp: waarde("wat"), situatie: waarde("bericht")
+        };
+        bezig(knop, true);
+        verstuur(f, gegevens).then(function (ok) {
+          bezig(knop, false);
+          if (!ok) { verzendfout(f, true); return; }
+          f.style.display = "none";
+          if (gelukt) {
+            gelukt.setAttribute("data-aan", "1");
+            gelukt.setAttribute("tabindex", "-1");
+            gelukt.focus();
+          }
+        });
       });
       f.addEventListener("input", function (e) {
         var v = e.target.closest(".veld");

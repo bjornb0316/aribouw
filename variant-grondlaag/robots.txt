@@ -1,0 +1,3 @@
+# Demo: niet indexeren. Bij livegang LIVE = True in bouwscript/data.py.
+User-agent: *
+Disallow: /

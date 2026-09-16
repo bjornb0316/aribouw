@@ -28,9 +28,11 @@ def main():
         ("over.html", P2.over("grondlaag")),
         ("offerte.html", P2.offerte("grondlaag")),
         ("contact.html", P2.contact("grondlaag")),
+        ("privacy.html", P2.privacy("grondlaag")),
     ]
     for naam, inhoud in pagina:
         B.schrijf("grondlaag", naam, inhoud)
+    B.zoekbestanden("grondlaag", [n for n, _ in pagina])
     print("variant-grondlaag   %2d pagina's" % len(pagina))
     totaal += len(pagina)
 
@@ -46,8 +48,10 @@ def main():
         pagina.append(("dienst-%s.html" % dienst[0], P2.dienstpagina("aflak", dienst)))
     for plaats in D.WERKGEBIED:
         pagina.append(("regio-%s.html" % plaats.lower(), P2.regiopagina("aflak", plaats)))
+    pagina.append(("privacy.html", P2.privacy("aflak")))
     for naam, inhoud in pagina:
         B.schrijf("aflak", naam, inhoud)
+    B.zoekbestanden("aflak", [n for n, _ in pagina])
     print("variant-aflak       %2d pagina's" % len(pagina))
     totaal += len(pagina)
 

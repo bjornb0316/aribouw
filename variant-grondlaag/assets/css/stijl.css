@@ -347,6 +347,30 @@ h3.display{font-size:clamp(1.1rem,1.6vw,1.3rem);font-weight:700}
 .gelukt b{font-family:Supreme,sans-serif;font-weight:700;font-size:1.2rem;display:block;
   margin-bottom:.5rem}
 .sectie--nacht .gelukt{background:#20242A;border-color:#31363E}
+/* Versturen mislukt: dit staat pas in beeld als het nodig is. */
+.verzendfout{display:none;margin-top:.9rem;font-size:.9rem;font-weight:700;color:#A32718;
+  max-width:52ch}
+.verzendfout[data-aan="1"]{display:block}
+.verzendfout a{text-decoration:underline;text-underline-offset:3px}
+.sectie--nacht .verzendfout{color:#FFB4A8}
+.knop:disabled{opacity:.7;cursor:progress}
+.formulier-noot a{text-decoration:underline;text-underline-offset:3px}
+/* Het lokveld voor spambots: buiten beeld, niet te bereiken met tab. */
+.honing{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.voet-inline{display:inline !important;padding:0 !important;text-decoration:underline;
+  text-underline-offset:3px}
+
+/* ---------- lopende tekst (privacyverklaring) ---------- */
+.lopend{max-width:46rem}
+.lopend h2{font-family:Supreme,sans-serif;font-weight:700;font-size:1.3rem;margin-top:2.4rem;
+  letter-spacing:-.01em}
+.lopend p,.lopend ul{margin-top:.8rem;color:var(--inkt-2)}
+.lopend ul{list-style:disc;padding-left:1.2rem}
+.lopend li{margin-top:.35rem}
+.lopend a{color:var(--blauw);text-decoration:underline;text-underline-offset:3px}
+.lopend dl{margin-top:.8rem;display:grid;grid-template-columns:max-content 1fr;gap:.3rem 1.2rem;
+  color:var(--inkt-2)}
+.lopend dt{font-weight:700;color:var(--inkt)}
 
 /* ---------- contactblok ---------- */
 .contact{display:grid;gap:clamp(2rem,4vw,3.5rem)}
