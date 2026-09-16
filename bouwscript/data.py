@@ -379,7 +379,8 @@ DIENST_VRAGEN = {
 ONBEVESTIGD = [
     "Eigen projectfoto's en voor-en-nafoto's: Ahmad stuurt ze apart. De site heeft er ruimte "
     "voor; nu staan er negen beelden van Facebook en Werkspot.",
-    "Het logo als vectorbestand. Er staat nu een eigen merkteken als tijdelijke oplossing.",
+    "Het logo als vectorbestand. Het logo van Ahmad staat er nu in, gemaakt uit een JPG; een SVG "
+    "of PDF maakt het nog scherper.",
     "Garantietermijnen en gebruikelijke doorlooptijden: zichtbaar gemarkeerd in de vragenlijst.",
     "Certificaten en extra reviews: stuurt Ahmad apart.",
     "Socialmediapagina's: stuurt Ahmad apart. Het Instagram-account uit de eerste briefing is "
@@ -409,6 +410,8 @@ def bedrijf_jsonld(variant="aflak"):
     graaf = [
         {"@type": "HousePainter", "@id": bedrijf_id(variant), "name": NAAM,
          "url": site + "/", "image": site + "/assets/og.jpg",
+         "logo": {"@type": "ImageObject", "url": site + "/assets/logo.png",
+                  "width": 630, "height": 600},
          "description": "Schildersbedrijf uit Westervoort voor binnen- en buitenschilderwerk, "
                         "behangen en houtreparaties, voor particulieren en professionals.",
          "founder": {"@type": "Person", "@id": site + "/#ahmad", "name": EIGENAAR,

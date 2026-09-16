@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """De keuzepagina op de wortel.
 
 Twee kolommen die elkaar raken in een schuine snijlijn: hetzelfde motief
@@ -13,7 +13,7 @@ import data as D
 WORTEL = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 
 GRONDLAAG = [
-    "Zes pagina&#39;s: home, diensten, werk, over, offerte, contact",
+    "Zeven pagina&#39;s: home, diensten, werk, over, offerte, contact, privacy",
     "Gesplitste hero met het beeld dat rechts van het scherm afloopt",
     "Sectielabels op een linkerrail, als het etiket op een verfblik",
     "Diensten als kleurstalen die uit een waaier lijken te liggen",
@@ -192,10 +192,7 @@ ul{list-style:none}
 
 <header class="blad op">
   <div class="wrap">
-    <span class="merk">
-      %(mark)s
-      <span><b>ARIBOUW</b><small>Schilderen &middot; behangen</small></span>
-    </span>
+    <span class="merk">%(mark)s</span>
     <h1 class="display">Twee vlakken, dezelfde snijlijn.</h1>
     <p>Allebei met jullie eigen foto&#39;s, jullie eigen blauw en dezelfde zorg voor detail. Het
     verschil zit in hoeveel de site zelf doet voordat de telefoon gaat.</p>
@@ -216,7 +213,7 @@ ul{list-style:none}
         <span class="tier">Professional</span>
         <h2 class="display">Grondlaag</h2>
       </div>
-      <p class="omvang"><b>6</b><span>Pagina&#39;s</span></p>
+      <p class="omvang"><b>7</b><span>Pagina&#39;s</span></p>
     </div>
     <p class="zin">De verzorgde bedrijfssite. Rustig, licht en compleet. Een bezoeker weet binnen
     een scherm wat jullie doen, waar en hoe goed het beoordeeld wordt.</p>
@@ -240,7 +237,7 @@ ul{list-style:none}
         <span class="tier">Performance</span>
         <h2 class="display">Aflak</h2>
       </div>
-      <p class="omvang"><b>14</b><span>Pagina&#39;s</span></p>
+      <p class="omvang"><b>16</b><span>Pagina&#39;s</span></p>
     </div>
     <p class="zin">Alles uit Grondlaag, plus alles hieronder. De site kwalificeert de aanvraag
     zelf, dus het gesprek begint niet meer bij nul.</p>
@@ -282,9 +279,8 @@ ul{list-style:none}
 </html>
 """ % dict(
         bjorn=D.BJORN_WA,
-        mark=('<svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true">'
-              '<rect x="0" y="0" width="28" height="28" rx="4" fill="#23262B"/>'
-              '<path d="M0 28V4a4 4 0 0 1 4-4h24z" fill="#14508C"/></svg>'),
+        mark=('<img src="assets/img/logo-kop.png" width="471" height="120" alt="Aribouw" '
+              'style="height:44px;width:auto;display:block">'),
         pijl=('<svg viewBox="0 0 14 9" fill="none" aria-hidden="true">'
               '<path d="M0 4.5h12M8.5 1L12 4.5 8.5 8" stroke="currentColor" '
               'stroke-width="1.4"/></svg>'),

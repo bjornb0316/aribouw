@@ -91,11 +91,20 @@ def deelbeeld():
             except OSError:
                 continue
         return ImageFont.load_default()
-    groot = lettertype(["segoeuib.ttf", "DejaVuSans-Bold.ttf", "arialbd.ttf"], 86)
     klein = lettertype(["segoeui.ttf", "DejaVuSans.ttf", "arial.ttf"], 36)
-    # Linksonder staat het blauwe vlak: daar is wit goed leesbaar.
-    d.text((70, 420), "ARIBOUW", font=groot, fill="#FFFFFF")
-    d.text((74, 526), "Schilder in Westervoort en omgeving", font=klein, fill="#DCE6F2")
+    # Het logo van Ahmad in kleur op het witte deel rechtsboven: op het blauw
+    # valt zijn blauwe huis weg. De regel staat linksonder op het blauw.
+    logo = os.path.join(IMG, "logo-kop.png")
+    if os.path.exists(logo):
+        l = Image.open(logo).convert("RGBA")
+        l = l.resize((int(l.width * 104 / float(l.height)), 104), Image.LANCZOS)
+        im.paste(l, (1200 - l.width - 150, 64), l)
+    else:
+        groot = lettertype(["segoeuib.ttf", "DejaVuSans-Bold.ttf", "arialbd.ttf"], 86)
+        d.text((70, 420), "ARIBOUW", font=groot, fill="#FFFFFF")
+    groot2 = lettertype(["segoeuib.ttf", "DejaVuSans-Bold.ttf", "arialbd.ttf"], 58)
+    d.text((70, 450), "Schilder in Westervoort", font=groot2, fill="#FFFFFF")
+    d.text((72, 530), "Binnen, buiten, behangen en houtwerk", font=klein, fill="#DCE6F2")
     pad = os.path.join(IMG, "og-aribouw.jpg")
     im.save(pad, "JPEG", quality=84, optimize=True, progressive=True)
     print("  %-24s 1200x630   %6.1f kB  deelafbeelding" % ("og-aribouw.jpg", os.path.getsize(pad) / 1024.0))

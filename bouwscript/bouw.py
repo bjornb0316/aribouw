@@ -14,13 +14,12 @@ FONTS = ('<link rel="preconnect" href="https://api.fontshare.com" crossorigin>'
          '<link rel="stylesheet" href="https://api.fontshare.com/v2/css?'
          'f%5B%5D=supreme@700&f%5B%5D=synonym@400,500,700&display=swap">')
 
-# Een vierkant dat diagonaal is doorgesneden: de snijlijn zelf. Hun echte
-# logo is een huis met een verfroller, maar dat bestaat alleen als foto op
-# Facebook. Dit staat er tot er een vectorbestand is.
-MARK = ('<svg class="merk-mark" viewBox="0 0 28 28" aria-hidden="true" focusable="false">'
-        '<rect class="m-inkt" x="0" y="0" width="28" height="28" rx="4" fill="#23262B"/>'
-        '<path class="m-blauw" d="M0 28V4a4 4 0 0 1 4-4h24z" fill="#14508C"/>'
-        '</svg>')
+# Het logo van Ahmad: huis en ARIBOUW naast elkaar. Gemaakt door logo.py uit
+# bron/logo-aribouw.jpg. De witte variant staat in de donkere voet.
+LOGO = ('<img class="merk-logo" src="../assets/img/logo-kop.png" width="471" height="120" '
+        'alt="Aribouw, schilderen en behangen">')
+LOGO_WIT = ('<img class="merk-logo merk-logo--voet" src="../assets/img/logo-kop-wit.png" '
+            'width="471" height="120" alt="Aribouw" loading="lazy">')
 
 PIJL = ('<svg viewBox="0 0 14 9" fill="none" aria-hidden="true">'
         '<path d="M0 4.5h12M8.5 1L12 4.5 8.5 8" stroke="currentColor" stroke-width="1.4"/></svg>')
@@ -72,7 +71,8 @@ def kop(variant, actief, titel, omschrijving, wa_bericht, extra="", kopklasse=""
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#F6F4F0">
-<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/favicon-48.png" sizes="48x48" type="image/png">
+<link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 %(fonts)s
 <link rel="stylesheet" href="assets/css/stijl.css">
@@ -83,10 +83,7 @@ def kop(variant, actief, titel, omschrijving, wa_bericht, extra="", kopklasse=""
 %(balk)s
 <header class="kop%(kopklasse)s">
   <div class="wrap kop-in">
-    <a class="merk" href="index.html">
-      %(mark)s
-      <span><b>ARIBOUW</b><small>Schilderen &middot; behangen</small></span>
-    </a>
+    <a class="merk" href="index.html">%(mark)s</a>
     <nav class="nav" aria-label="Hoofdmenu">
 %(nav)s
     </nav>
@@ -102,7 +99,7 @@ def kop(variant, actief, titel, omschrijving, wa_bericht, extra="", kopklasse=""
 
 <div class="menu" id="menu" data-open="0">
   <div class="menu-top">
-    <a class="merk" href="index.html">%(mark)s<span><b>ARIBOUW</b></span></a>
+    <a class="merk" href="index.html">%(mark)s</a>
     <button class="menu-sluit" aria-label="Menu sluiten">&times;</button>
   </div>
   <nav aria-label="Menu">
@@ -117,7 +114,7 @@ def kop(variant, actief, titel, omschrijving, wa_bericht, extra="", kopklasse=""
 <main>
 """ % dict(titel=titel, omschrijving=omschrijving, fonts=FONTS, extra=extra, nav=nav,
            nav_m=nav_m, wa=wa_bericht, tel=D.TEL_TOON, tellink=D.TEL_LINK,
-           mark=MARK, kopklasse=(" " + kopklasse) if kopklasse else "",
+           mark=LOGO, kopklasse=(" " + kopklasse) if kopklasse else "",
            robots=robots, balk=balk, site=D.SITE_URL[variant])
 
 
@@ -131,7 +128,7 @@ def voet(variant):
   <div class="wrap">
     <div class="voet-in">
       <div>
-        <span class="voet-merk">ARIBOUW</span>
+        <span class="voet-merk">%(logo_wit)s</span>
         <p style="margin-top:.9rem;max-width:34ch">Schilderwerk, behang en houtreparaties.
         Strak afgewerkt, netjes achtergelaten.</p>
         <p style="margin-top:.9rem">%(eigenaar)s<br>%(adres)s<br>%(postcode)s %(plaats)s</p>
@@ -170,7 +167,7 @@ def voet(variant):
 </body>
 </html>
 """ % dict(links=links, tel=D.TEL_TOON, tellink=D.TEL_LINK, mail=D.MAIL, kvk=D.KVK,
-           werkspot=D.WERKSPOT, gebied=gebied, plaats=D.PLAATS,
+           werkspot=D.WERKSPOT, gebied=gebied, plaats=D.PLAATS, logo_wit=LOGO_WIT,
            eigenaar=D.EIGENAAR, adres=D.ADRES, postcode=D.POSTCODE, btw=D.BTW,
            ontwerp="" if D.LIVE else (
                ' &nbsp;&middot;&nbsp; Voorbeeldontwerp van Bjorn, Capital BB. <a class="voet-inline" '
@@ -507,15 +504,8 @@ def contactblok(titel, intro, onderwerpen=None, variant=None):
            demozin=demozin())
 
 
-# Het merkteken als favicon: hetzelfde doorgesneden vierkant als in de kop.
-FAVICON = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28">'
-           '<rect width="28" height="28" rx="5" fill="#23262B"/>'
-           '<path d="M0 28V5a5 5 0 0 1 5-5h23z" fill="#14508C"/></svg>\n')
-
-
 def stijlbladen():
     import shutil
-    from PIL import Image, ImageDraw
     for variant in ("grondlaag", "aflak"):
         for soort, inhoud, naam in (("css", stijl.blad(variant), "stijl.css"),
                                     ("js", JS.blad(variant, D.WA, D.FORMULIER_ACTIE), "main.js")):
@@ -523,11 +513,17 @@ def stijlbladen():
             os.makedirs(map_, exist_ok=True)
             io.open(os.path.join(map_, naam), "w", encoding="utf-8").write(inhoud)
         assets = os.path.join(WORTEL, "variant-" + variant, "assets")
-        io.open(os.path.join(assets, "favicon.svg"), "w", encoding="utf-8").write(FAVICON)
-        # Voor iOS een PNG; iOS rondt de hoeken zelf af.
-        im = Image.new("RGB", (180, 180), "#23262B")
-        ImageDraw.Draw(im).polygon([(0, 0), (180, 0), (0, 180)], fill="#14508C")
-        im.save(os.path.join(assets, "apple-touch-icon.png"))
+        # Favicons uit het logo (logo.py). Ze moeten naast de pagina staan:
+        # browsers zoeken ze relatief aan de site.
+        img = os.path.join(WORTEL, "assets", "img")
+        for f, doel in (("favicon-32.png", "favicon-32.png"), ("favicon-48.png", "favicon-48.png"),
+                        ("apple-touch-icon.png", "apple-touch-icon.png"),
+                        ("logo-aribouw.png", "logo.png")):
+            if os.path.exists(os.path.join(img, f)):
+                shutil.copyfile(os.path.join(img, f), os.path.join(assets, doel))
+        oud = os.path.join(assets, "favicon.svg")
+        if os.path.exists(oud):
+            os.remove(oud)
         # De deelafbeelding voor WhatsApp, Facebook en LinkedIn. Gemaakt
         # door film.py; hier alleen naar de variant gekopieerd.
         og = os.path.join(WORTEL, "assets", "img", "og-aribouw.jpg")

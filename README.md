@@ -386,7 +386,7 @@ Naast de drie schakelaars hierboven:
 | Eigen projectfoto's en voor-en-na | `bron/`, dan `VOORNA` en `WERK` in `bouw.py` | Ahmad stuurt ze apart. Nu staan er negen beelden van Facebook en Werkspot |
 | `[NOG AANVULLEN: garantietermijnen]` | `data.py`, `VRAGEN` | Werkspot vermeldt wel dát er garantie is, niet hoe lang |
 | `[NOG AANVULLEN: gebruikelijke doorlooptijden]` | `data.py`, `VRAGEN` | zichtbaar gemarkeerd |
-| Het logo | `bouw.py`, constante `MARK` | er staat nu een diagonaal doorgesneden vierkant, het motief van de site. Ahmad stuurt het logo apart; een vectorbestand vervangt dit |
+| Logo als vector | `bron/logo-aribouw.jpg`, `bouwscript/logo.py` | het logo van Ahmad staat erin (kop, voet, favicons, deelafbeelding, structured data), gemaakt uit een JPG met het wit transparant. Een SVG of PDF maakt het scherper; dan alleen `logo.py` aanpassen |
 | Alleen Aflak overhouden | keuzepagina, `variant-grondlaag/` | Ahmad koos Aflak: die naar de hoofdmap, de rest eruit. De paden `../assets/` gaan dan mee |
 | Houtwerkfilm | `bouw.py`, `DIENST_FILM["houtwerk"]` | nu de kitwerk-film, die niet over hout gaat. Het Higgsfield-tegoed was op (0,97 credits); een nieuwe film kost ongeveer 11 credits |
 
