@@ -183,8 +183,7 @@ VRAGEN = [
      "terugkomt in de reviews."),
     ("Hoe lang duurt het?",
      "Dat verschilt te veel per klus om er hier een getal aan te hangen. Bij de offerte hoort een "
-     "planning: wanneer ik begin, hoeveel dagen het ongeveer duurt en of u thuis moet zijn. "
-     "[NOG AANVULLEN: gebruikelijke doorlooptijden]"),
+     "planning: wanneer ik begin, hoeveel dagen het ongeveer duurt en of u thuis moet zijn."),
     ("Welke verf of welk behang is geschikt?",
      "Dat hangt af van de ruimte en de ondergrond. In een badkamer of keuken is een andere verf "
      "nodig dan in een slaapkamer. Ik denk mee over materiaal en kleur, de keuze blijft aan u."),
@@ -199,8 +198,8 @@ VRAGEN = [
      "Ja. Schilderwerk, behang en kleine houtreparaties in een planning scheelt tijd en gedoe met "
      "meerdere partijen."),
     ("Heb ik garantie op de afwerking?",
-     "Op het Werkspot-profiel staat dat Aribouw garantie biedt. De precieze termijn en waar hij "
-     "op geldt hoort bij de offerte. [NOG AANVULLEN: garantietermijnen]"),
+     "Op het Werkspot-profiel staat dat Aribouw garantie biedt. Hoe lang en waarop precies, "
+     "staat in de offerte, zodat u het vooraf zwart op wit heeft."),
     ("Hoe weet ik dat het goed komt?",
      "Op Werkspot staan %s reviews met een gemiddelde van %s. Die zijn openbaar, inclusief de "
      "reacties eronder. Vraag gerust naar een adres van een klus bij u in de buurt."
@@ -236,23 +235,62 @@ ONBEVESTIGD = [
     "Formulieren hebben nog geen ontvanger. De WhatsApp-knoppen werken wel, met het echte nummer.",
 ]
 
-JSONLD = """{
-  "@context": "https://schema.org",
-  "@type": "HousePainter",
-  "name": "Aribouw",
-  "url": "%s/",
-  "image": "%s/assets/og.jpg",
-  "founder": {"@type": "Person", "name": "%s"},
-  "description": "Schildersbedrijf voor binnen- en buitenschilderwerk, behangen en kleine houtreparaties in Westervoort, Arnhem, Nijmegen en omgeving.",
-  "telephone": "%s",
-  "email": "%s",
-  "vatID": "%s",
-  "address": {"@type": "PostalAddress", "streetAddress": "%s", "postalCode": "%s",
-              "addressLocality": "%s", "addressCountry": "NL"},
-  "areaServed": [%s],
-  "sameAs": ["https://www.werkspot.nl/profiel/aribouw"]
-}""" % (SITE_URL["aflak"], SITE_URL["aflak"], EIGENAAR, TEL_LINK, MAIL, BTW, ADRES, POSTCODE, PLAATS,
-        ", ".join('"%s"' % p for p in WERKGEBIED_ALLES))
+# ---------------------------------------------------------------------
+# Structured data. Aribouw als een entiteit met een vast @id, zodat Google
+# en AI-zoekmachines de home, de dienstpagina's en de plaatspagina's aan
+# hetzelfde bedrijf koppelen. Alleen wat aantoonbaar klopt: geen
+# aggregateRating, want de reviews staan op Werkspot en niet op deze site.
+# ---------------------------------------------------------------------
+def bedrijf_id(variant="aflak"):
+    return SITE_URL[variant] + "/#aribouw"
+
+
+def bedrijf_jsonld(variant="aflak"):
+    import json
+    site = SITE_URL[variant]
+    diensten = [{"@type": "Offer", "itemOffered": {
+                    "@type": "Service", "name": d[1], "description": d[2],
+                    "url": "%s/dienst-%s.html" % (site, d[0]) if variant == "aflak" else site + "/diensten.html"}}
+                for d in DIENSTEN]
+    graaf = [
+        {"@type": "HousePainter", "@id": bedrijf_id(variant), "name": NAAM,
+         "url": site + "/", "image": site + "/assets/og.jpg",
+         "description": "Schildersbedrijf uit Westervoort voor binnen- en buitenschilderwerk, "
+                        "behangen en houtreparaties, voor particulieren en professionals.",
+         "founder": {"@type": "Person", "@id": site + "/#ahmad", "name": EIGENAAR,
+                     "jobTitle": "Schilder en eigenaar"},
+         "telephone": TEL_LINK, "email": MAIL, "vatID": BTW,
+         "identifier": {"@type": "PropertyValue", "propertyID": "KvK", "value": KVK},
+         "address": {"@type": "PostalAddress", "streetAddress": ADRES, "postalCode": POSTCODE,
+                     "addressLocality": PLAATS, "addressCountry": "NL"},
+         "areaServed": [{"@type": "City", "name": p} for p in WERKGEBIED_ALLES],
+         "knowsAbout": ["binnenschilderwerk", "buitenschilderwerk", "behangen", "renovlies",
+                        "glasvezelbehang", "houtrot herstellen", "kozijnen schilderen",
+                        "deuren schilderen", "trappen schilderen"],
+         "hasOfferCatalog": {"@type": "OfferCatalog", "name": "Diensten van Aribouw",
+                             "itemListElement": diensten},
+         "sameAs": [WERKSPOT]},
+        {"@type": "WebSite", "@id": site + "/#website", "url": site + "/", "name": NAAM,
+         "inLanguage": "nl-NL", "publisher": {"@id": bedrijf_id(variant)}},
+    ]
+    return json.dumps({"@context": "https://schema.org", "@graph": graaf},
+                      ensure_ascii=False, indent=2)
+
+
+def dienst_jsonld(variant, dienst):
+    import json
+    slug, naam, kort = dienst[0], dienst[1], dienst[2]
+    return json.dumps({
+        "@context": "https://schema.org", "@type": "Service",
+        "@id": "%s/dienst-%s.html#dienst" % (SITE_URL[variant], slug),
+        "name": naam, "serviceType": naam, "description": kort,
+        "provider": {"@id": bedrijf_id(variant)},
+        "areaServed": [{"@type": "City", "name": p} for p in WERKGEBIED_ALLES],
+        "url": "%s/dienst-%s.html" % (SITE_URL[variant], slug),
+    }, ensure_ascii=False, indent=2)
+
+
+JSONLD = bedrijf_jsonld("aflak")
 
 
 def wa_link(bericht):

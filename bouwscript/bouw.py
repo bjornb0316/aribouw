@@ -161,8 +161,9 @@ def voet(variant):
 </footer>
 
 <nav class="balk" aria-label="Snelle acties">
-  <a class="knop knop--vol" href="offerte.html">Offerte aanvragen</a>
+  <a class="knop knop--lijn" href="tel:%(tellink)s">Bellen</a>
   <a class="knop knop--lijn" href="#" data-wa-pagina>WhatsApp</a>
+  <a class="knop knop--vol" href="offerte.html">Offerte</a>
 </nav>
 
 <script src="assets/js/main.js"></script>
@@ -195,6 +196,33 @@ def railkop(label, titel, onder="", intro=""):
     if intro:
         h += '        <p class="intro" style="margin-top:.9rem">%s</p>\n' % intro
     return h
+
+
+def vertrouwen():
+    """Direct onder de hero: vier dingen die binnen vijf seconden duidelijk
+    moeten zijn. Alleen wat aantoonbaar klopt, geen verzonnen keurmerken."""
+    punten = [
+        ('<span class="sterren" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>'
+         '<b>%s uit %s reviews</b>' % (D.SCORE, D.AANTAL_REVIEWS),
+         '<a href="%s">Openbaar op Werkspot</a>' % D.WERKSPOT),
+        ("<b>Eigen werk op de site</b>", '<a href="werk.html">Voor en na bekijken</a>'),
+        ("<b>Vrijblijvend langskomen</b>", "Eerst kijken, dan pas een prijs"),
+        ("<b>Gevestigd in %s</b>" % D.PLAATS, '<a href="werkgebied.html">Twaalf plaatsen in de regio</a>'),
+    ]
+    h = '  <section class="vertrouwen" aria-label="Waarom Aribouw">\n    <div class="wrap">\n'
+    h += '      <ul class="vertrouwen-in op" data-stagger>\n'
+    for boven, onder in punten:
+        h += '        <li>%s<span>%s</span></li>\n' % (boven, onder)
+    return h + "      </ul>\n    </div>\n  </section>\n"
+
+
+def ctaregel(tekst, knoppen):
+    """Een CTA die past bij wat de bezoeker net heeft gezien. knoppen is een
+    lijst van (label, href, "vol" of "lijn")."""
+    h = '        <div class="ctaregel op">\n          <p>%s</p>\n          <div class="knopgroep">\n' % tekst
+    for label, href, soort in knoppen:
+        h += '            <a class="knop knop--%s" href="%s">%s</a>\n' % (soort, href, label)
+    return h + "          </div>\n        </div>\n"
 
 
 def gebiedstrip():
@@ -510,7 +538,29 @@ def schrijf(variant, naam, inhoud):
     map_ = os.path.join(WORTEL, "variant-" + variant)
     os.makedirs(map_, exist_ok=True)
     inhoud = inhoud.replace("__PAGINA__", "" if naam == "index.html" else naam)
+    if naam != "index.html":
+        inhoud = inhoud.replace("</head>", kruimels(variant, naam, inhoud) + "\n</head>", 1)
     io.open(os.path.join(map_, naam), "w", encoding="utf-8").write(inhoud)
+
+
+def kruimels(variant, naam, inhoud):
+    """BreadcrumbList voor elke subpagina. De naam komt uit de h1 van de
+    pagina zelf; dienst- en plaatspagina's hangen onder hun overzicht."""
+    import json, re, html
+    site = D.SITE_URL[variant]
+    m = re.search(r"<h1[^>]*>(.*?)</h1>", inhoud, re.S)
+    titel = html.unescape(re.sub(r"<[^>]+>|\s+", " ", m.group(1)).strip()) if m else naam
+    titel = re.sub(r"\s+", " ", titel)
+    pad = [("Home", site + "/")]
+    if naam.startswith("dienst-"):
+        pad.append(("Diensten", site + "/diensten.html"))
+    elif naam.startswith("regio-"):
+        pad.append(("Werkgebied", site + "/werkgebied.html"))
+    pad.append((titel, "%s/%s" % (site, naam)))
+    data = {"@context": "https://schema.org", "@type": "BreadcrumbList",
+            "itemListElement": [{"@type": "ListItem", "position": i + 1, "name": n, "item": u}
+                                for i, (n, u) in enumerate(pad)]}
+    return '<script type="application/ld+json">%s</script>' % json.dumps(data, ensure_ascii=False)
 
 
 def zoekbestanden(variant, namen):

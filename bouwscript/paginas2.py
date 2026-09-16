@@ -387,8 +387,9 @@ def privacy(variant):
   </section>
 """ % dict(datum=PRIVACY_DATUM, eigenaar=D.EIGENAAR, adres=D.ADRES, postcode=D.POSTCODE,
            plaats=D.PLAATS, kvk=D.KVK, mail=D.MAIL, tel=D.TEL_TOON, tellink=D.TEL_LINK,
-           formulierdienst=B.markeer("[NOG AANVULLEN: naam van de formulierdienst]"),
-           hosting=B.markeer("[NOG AANVULLEN: naam van de hostingpartij]"))
+           # Categorieën van ontvangers volstaan voor de AVG. Namen kunnen erbij
+           # zodra hosting en formulierdienst vastliggen (zie data.py).
+           formulierdienst="", hosting="")
     return h + B.voet(variant)
 
 
@@ -404,7 +405,9 @@ def dienstpagina(variant, dienst):
               "%s in Westervoort, Arnhem en Nijmegen | Aribouw" % naam,
               "%s Werkgebied Westervoort, Duiven, Zevenaar, Arnhem, Nijmegen en omgeving." % kort,
               "Hallo, ik heb een vraag over %s." % naam.lower(),
-              extra='<script type="application/ld+json">%s</script>' % D.vraag_jsonld(vraagset))
+              extra=('<script type="application/ld+json">%s</script>\n'
+                     '<script type="application/ld+json">%s</script>'
+                     % (D.dienst_jsonld(variant, dienst), D.vraag_jsonld(vraagset))))
 
     werk = slug if slug in ("binnenschilderwerk", "buitenschilderwerk", "behang") else "meerdere dingen"
     h += B.filmhero("""      <p class="label op"><a href="diensten.html">Diensten</a></p>
