@@ -501,40 +501,72 @@ window.abExtra = function (WA) {
     });
   }
 
-  /* ---- project doorgeven (voor Ahmad) ----
-     Geen server: alles gaat als een WhatsApp-bericht naar Bjorn, de
-     foto's stuurt Ahmad er in hetzelfde gesprek achteraan. */
-  function projectformulier() {
-    var f = document.querySelector("[data-projectformulier]");
+  /* ---- beheer: project toevoegen (voorbeeld voor de correctieronde) ----
+     Alles gebeurt in de browser: foto's worden alleen lokaal getoond en er
+     wordt niets opgeslagen of verstuurd. De echte versie slaat het project
+     op en zet het direct op de site. */
+  function beheer() {
+    var f = document.querySelector("[data-beheer]");
     if (!f) return;
+    var kaart = document.querySelector("[data-beheer-kaart]");
+    var gelukt = document.querySelector("[data-beheer-gelukt]");
+    var akkoord = f.querySelector("[data-akkoord]");
+    var akkoordFout = f.querySelector("[data-akkoord-fout]");
+
+    function w(n) { var i = f.querySelector('[name="' + n + '"]'); return i ? i.value.trim() : ""; }
+    function foto(naam, img) {
+      var i = f.querySelector('[name="' + naam + '"]');
+      var bestand = i && i.files && i.files[0];
+      if (bestand) img.src = URL.createObjectURL(bestand);
+    }
+    function toonKaart() {
+      var tonen = f.querySelector('[name="plaatsnaam"]').checked;
+      var wat = w("onderdelen");
+      var titel = wat.charAt(0).toUpperCase() + wat.slice(1) +
+        (tonen && w("plaats") && w("plaats") !== "Andere plaats" ? " in " + w("plaats") : "");
+      kaart.querySelector("[data-bk-titel]").textContent = titel;
+      kaart.querySelector("[data-bk-situatie]").textContent = w("situatie");
+      kaart.querySelector("[data-bk-aanpak]").textContent = w("aanpak");
+      var voor = kaart.querySelector("[data-bk-voor]"), na = kaart.querySelector("[data-bk-na]");
+      foto("voor", voor); foto("na", na);
+      voor.alt = titel + ", voor"; na.alt = titel + ", na";
+      kaart.querySelector("[data-bk-links]").textContent =
+        "Komt op de werkpagina, als eigen projectpagina, en bij " + w("werk") +
+        (tonen && w("plaats") !== "Andere plaats" ? " en " + w("plaats") : "") + ".";
+      kaart.hidden = false;
+    }
+    function klopt(metAkkoord) {
+      var ok = window.abControleer ? window.abControleer(f) : true;
+      if (metAkkoord) {
+        akkoordFout.setAttribute("data-aan", akkoord.checked ? "0" : "1");
+        if (!akkoord.checked) ok = false;
+      }
+      return ok;
+    }
+
+    f.querySelector("[data-beheer-voorbeeld]").addEventListener("click", function () {
+      if (!klopt(false)) return;
+      toonKaart();
+      kaart.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
     f.addEventListener("submit", function (e) {
       e.preventDefault();
-      if (window.abControleer && !window.abControleer(f)) return;
-      function w(n) { var i = f.querySelector('[name="' + n + '"]'); return i ? i.value.trim() : ""; }
-      var regels = [
-        "Nieuw project voor de website",
-        "",
-        "Plaats: " + w("plaats"),
-        "Wanneer: " + (w("wanneer") || "niet ingevuld"),
-        "Soort werk: " + w("werk"),
-        "Gedaan: " + w("onderdelen"),
-        "Ervoor: " + w("situatie"),
-        "Aanpak: " + w("aanpak"),
-        "Resultaat: " + (w("resultaat") || "niet ingevuld"),
-        "Foto's online: " + w("toestemming"),
-        "",
-        "De voor- en nafoto's stuur ik hierna."
-      ];
-      window.location.href = "https://wa.me/" + f.getAttribute("data-naar") +
-        "?text=" + encodeURIComponent(regels.join("\n"));
+      if (!klopt(true)) return;
+      toonKaart();
+      gelukt.setAttribute("data-aan", "1");
+      gelukt.setAttribute("tabindex", "-1");
+      gelukt.focus();
     });
     f.addEventListener("input", function (e) {
       var v = e.target.closest(".veld");
-      if (v && e.target.value.trim()) v.removeAttribute("data-fout");
+      if (v && e.target.value) v.removeAttribute("data-fout");
+    });
+    akkoord.addEventListener("change", function () {
+      if (akkoord.checked) akkoordFout.setAttribute("data-aan", "0");
     });
   }
 
-  schuiven(); stalen(); flows(); films(); projectformulier();
+  schuiven(); stalen(); flows(); films(); beheer();
 };
 """
 
