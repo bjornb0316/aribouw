@@ -280,7 +280,7 @@ ul{list-style:none}
 """ % dict(
         bjorn=D.BJORN_WA,
         mark=('<img src="assets/img/logo-kop.png" width="471" height="120" alt="Aribouw" '
-              'style="height:44px;width:auto;display:block">'),
+              'style="height:30px;width:auto;display:block">'),
         pijl=('<svg viewBox="0 0 14 9" fill="none" aria-hidden="true">'
               '<path d="M0 4.5h12M8.5 1L12 4.5 8.5 8" stroke="currentColor" '
               'stroke-width="1.4"/></svg>'),

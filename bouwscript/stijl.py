@@ -102,9 +102,9 @@ h3.display{font-size:clamp(1.1rem,1.6vw,1.3rem);font-weight:700}
 @media (max-width:900px){.kop-in{height:62px}}
 
 .merk{flex-shrink:0;display:flex;align-items:center;gap:.65rem;line-height:1}
-.merk-logo{height:40px;width:auto;display:block}
-@media (max-width:900px){.merk-logo{height:34px}}
-.voet-merk .merk-logo{height:44px}
+.merk-logo{height:30px;width:auto;display:block}
+@media (max-width:900px){.merk-logo{height:26px}}
+.voet-merk .merk-logo{height:30px}
 .merk b{font-family:Supreme,sans-serif;font-weight:700;font-size:1.18rem;
   letter-spacing:.02em;display:block}
 .merk small{display:block;font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;
