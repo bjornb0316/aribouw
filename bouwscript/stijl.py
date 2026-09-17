@@ -709,6 +709,42 @@ h2.display{font-size:clamp(2rem,4vw,3.2rem);letter-spacing:-.025em}
 .sectie--film > .wrap{position:relative;z-index:2}
 .sectie--film .sectie-kop .display{color:#fff;text-shadow:0 2px 24px rgba(10,14,20,.5)}
 
+/* ---------- alle werkzaamheden in een oogopslag ---------- */
+.werkzaamheden{margin-top:clamp(1.6rem,3vw,2.2rem);background:var(--wit);border:1px solid var(--lijn);
+  border-radius:var(--r);padding:clamp(1.2rem,2.6vw,1.7rem)}
+.werkzaamheden h3{font-family:Supreme,sans-serif;font-weight:700;font-size:1.05rem}
+.werkzaamheden ul{margin-top:.8rem;display:grid;gap:0 1.6rem}
+@media (min-width:640px){.werkzaamheden ul{grid-template-columns:1fr 1fr}}
+.werkzaamheden li{border-top:1px solid var(--lijn)}
+.werkzaamheden li a,.werkzaamheden li:not(:has(a)){display:flex;align-items:center;
+  justify-content:space-between;gap:.8rem;padding:.6rem 0;font-size:.95rem;font-weight:500}
+.werkzaamheden li a{color:var(--inkt)}
+.werkzaamheden li a svg{width:14px;height:9px;flex-shrink:0;color:var(--blauw);
+  transition:transform .25s var(--soepel)}
+.werkzaamheden li a:hover{color:var(--blauw)}
+.werkzaamheden li a:hover svg{transform:translateX(3px)}
+.werkzaamheden p{margin-top:.8rem;font-size:.85rem;color:var(--inkt-3)}
+.werkzaamheden--intro{max-width:52rem}
+
+/* ---------- specialismen op de dienstenpagina ---------- */
+.speci{display:grid;gap:clamp(1rem,2vw,1.5rem);margin-top:clamp(1.4rem,3vw,2rem)}
+@media (min-width:760px){.speci{grid-template-columns:1fr 1fr}}
+.speci-kaart{display:flex;flex-direction:column;background:var(--wit);border:1px solid var(--lijn);
+  border-radius:var(--r);overflow:hidden;transition:box-shadow .35s var(--soepel)}
+.speci-kaart:hover{box-shadow:0 14px 32px rgba(35,38,43,.12)}
+.speci-kaart img{width:100%;aspect-ratio:16/9;object-fit:cover}
+.speci-kaart > span{padding:1.2rem 1.3rem 1.4rem;display:flex;flex-direction:column;gap:.45rem}
+.speci-kaart p{color:var(--inkt-2);font-size:.93rem}
+.speci-kaart .meer{font-weight:700;font-size:.9rem;color:var(--blauw);display:inline-flex;
+  align-items:center;gap:.45rem;margin-top:.4rem}
+.speci-kaart .meer svg{width:14px;height:9px}
+.zie-ook{margin-top:1.3rem;font-size:.92rem;color:var(--inkt-3);display:flex;flex-wrap:wrap;
+  gap:.3rem 1.2rem;align-items:center}
+.zie-ook a{color:var(--blauw);font-weight:700;display:inline-flex;align-items:center;gap:.4rem}
+.zie-ook a svg{width:14px;height:9px}
+.punten--twee{display:grid;margin-top:clamp(1.2rem,2.5vw,1.6rem)}
+@media (min-width:760px){.punten--twee{grid-template-columns:1fr 1fr;column-gap:2rem}}
+
 /* ---------- dienstpagina: kennis voor de aanvraag ----------
    Drie vormen, zodat de pagina niet een rij gelijke blokken wordt:
    wanneer als drie kolommen met een blauwe streep, signalen als

@@ -116,6 +116,7 @@ def diensten_blok(variant):
                    "gebeld, en waar de reviews over gaan.")
     h += B.kaarten(variant)
     if aflak:
+        h += B.werkzaamheden(variant)
         h += B.ctaregel("Benieuwd wat dit bij uw woning kost? Ik kom vrijblijvend kijken.",
                         [("Offerte aanvragen", "offerte.html", "vol")])
     h += "      </div>\n    </div>\n  </section>\n"
@@ -295,8 +296,8 @@ def diensten(variant):
     aflak = variant == "aflak"
     h = B.kop(variant, "diensten.html",
               "Diensten | Aribouw, schilder in Westervoort",
-              "Binnenschilderwerk, buitenschilderwerk, behangen en houtreparaties. Wat elk van "
-              "die vier inhoudt en waar de uren in gaan zitten.",
+              "Binnen- en buitenschilderwerk, wanden en plafonds, kozijnen en deuren, trappen, "
+              "behangen en houtreparaties. Wat elk inhoudt en waar de uren in gaan zitten.",
               "Hallo, ik heb een vraag over uw diensten.")
 
     h += """
@@ -305,11 +306,10 @@ def diensten(variant):
       <h1 class="display op" style="max-width:17ch">Het voorwerk is het werk</h1>
       <p class="intro op" style="margin-top:1.1rem">Verf kopen kan iedereen. Het verschil zit in
       wat eraan voorafgaat: ontvetten, schuren, gaatjes dichtzetten, afplakken. Daar gaan de uren
-      in zitten en daar wordt een klus later op afgerekend. Stucwerk en egaliseren doe ik niet;
-      dit is schilderwerk.</p>
-    </div>
+      in zitten en daar wordt een klus later op afgerekend.</p>
+%s    </div>
   </section>
-"""
+""" % B.werkzaamheden(variant, "werkzaamheden--intro")
 
     # Twee blokken met beeld, daarna de rest als stalen. Nooit meer dan
     # twee beeld-tekst-splits achter elkaar.
@@ -343,6 +343,24 @@ def diensten(variant):
         link = ("dienst-%s.html" % dienst[0]) if aflak else "offerte.html"
         h += B.kaart(variant, dienst, "Wat dat inhoudt" if aflak else "Offerte aanvragen", link)
     h += "        </div>\n      </div>\n    </div>\n  </section>\n"
+
+    if aflak:
+        # De specialismen met een eigen pagina.
+        beelden = {"kozijnen-deuren": ("kozijn-buiten.webp", "Wit geschilderde buitenkozijnen"),
+                   "wanden-plafonds": ("kleur-licht.webp", "Kamer met strak geschilderde wanden")}
+        h += B.snee(om=True, zand=True)
+        h += '  <section class="sectie sectie--zand">\n    <div class="wrap rail">\n'
+        h += B.railkop("Specifiek", "Kozijnen, deuren, wanden en plafonds", "Veel gevraagd",
+                       "Onderdelen van binnen- en buitenschilderwerk waar mensen vaak specifiek "
+                       "naar zoeken, met een eigen uitleg.")
+        h += '        <div class="speci op" data-stagger>\n'
+        for slug, naam, kort, lang, beeld, punten in D.SUBDIENSTEN:
+            src, alt = beelden[slug]
+            h += ('          <a class="speci-kaart" href="dienst-%s.html"><img src="../assets/img/%s" '
+                  'width="1000" height="750" loading="lazy" alt="%s"><span><h3 class="display">%s'
+                  '</h3><p>%s</p><span class="meer">Wat dat inhoudt %s</span></span></a>\n'
+                  % (slug, src, alt, naam, kort, B.PIJL))
+        h += "        </div>\n      </div>\n    </div>\n  </section>\n"
 
     h += B.contactblok(
         "Niet zeker wat u nodig heeft",

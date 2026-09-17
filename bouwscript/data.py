@@ -171,6 +171,20 @@ DIENST_INHOUD = {
                    "Het aantal lagen, bijvoorbeeld bij een lichte kleur over een donkere",
                    "Of de ruimte leeg is of eerst alles afgedekt moet worden"],
         "reviews": [1, 0],
+        "zie_ook": [("Wanden en plafonds schilderen", "dienst-wanden-plafonds.html"),
+                    ("Kozijnen en deuren schilderen", "dienst-kozijnen-deuren.html")],
+        # Een trap heeft (nog) geen foto of project, dus een blok hier in
+        # plaats van een eigen pagina.
+        "extra": {
+            "id": "trappen", "label": "Trappen", "titel": "Trappen schilderen",
+            "tekst": "Een trap krijgt het zwaarst te verduren van al het houtwerk in huis. Treden, "
+                     "stootborden, leuning en spijlen worden grondig geschuurd en krijgen een lak "
+                     "die tegen lopen kan. Omdat een trap tijdens het werk niet of maar half te "
+                     "gebruiken is, spreken we vooraf af hoe dat gaat.",
+            "punten": ["Treden en stootborden", "Leuning, spijlen en trapboom",
+                       "Een slijtvaste lak die tegen lopen kan",
+                       "Vooraf afspraken over wanneer de trap te gebruiken is"],
+        },
     },
     "buitenschilderwerk": {
         "wanneer": [
@@ -201,6 +215,7 @@ DIENST_INHOUD = {
                    "Hoe goed hoge delen bereikbaar zijn",
                    "Het aantal lagen"],
         "reviews": [0, 2, 3],
+        "zie_ook": [("Kozijnen en deuren schilderen", "dienst-kozijnen-deuren.html")],
     },
     "behang": {
         "wanneer": [
@@ -255,6 +270,69 @@ DIENST_INHOUD = {
                    "Of het hele kozijn of de hele deur meteen wordt geschilderd",
                    "Hoe goed de plek bereikbaar is"],
         "reviews": [3, 2],
+        "zie_ook": [("Kozijnen en deuren schilderen", "dienst-kozijnen-deuren.html")],
+    },
+    "kozijnen-deuren": {
+        "wanneer": [
+            ("Buitenkozijnen en voordeuren", "Zodra de lak dof wordt, gaat scheuren of op de "
+             "onderdorpels loslaat. Buiten gaat het snel als er eenmaal water achter de verf komt."),
+            ("Binnendeuren en kozijnen", "Als de lak geel is geworden, beschadigd is rond de klink, "
+             "of als er een andere kleur moet, bijvoorbeeld van houtlook naar wit."),
+            ("Bij een verkoop of verhuizing", "Kozijnen en de voordeur ziet iemand als eerste. Nieuwe "
+             "lak maakt daar veel verschil."),
+        ],
+        "signalen": ["Lak die bladdert op onderdorpels en in de hoeken",
+                     "Hout dat zacht aanvoelt of donker is verkleurd",
+                     "Open naden tussen het kozijn en het glas of de muur",
+                     "Gele of doffe lak op binnendeuren en kozijnen",
+                     "Een deur die klemt doordat er te veel lagen op zitten"],
+        "materiaal": [
+            ("Grondverf", "Op kaal of hersteld hout, zodat de lak goed hecht."),
+            ("Lak voor binnen en buiten", "Buitenlak moet tegen zon en regen kunnen. Binnen "
+             "vergeelt een watergedragen lak minder."),
+            ("Houtrotvuller of nieuw hout", "Voor aangetaste plekken in kozijnen en onderdorpels, "
+             "voordat er lak op gaat."),
+        ],
+        "kosten": ["Het aantal kozijnen en deuren",
+                   "Binnen of buiten, en hoe goed alles bereikbaar is",
+                   "Hoeveel houtrot er hersteld moet worden",
+                   "Of de oude lak geschuurd of helemaal verwijderd moet worden",
+                   "Een kleurwissel, bijvoorbeeld van donker naar wit, vraagt meer lagen"],
+        "reviews": [3, 2],
+        "voorna": True,
+        "zie_ook": [("Buitenschilderwerk", "dienst-buitenschilderwerk.html"),
+                    ("Houtreparaties en onderhoud", "dienst-houtwerk.html")],
+    },
+    "wanden-plafonds": {
+        "wanneer": [
+            ("Bij vlekken en verkleuring", "Als vlekken, vingerafdrukken of vergeling niet meer "
+             "weggaan met schoonmaken."),
+            ("Bij een nieuwe kleur", "Een andere kleur geeft een ruimte een ander gevoel. Van donker "
+             "naar licht vraagt vaak een extra laag."),
+            ("Na een lekkage of verbouwing", "Waterkringen en reparaties blijven zichtbaar zonder "
+             "voorbehandeling. Die plekken krijgen eerst een isolerende grondlaag."),
+        ],
+        "signalen": ["Waterkringen of gele vlekken op het plafond",
+                     "Verf die afbladdert of afgeeft als u eroverheen veegt",
+                     "Doorschijnende plekken of een oude kleur die erdoor komt",
+                     "Gaatjes en naden van pluggen en leidingen",
+                     "Haarscheurtjes in de hoeken"],
+        "materiaal": [
+            ("Muurverf, mat of zijdeglans", "Mat verbergt oneffenheden het best. Zijdeglans is "
+             "beter af te nemen, handig in een hal of kinderkamer."),
+            ("Isolerende grondverf", "Op vlekken van water, nicotine of vet, zodat ze niet door "
+             "de nieuwe laag heen komen."),
+            ("Vochtbestendige verf", "Voor keuken en badkamer, waar gewone muurverf niet lang goed "
+             "blijft."),
+        ],
+        "kosten": ["Het aantal vierkante meters wand en plafond",
+                   "De hoogte, bijvoorbeeld een trapgat of een hoog plafond",
+                   "Hoeveel voorbereiding de ondergrond nodig heeft",
+                   "Het aantal lagen, zeker bij een kleurwissel",
+                   "Of de ruimte leeg is of alles afgedekt moet worden"],
+        "reviews": [1],
+        "zie_ook": [("Binnenschilderwerk", "dienst-binnenschilderwerk.html"),
+                    ("Behangen", "dienst-behang.html")],
     },
 }
 
@@ -290,6 +368,51 @@ REGIO = {
         "reviews": [3], "projecten": [],
     },
 }
+
+# Twee specialismen met een eigen pagina, onder de hoofddiensten. Geen eigen
+# dienstkaart en geen eigen film: ze hangen onder Diensten en worden bereikt
+# via het overzicht en de links op de hoofdpagina's.
+# (slug, naam, kort, lang, beeld, punten)
+SUBDIENSTEN = [
+    ("kozijnen-deuren", "Kozijnen en deuren schilderen",
+     "Buitenkozijnen, voordeuren, binnendeuren en ander houtwerk. Eerst het hout in orde, dan een "
+     "strakke laklaag.",
+     "Bij kozijnen en deuren ziet u elk foutje: een druppel, een streep, verf op het glas of op het "
+     "beslag. Daarom gaat de meeste tijd naar de voorbereiding: oude lak schuren of verwijderen, "
+     "beschadigingen herstellen, glas en beslag strak afplakken. Buiten komt daar houtrot bij, dat "
+     "eerst hersteld wordt. Pas dan gaan de grondverf en de lak erop.",
+     "kozijn-buiten.webp",
+     ["Buitenkozijnen, ramen en boeidelen",
+      "Voordeuren, achterdeuren en binnendeuren",
+      "Houtrot herstellen voordat er lak op gaat",
+      "Glas en beslag strak afgeplakt"]),
+    ("wanden-plafonds", "Wanden en plafonds schilderen",
+     "Wanden en plafonds strak geschilderd, zonder strepen of vlekken. Meubels en vloeren afgedekt.",
+     "Een muur of plafond schilderen lijkt simpel, maar juist op een groot vlak ziet u elke "
+     "oneffenheid, elke overgang en elke streep. Gaatjes en naden zet ik eerst dicht, vlekken "
+     "worden voorbehandeld, en plafonds en kozijnen strak afgeplakt. Stucwerk en egaliseren doe ik "
+     "niet; is een wand daarvoor te slecht, dan hoort u dat vooraf.",
+     "stap-uitvoeren.webp",
+     ["Wanden in woonkamer, slaapkamer, hal en trapgat",
+      "Plafonds, ook met vlekken of verkleuring",
+      "Keuken en badkamer met vochtbestendige verf",
+      "Strakke lijnen tussen wand, plafond en kozijn"]),
+]
+# Onder welke hoofddienst een specialisme hangt, voor de terugverwijzing.
+SUB_OUDER = {"kozijnen-deuren": "buitenschilderwerk", "wanden-plafonds": "binnenschilderwerk"}
+
+# Zijn eigen lijst van werkzaamheden uit de intake, letterlijk, met waar
+# elke regel op de site over gaat.
+WERKZAAMHEDEN = [
+    ("Binnenschilderwerk", "dienst-binnenschilderwerk.html"),
+    ("Buitenschilderwerk", "dienst-buitenschilderwerk.html"),
+    ("Wand- en plafondschilderwerk", "dienst-wanden-plafonds.html"),
+    ("Behangen", "dienst-behang.html"),
+    ("Deuren, kozijnen en ander houtwerk schilderen", "dienst-kozijnen-deuren.html"),
+    ("Trappen schilderen", "dienst-binnenschilderwerk.html#trappen"),
+    ("Kleine houtreparaties", "dienst-houtwerk.html"),
+    ("Klein renovatie- en onderhoudswerk", "dienst-houtwerk.html"),
+]
 
 # Van eerste bericht tot oplevering. Geen doorlooptijden, want die zijn
 # nog niet bevestigd.
@@ -374,6 +497,8 @@ DIENST_VRAGEN = {
     "buitenschilderwerk": [5, 0, 7, 10],
     "behang": [9, 3, 4, 1],
     "houtwerk": [5, 6, 0, 10],
+    "kozijnen-deuren": [5, 0, 3, 7],
+    "wanden-plafonds": [0, 9, 3, 1],
 }
 
 ONBEVESTIGD = [
@@ -406,7 +531,7 @@ def bedrijf_jsonld(variant="aflak"):
     diensten = [{"@type": "Offer", "itemOffered": {
                     "@type": "Service", "name": d[1], "description": d[2],
                     "url": "%s/dienst-%s.html" % (site, d[0]) if variant == "aflak" else site + "/diensten.html"}}
-                for d in DIENSTEN]
+                for d in (DIENSTEN + SUBDIENSTEN if variant == "aflak" else DIENSTEN)]
     graaf = [
         {"@type": "HousePainter", "@id": bedrijf_id(variant), "name": NAAM,
          "url": site + "/", "image": site + "/assets/og.jpg",

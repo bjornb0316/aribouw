@@ -510,16 +510,32 @@ def dienstpagina(variant, dienst):
                      '<script type="application/ld+json">%s</script>'
                      % (D.dienst_jsonld(variant, dienst), D.vraag_jsonld(vraagset))))
 
-    werk = slug if slug in ("binnenschilderwerk", "buitenschilderwerk", "behang") else "meerdere dingen"
+    # Welke eerste vraag in de offerteflow al beantwoord is. Kozijnen kunnen
+    # binnen en buiten zijn, dus daar vraagt de flow het gewoon.
+    werk = {"binnenschilderwerk": "binnenschilderwerk", "buitenschilderwerk": "buitenschilderwerk",
+            "behang": "behang", "houtwerk": "meerdere dingen",
+            "wanden-plafonds": "binnenschilderwerk"}.get(slug, "")
+    offerte = "offerte.html" + ("?werk=%s" % werk if werk else "")
     wa = D.wa_link("Hallo, ik stuur een foto voor %s." % naam.lower())
-    h += B.filmhero("""      <p class="label op"><a href="diensten.html">Diensten</a></p>
+    tekst = """      <p class="label op"><a href="diensten.html">Diensten</a></p>
       <h1 class="display op" style="max-width:18ch">%(naam)s in Westervoort en omgeving</h1>
       <p class="intro op">%(kort)s</p>
       <div class="knopgroep op">
-        <a class="knop knop--vol" href="offerte.html?werk=%(werk)s">Offerte aanvragen</a>
+        <a class="knop knop--vol" href="%(offerte)s">Offerte aanvragen</a>
         <a class="knop knop--lijn" href="%(wa)s">Foto sturen via WhatsApp</a>
       </div>
-""" % dict(naam=naam, kort=kort, werk=werk, wa=wa), B.DIENST_FILM[slug], klasse="hero--dienst")
+""" % dict(naam=naam, kort=kort, offerte=offerte, wa=wa)
+    if slug in B.DIENST_FILM:
+        h += B.filmhero(tekst, B.DIENST_FILM[slug], klasse="hero--dienst")
+    else:
+        heldbeeld, heldalt = B.DIENST_BEELD[slug]
+        h += B.filmhero(tekst, beeld=heldbeeld, alt=heldalt, klasse="hero--dienst")
+
+    zie_ook = ""
+    if inhoud.get("zie_ook"):
+        zie_ook = ('          <p class="zie-ook">Zie ook: %s</p>\n'
+                   % " ".join('<a href="%s">%s %s</a>' % (href, label, B.PIJL)
+                              for label, href in inhoud["zie_ook"]))
 
     # Waar de uren in gaan zitten, met een eigen foto.
     h += """
@@ -534,17 +550,29 @@ def dienstpagina(variant, dienst):
           <h2 class="display">Waar de uren in gaan zitten</h2>
           <p class="intro" style="margin-top:.9rem">%(lang)s</p>
           <ul class="punten">%(punten)s</ul>
-        </div>
+%(zie_ook)s        </div>
       </div>
     </div>
   </section>
-""" % dict(kort=kort, lang=lang, beeld=beeld,
+""" % dict(kort=kort, lang=lang, beeld=beeld, zie_ook=zie_ook,
            punten="".join("<li>%s</li>" % p for p in punten))
 
+    # Bij kozijnen en deuren: de echte voor-en-na van de binnendeur.
+    if inhoud.get("voorna"):
+        import paginas as P1
+        h += '  <section class="sectie">\n    <div class="wrap rail">\n'
+        h += B.railkop("Voor en na", "Een binnendeur, voor en na", "Eigen werk",
+                       "Van houtlook naar strak gebroken wit. Sleep de lijn om het verschil te zien.")
+        h += P1.vergelijk("55")
+        h += "      </div>\n    </div>\n  </section>\n"
+
     # Wanneer, waar u op let, welk materiaal: de vragen voor de aanvraag.
-    h += B.snee(om=True, zand=True)
+    h += B.snee(om=True, zand=not inhoud.get("voorna"))
     h += '  <section class="sectie">\n    <div class="wrap rail">\n'
-    h += B.railkop("Wanneer", "Wanneer is het tijd voor %s?" % naam.lower(), "Voor de aanvraag")
+    wanneer_titel = {"kozijnen-deuren": "Wanneer is het tijd voor nieuwe lak?",
+                     "wanden-plafonds": "Wanneer is het tijd voor een nieuwe laag?"}.get(
+                         slug, "Wanneer is het tijd voor %s?" % naam.lower())
+    h += B.railkop("Wanneer", wanneer_titel, "Voor de aanvraag")
     h += '        <div class="kennis op" data-stagger>\n'
     for titel, tekst in inhoud["wanneer"]:
         h += '          <div><h3>%s</h3><p>%s</p></div>\n' % (titel, tekst)
@@ -573,8 +601,22 @@ def dienstpagina(variant, dienst):
     h += ('        <ol class="kosten op">%s</ol>\n'
           % "".join("<li>%s</li>" % k for k in inhoud["kosten"]))
     h += B.ctaregel("Benieuwd wat dit bij uw woning kost? Ik kom vrijblijvend kijken.",
-                    [("Offerte aanvragen", "offerte.html?werk=%s" % werk, "vol")])
+                    [("Offerte aanvragen", offerte, "vol")])
     h += "      </div>\n    </div>\n  </section>\n"
+
+    # Een onderdeel dat (nog) geen eigen pagina heeft, zoals trappen.
+    extra = inhoud.get("extra")
+    if extra:
+        h += '  <section class="sectie sectie--zand" id="%s">\n    <div class="wrap rail">\n' % extra["id"]
+        h += B.railkop(extra["label"], extra["titel"], "Onderdeel van %s" % naam.lower(),
+                       extra["tekst"])
+        h += ('        <ul class="punten punten--twee op">%s</ul>\n'
+              % "".join("<li>%s</li>" % p for p in extra["punten"]))
+        h += B.ctaregel("Een trap laten schilderen? Stuur een foto van de treden en de leuning.",
+                        [("Foto sturen via WhatsApp",
+                          D.wa_link("Hallo, ik wil mijn trap laten schilderen. Ik stuur een foto."),
+                          "vol")])
+        h += "      </div>\n    </div>\n  </section>\n"
 
     h += B.werkwijze(" sectie--vlak", beelden=True)
     h += B.snee()
@@ -594,7 +636,7 @@ def dienstpagina(variant, dienst):
 
     h += B.snee(om=True, zand=True)
     h += '  <section class="sectie">\n    <div class="wrap rail">\n'
-    h += B.railkop("En verder", "Vaak in dezelfde klus", "Drie andere diensten")
+    h += B.railkop("En verder", "Vaak in dezelfde klus", "%d andere diensten" % len(andere))
     h += B.kaarten(variant, lijst=andere)
     h += "      </div>\n    </div>\n  </section>\n"
 

@@ -1,29 +1,45 @@
-# Aribouw, twee websitevoorstellen
+# Aribouw, website
 
-Twee uitgewerkte demo's voor Aribouw, het schildersbedrijf van Ahmad Nikzad
-uit Westervoort: schilderwerk, behangen en houtreparaties. Beide varianten
-delen huisstijl, fotografie en teksten. Het verschil zit in scope en in
-designniveau, niet in kwaliteit. Ahmad heeft gekozen voor variant 2, Aflak.
+De website van Aribouw, het schildersbedrijf van Ahmad Nikzad uit Westervoort:
+schilderwerk, behangen en houtreparaties.
 
-Live: **https://bjornb0316.github.io/aribouw/**
+Live: **https://bjornb0316.github.io/aribouw/** (stuurt door naar `variant-aflak/`)
 
-Of open `index.html` lokaal om ze naast elkaar te zien.
+Er waren eerst twee voorstellen, Grondlaag (Professional) en Aflak
+(Performance), met een keuzepagina ervoor. Ahmad koos Aflak. Op 17 september
+2026 zijn de keuzepagina en Grondlaag verwijderd; de beschrijving van Grondlaag
+verderop in dit document is historisch.
 
 ---
 
 ## Wat waar staat
 
 ```
-index.html                keuzepagina: beide varianten naast elkaar
-assets/img/               gedeelde foto's (WebP)
-assets/film/              Higgsfield-films voor Aflak (MP4 + poster)
-variant-grondlaag/        Professional, 6 pagina's
-variant-aflak/            Performance, 14 pagina's
-  assets/css/stijl.css    per variant, uit dezelfde tokens gegenereerd
-  assets/js/main.js       per variant
-bron/                     ruwe downloads, niet voor de server
+index.html                doorverwijzing naar variant-aflak/
+assets/img/               foto's, logo en favicons (WebP/PNG)
+assets/film/              Higgsfield-films (MP4 + poster)
+variant-aflak/            de site, 19 pagina's
+  assets/css/stijl.css    gegenereerd uit bouwscript/stijl.py
+  assets/js/main.js       gegenereerd uit bouwscript/script.py
+bron/                     ruwe downloads en het logo, niet voor de server
 bouwscript/               de generator (Python, geen build-stap nodig)
 ```
+
+### Diensten
+
+Alle werkzaamheden uit Ahmads intake staan zichtbaar in een overzicht op de home
+en bovenaan de dienstenpagina, en elke regel linkt naar de pagina die erover gaat:
+
+| werkzaamheid | pagina |
+| --- | --- |
+| Binnenschilderwerk | `dienst-binnenschilderwerk.html` |
+| Buitenschilderwerk | `dienst-buitenschilderwerk.html` |
+| Wand- en plafondschilderwerk | `dienst-wanden-plafonds.html` (nieuw) |
+| Behangen | `dienst-behang.html` |
+| Deuren, kozijnen en ander houtwerk | `dienst-kozijnen-deuren.html` (nieuw, met de echte voor-en-na) |
+| Trappen schilderen | blok `#trappen` op binnenschilderwerk; eigen pagina zodra er een trapklus met foto's is |
+| Kleine houtreparaties | `dienst-houtwerk.html` |
+| Klein renovatie- en onderhoudswerk | `dienst-houtwerk.html` |
 
 ```bash
 python bouwscript/alles.py        # bouwen
