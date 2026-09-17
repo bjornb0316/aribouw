@@ -3,24 +3,24 @@
 De website van Aribouw, het schildersbedrijf van Ahmad Nikzad uit Westervoort:
 schilderwerk, behangen en houtreparaties.
 
-Live: **https://bjornb0316.github.io/aribouw/** (stuurt door naar `variant-aflak/`)
+Live: **https://bjornb0316.github.io/aribouw/**
 
 Er waren eerst twee voorstellen, Grondlaag (Professional) en Aflak
 (Performance), met een keuzepagina ervoor. Ahmad koos Aflak. Op 17 september
 2026 zijn de keuzepagina en Grondlaag verwijderd; de beschrijving van Grondlaag
-verderop in dit document is historisch.
+verderop in dit document is historisch. Daarna is de site van `variant-aflak/` naar de hoofdmap verhuisd; oude links sturen door.
 
 ---
 
 ## Wat waar staat
 
 ```
-index.html                doorverwijzing naar variant-aflak/
+*.html                    de site, 19 pagina's, in de hoofdmap
 assets/img/               foto's, logo en favicons (WebP/PNG)
 assets/film/              Higgsfield-films (MP4 + poster)
-variant-aflak/            de site, 19 pagina's
-  assets/css/stijl.css    gegenereerd uit bouwscript/stijl.py
-  assets/js/main.js       gegenereerd uit bouwscript/script.py
+assets/css/stijl.css      gegenereerd uit bouwscript/stijl.py
+assets/js/main.js         gegenereerd uit bouwscript/script.py
+variant-aflak/            doorverwijzingen voor de oude adressen
 bron/                     ruwe downloads en het logo, niet voor de server
 bouwscript/               de generator (Python, geen build-stap nodig)
 ```
