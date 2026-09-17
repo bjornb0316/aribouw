@@ -16,9 +16,9 @@ FONTS = ('<link rel="preconnect" href="https://api.fontshare.com" crossorigin>'
 
 # Het logo van Ahmad: huis en ARIBOUW naast elkaar. Gemaakt door logo.py uit
 # bron/logo-aribouw.jpg. De witte variant staat in de donkere voet.
-LOGO = ('<img class="merk-logo" src="../assets/img/logo-kop.png" width="471" height="120" '
+LOGO = ('<img class="merk-logo" src="assets/img/logo-kop.png" width="471" height="120" '
         'alt="Aribouw, schilderen en behangen">')
-LOGO_WIT = ('<img class="merk-logo merk-logo--voet" src="../assets/img/logo-kop-wit.png" '
+LOGO_WIT = ('<img class="merk-logo merk-logo--voet" src="assets/img/logo-kop-wit.png" '
             'width="471" height="120" alt="Aribouw" loading="lazy">')
 
 PIJL = ('<svg viewBox="0 0 14 9" fill="none" aria-hidden="true">'
@@ -260,8 +260,8 @@ def film(naam, gedrag="lus", klasse="film"):
     geladen als hij in beeld komt (of bij hover). Zonder JS of met minder
     beweging blijft de poster staan. Decoratief, dus aria-hidden."""
     return ('<div class="%s" aria-hidden="true"><video muted playsinline preload="none"%s '
-            'poster="../assets/film/%s.webp" data-film="%s">'
-            '<source data-src="../assets/film/%s.mp4" type="video/mp4"></video></div>'
+            'poster="assets/film/%s.webp" data-film="%s">'
+            '<source data-src="assets/film/%s.mp4" type="video/mp4"></video></div>'
             % (klasse, "" if gedrag == "eenmaal" else " loop", naam, gedrag, naam))
 
 
@@ -270,7 +270,7 @@ def filmhero(tekst, filmnaam=None, beeld=None, alt="", klasse=""):
     if filmnaam:
         media = film(filmnaam, "eenmaal" if filmnaam == "snijlijn" else "lus", "film film--hero")
     else:
-        media = ('<div class="film film--hero"><img src="../assets/img/%s" width="1920" '
+        media = ('<div class="film film--hero"><img src="assets/img/%s" width="1920" '
                  'height="1080" fetchpriority="high" alt="%s"></div>' % (beeld, alt))
     return """
   <section class="hero--film%s">
@@ -334,7 +334,7 @@ WERK = [
 def werkraster(hoeveel=6):
     h = '        <div class="werk op" data-stagger>\n'
     for beeld, titel, onder in WERK[:hoeveel]:
-        h += ('          <figure><img src="../assets/img/%s" width="1000" height="750" '
+        h += ('          <figure><img src="assets/img/%s" width="1000" height="750" '
               'loading="lazy" alt="%s"><figcaption><h3>%s</h3><p>%s</p></figcaption></figure>\n'
               % (beeld, titel, titel, onder))
     return h + "        </div>\n"
@@ -363,7 +363,7 @@ def werkwijze(klasse="", beelden=False):
         beeld = ""
         if beelden:
             b, alt = STAP_BEELDEN[i]
-            beeld = ('<img class="stap-beeld" src="../assets/img/%s" width="1000" height="750" '
+            beeld = ('<img class="stap-beeld" src="assets/img/%s" width="1000" height="750" '
                      'loading="lazy" alt="%s">' % (b, alt))
         h += ('          <div class="stap">%s<b>%s</b><h3>%s</h3><p>%s</p></div>\n'
               % (beeld, nr, titel, tekst))
@@ -527,10 +527,10 @@ def stijlbladen():
     for variant in ("aflak",):
         for soort, inhoud, naam in (("css", stijl.blad(variant), "stijl.css"),
                                     ("js", JS.blad(variant, D.WA, D.FORMULIER_ACTIE), "main.js")):
-            map_ = os.path.join(WORTEL, "variant-" + variant, "assets", soort)
+            map_ = os.path.join(WORTEL, "assets", soort)
             os.makedirs(map_, exist_ok=True)
             io.open(os.path.join(map_, naam), "w", encoding="utf-8").write(inhoud)
-        assets = os.path.join(WORTEL, "variant-" + variant, "assets")
+        assets = os.path.join(WORTEL, "assets")
         # Favicons uit het logo (logo.py). Ze moeten naast de pagina staan:
         # browsers zoeken ze relatief aan de site.
         img = os.path.join(WORTEL, "assets", "img")
@@ -550,7 +550,7 @@ def stijlbladen():
 
 
 def schrijf(variant, naam, inhoud):
-    map_ = os.path.join(WORTEL, "variant-" + variant)
+    map_ = WORTEL
     os.makedirs(map_, exist_ok=True)
     inhoud = inhoud.replace("__PAGINA__", "" if naam == "index.html" else naam)
     if naam != "index.html":
@@ -597,6 +597,6 @@ def zoekbestanden(variant, namen):
         robots = "User-agent: *\nAllow: /\n\nSitemap: %s/sitemap.xml\n" % site
     else:
         robots = "# Demo: niet indexeren. Bij livegang LIVE = True in bouwscript/data.py.\nUser-agent: *\nDisallow: /\n"
-    map_ = os.path.join(WORTEL, "variant-" + variant)
+    map_ = WORTEL
     io.open(os.path.join(map_, "sitemap.xml"), "w", encoding="utf-8").write(sitemap)
     io.open(os.path.join(map_, "robots.txt"), "w", encoding="utf-8").write(robots)

@@ -42,8 +42,7 @@ LIVE = False
 # canonical, og:url, og:image en de sitemap. Bij livegang: het echte domein
 # bij "aflak".
 SITE_URL = {
-    "aflak": "https://bjornb0316.github.io/aribouw/variant-aflak",
-    "grondlaag": "https://bjornb0316.github.io/aribouw/variant-grondlaag",
+    "aflak": "https://bjornb0316.github.io/aribouw",
 }
 
 # Waar formulieren naartoe gaan. Leeg: demostand, controle en bevestiging

@@ -10,9 +10,9 @@ def vergelijk(x, paar=None):
     """Een echte voor-en-na, sleepbaar. Standaard het eerste paar uit B.VOORNA."""
     voor, na, titel, onder, alt_voor, alt_na = paar or B.VOORNA[0]
     return """        <div class="vergelijk op" data-schuif style="--x:%s%%">
-          <img src="../assets/img/%s" width="1100" height="825" loading="lazy"
+          <img src="assets/img/%s" width="1100" height="825" loading="lazy"
                alt="%s">
-          <img class="schuif-na" src="../assets/img/%s" width="1100" height="825"
+          <img class="schuif-na" src="assets/img/%s" width="1100" height="825"
                loading="lazy" alt="%s">
           <span class="schuif-merk schuif-merk--voor">Voor</span>
           <span class="schuif-merk schuif-merk--na">Na</span>
@@ -34,7 +34,7 @@ def index(variant):
               % (D.EIGENAAR, D.SCORE, D.AANTAL_REVIEWS),
               "Hallo, ik wil graag een offerte voor schilderwerk.",
               extra=('<script type="application/ld+json">%s</script>' % D.bedrijf_jsonld(variant)) +
-                    ('\n<link rel="preload" as="image" href="../assets/film/snijlijn.webp" '
+                    ('\n<link rel="preload" as="image" href="assets/film/snijlijn.webp" '
                      'fetchpriority="high">' if aflak else ""))
 
     # De zoekterm hoort in de h1: "schilder" plus de plaats. De merkzin blijft
@@ -65,7 +65,7 @@ def index(variant):
       <div class="hero-tekst">
 %s      </div>
       <div class="hero-beeld op">
-        <img src="../assets/img/pui-voetzorg.webp" width="1600" height="1000" fetchpriority="high"
+        <img src="assets/img/pui-voetzorg.webp" width="1600" height="1000" fetchpriority="high"
              alt="Geschilderde pui en deur van een praktijkruimte in antraciet">
       </div>
     </div>
@@ -242,13 +242,13 @@ def kleurkiezer():
         <div class="kiezer" data-stalen style="margin-top:2rem">
           <figure class="kiezer-beeld op">
             <div class="kiezer-vlak">
-            <img data-kleur-beeld="weetniet" data-aan="1" src="../assets/img/kleur-weetniet.webp"
+            <img data-kleur-beeld="weetniet" data-aan="1" src="assets/img/kleur-weetniet.webp"
                  width="1400" height="1050" loading="lazy" alt="Kleurwaaier en drie proefplankjes op een eiken tafel">
-            <img data-kleur-beeld="licht" data-aan="0" src="../assets/img/kleur-licht.webp"
+            <img data-kleur-beeld="licht" data-aan="0" src="assets/img/kleur-licht.webp"
                  width="1400" height="1050" loading="lazy" alt="Kamer met muren in gebroken wit">
-            <img data-kleur-beeld="warm" data-aan="0" src="../assets/img/kleur-warm.webp"
+            <img data-kleur-beeld="warm" data-aan="0" src="assets/img/kleur-warm.webp"
                  width="1400" height="1050" loading="lazy" alt="Kamer met muren in een warme zandtint">
-            <img data-kleur-beeld="donker" data-aan="0" src="../assets/img/kleur-donker.webp"
+            <img data-kleur-beeld="donker" data-aan="0" src="assets/img/kleur-donker.webp"
                  width="1400" height="1050" loading="lazy" alt="Binnendeur in diep blauwgrijs gelakt">
             </div>
             <figcaption>Sfeerbeeld bij de richting, geen klus van Aribouw.</figcaption>
@@ -320,7 +320,7 @@ def diensten(variant):
         om = " blok--om" if i == 1 else ""
         h += """      <div class="blok%s op">
         <div class="blok-beeld">
-          <img src="../assets/img/%s" width="1000" height="750" loading="lazy" alt="%s">
+          <img src="assets/img/%s" width="1000" height="750" loading="lazy" alt="%s">
         </div>
         <div>
           <h2 class="display">%s</h2>
@@ -356,7 +356,7 @@ def diensten(variant):
         h += '        <div class="speci op" data-stagger>\n'
         for slug, naam, kort, lang, beeld, punten in D.SUBDIENSTEN:
             src, alt = beelden[slug]
-            h += ('          <a class="speci-kaart" href="dienst-%s.html"><img src="../assets/img/%s" '
+            h += ('          <a class="speci-kaart" href="dienst-%s.html"><img src="assets/img/%s" '
                   'width="1000" height="750" loading="lazy" alt="%s"><span><h3 class="display">%s'
                   '</h3><p>%s</p><span class="meer">Wat dat inhoudt %s</span></span></a>\n'
                   % (slug, src, alt, naam, kort, B.PIJL))
@@ -408,12 +408,12 @@ def werk(variant):
     else:
         h += """        <div class="voorna op">
           <figure>
-            <img src="../assets/img/deur-voor-breed.webp" width="1100" height="825" loading="lazy"
+            <img src="assets/img/deur-voor-breed.webp" width="1100" height="825" loading="lazy"
                  alt="Binnendeur met houtlook voor het schilderen">
             <figcaption>Voor</figcaption>
           </figure>
           <figure>
-            <img src="../assets/img/deur-na-breed.webp" width="1100" height="825" loading="lazy"
+            <img src="assets/img/deur-na-breed.webp" width="1100" height="825" loading="lazy"
                  alt="Dezelfde deur na het schilderen in gebroken wit">
             <figcaption>Na</figcaption>
           </figure>

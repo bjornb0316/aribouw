@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """Bouwt de site van Aribouw.
 
-  variant-aflak/      de site: films, kleurkiezer, voor-en-na, aanvraag in
-                      stappen, dienst- en plaatspagina's
-  index.html          doorverwijzing naar variant-aflak/
+  *.html, assets/     de site in de hoofdmap: films, kleurkiezer, voor-en-na,
+                      aanvraag in stappen, dienst- en plaatspagina's
+  variant-aflak/      doorverwijzingen voor de oude adressen
 
 Er was ook een variant Grondlaag (Professional). Ahmad koos Aflak; Grondlaag
 is op 17 september 2026 verwijderd. De code in paginas.py en paginas2.py kent
@@ -18,7 +18,7 @@ import bouw as B
 import data as D
 import paginas as P1
 import paginas2 as P2
-import keuze
+import doorverwijzing
 
 
 def main():
@@ -43,12 +43,11 @@ def main():
     for naam, inhoud in pagina:
         B.schrijf("aflak", naam, inhoud)
     B.zoekbestanden("aflak", [n for n, _ in pagina if n != "beheer.html"])
-    print("variant-aflak       %2d pagina's" % len(pagina))
+    print("hoofdmap            %2d pagina's" % len(pagina))
     totaal += len(pagina)
 
-    keuze.bouw()
-    print("wortel               doorverwijzing naar variant-aflak/")
-    totaal += 1
+    n = doorverwijzing.bouw([n for n, _ in pagina])
+    print("variant-aflak/      %2d doorverwijzingen naar de hoofdmap" % n)
 
     print("\n%d pagina's geschreven" % totaal)
 

@@ -37,7 +37,7 @@ def over(variant):
           </div>
         </div>
         <div class="blok-beeld">
-          <img src="../assets/img/pui-detail.webp" width="1200" height="900" fetchpriority="high"
+          <img src="assets/img/pui-detail.webp" width="1200" height="900" fetchpriority="high"
                alt="Detail van een strak geschilderd kozijn en de aansluiting op het metselwerk">
         </div>
       </div>
@@ -178,10 +178,10 @@ def offerte(variant):
         <div data-stap data-aan="0">
           <h3 class="display">Welke kleurrichting?</h3>
           <div class="keuzes keuzes--2">
-            <button class="keuze keuze--beeld" type="button" data-waarde="licht"><img src="../assets/img/kleur-licht.webp" width="1400" height="1050" loading="lazy" alt="">Wit of gebroken wit</button>
-            <button class="keuze keuze--beeld" type="button" data-waarde="warm"><img src="../assets/img/kleur-warm.webp" width="1400" height="1050" loading="lazy" alt="">Een warme tint</button>
-            <button class="keuze keuze--beeld" type="button" data-waarde="donker"><img src="../assets/img/kleur-donker.webp" width="1400" height="1050" loading="lazy" alt="">Donker en diep</button>
-            <button class="keuze keuze--beeld" type="button" data-waarde="weetniet"><img src="../assets/img/kleur-weetniet.webp" width="1400" height="1050" loading="lazy" alt="">Weet ik nog niet</button>
+            <button class="keuze keuze--beeld" type="button" data-waarde="licht"><img src="assets/img/kleur-licht.webp" width="1400" height="1050" loading="lazy" alt="">Wit of gebroken wit</button>
+            <button class="keuze keuze--beeld" type="button" data-waarde="warm"><img src="assets/img/kleur-warm.webp" width="1400" height="1050" loading="lazy" alt="">Een warme tint</button>
+            <button class="keuze keuze--beeld" type="button" data-waarde="donker"><img src="assets/img/kleur-donker.webp" width="1400" height="1050" loading="lazy" alt="">Donker en diep</button>
+            <button class="keuze keuze--beeld" type="button" data-waarde="weetniet"><img src="assets/img/kleur-weetniet.webp" width="1400" height="1050" loading="lazy" alt="">Weet ik nog niet</button>
           </div>
         </div>
 
@@ -579,7 +579,7 @@ def dienstpagina(variant, dienst):
     <div class="wrap">
       <div class="blok op" style="border:0;padding-top:0">
         <div class="blok-beeld">
-          <img src="../assets/img/%(beeld)s" width="1000" height="750" loading="lazy"
+          <img src="assets/img/%(beeld)s" width="1000" height="750" loading="lazy"
                alt="%(kort)s">
         </div>
         <div>
@@ -717,7 +717,7 @@ def regiopagina(variant, plaats):
             werk = [w for w in B.WERK if w[0] in regio["projecten"]]
             h += '        <div class="werk werk--lokaal op" data-stagger>\n'
             for beeld, titel, onder in werk:
-                h += ('          <figure><img src="../assets/img/%s" width="1000" height="750" '
+                h += ('          <figure><img src="assets/img/%s" width="1000" height="750" '
                       'loading="lazy" alt="%s in %s"><figcaption><h3>%s</h3><p>%s</p></figcaption>'
                       '</figure>\n' % (beeld, titel, plaats, titel, onder))
             h += "        </div>\n"
