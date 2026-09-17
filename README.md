@@ -1,4 +1,4 @@
-# Aribouw, website
+﻿# Aribouw, website
 
 De website van Aribouw, het schildersbedrijf van Ahmad Nikzad uit Westervoort:
 schilderwerk, behangen en houtreparaties.
@@ -154,7 +154,7 @@ letterlijk onder dat het een sfeerbeeld is.
 | wat | waar | model |
 | --- | --- | --- |
 | Hero-film: tape gaat van de muur, er blijft een kaarsrechte lijn over | home | Kling 3.0 Pro, start- en eindbeeld |
-| Vier dienstfilms: roller, kwast op een kozijn, behang, houtvuller in een hersteld kozijn | dienstkaarten (lopen bij hover) en de kop van elke dienstpagina | Kling 3.0 Pro vanaf Nano Banana Pro-stills |
+| Zes dienstfilms: roller, kwast op een kozijn, behang, houtvuller in een hersteld kozijn, lak op een voordeur, de lijn tussen wand en plafond | dienstkaarten (lopen bij hover) en de kop van elke dienstpagina | Kling 3.0 Pro vanaf Nano Banana Pro-stills |
 | Woning in de schemer | bovenin elk contactblok | Kling 3.0 Pro |
 | Vier kamers per kleurrichting | kleurkiezer (wisselt mee bij hover en klik) en als duimnagel in de offerteflow | Soul 2.0 en Nano Banana Pro |
 | Vijf procesbeelden | werkwijze, bij elke stap | Soul 2.0 en Nano Banana Pro |
@@ -220,7 +220,7 @@ Fontshare.
 Home, diensten, werk, over Aribouw, offerte, contact.
 
 - Gesplitste hero met het beeld dat rechts van het scherm afloopt
-- Alle vier de diensten op één pagina, twee beeld-tekst-blokken en een raster
+- Alle vier de diensten op Ã©Ã©n pagina, twee beeld-tekst-blokken en een raster
 - Voor en na naast elkaar
 - Vier echte Werkspot-reviews met naam, plaats en datum
 - Contactformulier met veldcontrole en bevestiging in beeld
@@ -266,7 +266,7 @@ reviews en dezelfde mobiele navigatie.
 ## Wat er gecontroleerd is
 
 - 34 unieke adressen op de lokale server, allemaal 200, nul dode interne links
-- 21 pagina's geladen: nul console-errors, precies één `h1` per pagina, elke
+- 21 pagina's geladen: nul console-errors, precies Ã©Ã©n `h1` per pagina, elke
   `img` met `alt`, `width` en `height`, geen dode `href="#"`
 - Geen em-dashes in de hele site
 - Geen horizontale overflow op 1440 en op 375
@@ -400,7 +400,7 @@ Naast de drie schakelaars hierboven:
 | wat | waar | opmerking |
 | --- | --- | --- |
 | Eigen projectfoto's en voor-en-na | `bron/`, dan `VOORNA` en `WERK` in `bouw.py` | Ahmad stuurt ze apart. Nu staan er negen beelden van Facebook en Werkspot |
-| `[NOG AANVULLEN: garantietermijnen]` | `data.py`, `VRAGEN` | Werkspot vermeldt wel dát er garantie is, niet hoe lang |
+| `[NOG AANVULLEN: garantietermijnen]` | `data.py`, `VRAGEN` | Werkspot vermeldt wel dÃ¡t er garantie is, niet hoe lang |
 | `[NOG AANVULLEN: gebruikelijke doorlooptijden]` | `data.py`, `VRAGEN` | zichtbaar gemarkeerd |
 | Logo als vector | `bron/logo-aribouw.jpg`, `bouwscript/logo.py` | het logo van Ahmad staat erin (kop, voet, favicons, deelafbeelding, structured data), gemaakt uit een JPG met het wit transparant. Een SVG of PDF maakt het scherper; dan alleen `logo.py` aanpassen |
 | Alleen Aflak overhouden | keuzepagina, `variant-grondlaag/` | Ahmad koos Aflak: die naar de hoofdmap, de rest eruit. De paden `../assets/` gaan dan mee |

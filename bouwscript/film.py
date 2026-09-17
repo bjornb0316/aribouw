@@ -52,6 +52,10 @@ FILMS = [
     # Houtreparatie: plamuurmes zet houtvuller in een hersteld kozijn. Vervangt
     # de kitwerk-film (v65), die niet over hout ging. Gemaakt op 17 september.
     ("v82.mp4", "houtwerk", 1280, 23),
+    # Specialismen, 17 september: lak op een paneeldeur, en een kwast die de
+    # lijn tussen wand en plafond trekt.
+    ("v93.mp4", "deuren", 1280, 23),
+    ("v94.mp4", "wanden", 1280, 23),
     ("v66.mp4", "schemer", 1600, 24),
 ]
 
