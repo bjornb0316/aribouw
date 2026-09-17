@@ -685,6 +685,27 @@ h2.display{font-size:clamp(2rem,4vw,3.2rem);letter-spacing:-.025em}
 .sectie--film > .wrap{position:relative;z-index:2}
 .sectie--film .sectie-kop .display{color:#fff;text-shadow:0 2px 24px rgba(10,14,20,.5)}
 
+/* ---------- beheer: project toevoegen ---------- */
+.beheer-voorbeeld{background:var(--blauw-3);border-left:4px solid var(--blauw);color:var(--inkt);
+  padding:.9rem 1.1rem;border-radius:var(--r);font-size:.93rem;margin-bottom:1.8rem}
+.vink{display:flex;align-items:flex-start;gap:.65rem;margin-top:.9rem;font-size:.95rem;
+  cursor:pointer;min-height:44px}
+.vink input{width:1.2rem;height:1.2rem;margin-top:.15rem;accent-color:var(--blauw);flex-shrink:0}
+.vink-fout{display:none;font-size:.84rem;color:#A32718;font-weight:700;margin-top:.1rem}
+.vink-fout[data-aan="1"]{display:block}
+.veld input[type="file"]{padding:.6rem;background:var(--papier)}
+.beheer-kaart{margin-top:2rem;background:var(--wit);border:1px solid var(--lijn);
+  border-radius:var(--r);padding:clamp(1.3rem,3vw,2rem)}
+.beheer-kaart h2{font-size:clamp(1.5rem,3vw,2.1rem);margin-top:.5rem}
+.beheer-kaart h3{font-family:Supreme,sans-serif;font-weight:700;font-size:1rem;margin-top:1.3rem}
+.beheer-kaart p{color:var(--inkt-2);margin-top:.3rem}
+.beheer-fotos{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-top:1.2rem}
+.beheer-fotos img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:var(--r);
+  background:var(--zand)}
+.beheer-fotos figcaption{font-size:.7rem;font-weight:700;letter-spacing:.19em;
+  text-transform:uppercase;color:var(--inkt-3);margin-top:.4rem}
+.beheer .gelukt{margin-top:1.4rem}
+
 /* ---------- alle werkzaamheden in een oogopslag ---------- */
 .werkzaamheden{margin-top:clamp(1.6rem,3vw,2.2rem);background:var(--wit);border:1px solid var(--lijn);
   border-radius:var(--r);padding:clamp(1.2rem,2.6vw,1.7rem)}
