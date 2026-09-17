@@ -234,7 +234,25 @@ def gebiedstrip():
 
 # Aflak: welke Higgsfield-film bij welke dienst hoort. Zie film.py.
 DIENST_FILM = {"binnenschilderwerk": "binnen", "buitenschilderwerk": "buiten",
-               "behang": "behang", "houtwerk": "kitwerk"}
+               "behang": "behang", "houtwerk": "kitwerk",
+               # Specialismen: kozijnen deelt de kwastfilm met buitenschilderwerk,
+               # wanden en plafonds krijgt een beeld in plaats van een film.
+               "kozijnen-deuren": "buiten"}
+DIENST_BEELD = {"wanden-plafonds": ("kleur-licht.webp", "Kamer met strak geschilderde wanden in gebroken wit")}
+
+
+def werkzaamheden(variant, klasse=""):
+    """Alles wat Ahmad in de intake opgaf, letterlijk, in een oogopslag.
+    In Aflak linkt elke regel naar de pagina die erover gaat."""
+    h = '        <div class="werkzaamheden op%s">\n' % ((" " + klasse) if klasse else "")
+    h += '          <h3>Alle werkzaamheden</h3>\n          <ul>\n'
+    for naam, href in D.WERKZAAMHEDEN:
+        if variant == "aflak":
+            h += '            <li><a href="%s">%s %s</a></li>\n' % (href, naam, PIJL)
+        else:
+            h += '            <li>%s</li>\n' % naam
+    h += '          </ul>\n          <p>Geen stucwerk of egaliseren: Aribouw is een schilder.</p>\n'
+    return h + "        </div>\n"
 
 
 def film(naam, gedrag="lus", klasse="film"):
@@ -506,7 +524,7 @@ def contactblok(titel, intro, onderwerpen=None, variant=None):
 
 def stijlbladen():
     import shutil
-    for variant in ("grondlaag", "aflak"):
+    for variant in ("aflak",):
         for soort, inhoud, naam in (("css", stijl.blad(variant), "stijl.css"),
                                     ("js", JS.blad(variant, D.WA, D.FORMULIER_ACTIE), "main.js")):
             map_ = os.path.join(WORTEL, "variant-" + variant, "assets", soort)
