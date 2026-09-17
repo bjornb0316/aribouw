@@ -49,7 +49,9 @@ FILMS = [
     ("v62.mp4", "binnen", 1280, 23),
     ("v63.mp4", "buiten", 1280, 23),
     ("v64.mp4", "behang", 1280, 23),
-    ("v65.mp4", "kitwerk", 1280, 23),
+    # Houtreparatie: plamuurmes zet houtvuller in een hersteld kozijn. Vervangt
+    # de kitwerk-film (v65), die niet over hout ging. Gemaakt op 17 september.
+    ("v82.mp4", "houtwerk", 1280, 23),
     ("v66.mp4", "schemer", 1600, 24),
 ]
 
