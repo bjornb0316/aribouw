@@ -154,7 +154,7 @@ letterlijk onder dat het een sfeerbeeld is.
 | wat | waar | model |
 | --- | --- | --- |
 | Hero-film: tape gaat van de muur, er blijft een kaarsrechte lijn over | home | Kling 3.0 Pro, start- en eindbeeld |
-| Vier dienstfilms: roller, kwast op een kozijn, behang, kitwerk | dienstkaarten (lopen bij hover) en de kop van elke dienstpagina | Kling 3.0 Pro vanaf Nano Banana Pro-stills |
+| Vier dienstfilms: roller, kwast op een kozijn, behang, houtvuller in een hersteld kozijn | dienstkaarten (lopen bij hover) en de kop van elke dienstpagina | Kling 3.0 Pro vanaf Nano Banana Pro-stills |
 | Woning in de schemer | bovenin elk contactblok | Kling 3.0 Pro |
 | Vier kamers per kleurrichting | kleurkiezer (wisselt mee bij hover en klik) en als duimnagel in de offerteflow | Soul 2.0 en Nano Banana Pro |
 | Vijf procesbeelden | werkwijze, bij elke stap | Soul 2.0 en Nano Banana Pro |
@@ -404,7 +404,6 @@ Naast de drie schakelaars hierboven:
 | `[NOG AANVULLEN: gebruikelijke doorlooptijden]` | `data.py`, `VRAGEN` | zichtbaar gemarkeerd |
 | Logo als vector | `bron/logo-aribouw.jpg`, `bouwscript/logo.py` | het logo van Ahmad staat erin (kop, voet, favicons, deelafbeelding, structured data), gemaakt uit een JPG met het wit transparant. Een SVG of PDF maakt het scherper; dan alleen `logo.py` aanpassen |
 | Alleen Aflak overhouden | keuzepagina, `variant-grondlaag/` | Ahmad koos Aflak: die naar de hoofdmap, de rest eruit. De paden `../assets/` gaan dan mee |
-| Houtwerkfilm | `bouw.py`, `DIENST_FILM["houtwerk"]` | nu de kitwerk-film, die niet over hout gaat. Het Higgsfield-tegoed was op (0,97 credits); een nieuwe film kost ongeveer 11 credits |
 
 ### Nog te ontvangen of te bevestigen
 
