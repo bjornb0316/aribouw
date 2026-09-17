@@ -235,10 +235,10 @@ def gebiedstrip():
 # Aflak: welke Higgsfield-film bij welke dienst hoort. Zie film.py.
 DIENST_FILM = {"binnenschilderwerk": "binnen", "buitenschilderwerk": "buiten",
                "behang": "behang", "houtwerk": "houtwerk",
-               # Specialismen: kozijnen deelt de kwastfilm met buitenschilderwerk,
-               # wanden en plafonds krijgt een beeld in plaats van een film.
-               "kozijnen-deuren": "buiten"}
-DIENST_BEELD = {"wanden-plafonds": ("kleur-licht.webp", "Kamer met strak geschilderde wanden in gebroken wit")}
+               # Specialismen met een eigen film.
+               "kozijnen-deuren": "deuren", "wanden-plafonds": "wanden"}
+# Een beeld in de kop als een dienst (nog) geen film heeft.
+DIENST_BEELD = {}
 
 
 def werkzaamheden(variant, klasse=""):
