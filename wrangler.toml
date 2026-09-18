@@ -1,0 +1,23 @@
+﻿# Cloudflare Pages: de site plus de functies erachter.
+#
+#   npx wrangler d1 create aribouw          eenmalig, vul database_id hieronder in
+#   npx wrangler r2 bucket create aribouw-media
+#   npx wrangler d1 execute aribouw --remote --file=schema.sql
+#   npx wrangler pages deploy . --project-name=aribouw
+#
+# De pincode en het sessiegeheim staan niet in dit bestand:
+#   npx wrangler pages secret put BEHEER_PIN --project-name=aribouw
+#   npx wrangler pages secret put SESSIE_GEHEIM --project-name=aribouw
+
+name = "aribouw"
+compatibility_date = "2026-09-01"
+pages_build_output_dir = "."
+
+[[d1_databases]]
+binding = "DB"
+database_name = "aribouw"
+database_id = "dcca253e-5526-4f18-841a-5a4350e095f4"
+
+[[r2_buckets]]
+binding = "MEDIA"
+bucket_name = "aribouw-media"

@@ -1,260 +1,160 @@
 <!doctype html>
 <html lang="nl">
 <head>
-<script>document.documentElement.className+=" js";</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>Project toevoegen | Beheer Aribouw</title>
-<meta name="description" content="Beheer: een project op de website van Aribouw zetten.">
-<link rel="canonical" href="https://bjornb0316.github.io/aribouw/beheer.html">
-<meta property="og:title" content="Project toevoegen | Beheer Aribouw">
-<meta property="og:description" content="Beheer: een project op de website van Aribouw zetten.">
-<meta property="og:type" content="website">
-<meta property="og:locale" content="nl_NL">
-<meta property="og:site_name" content="Aribouw">
-<meta property="og:url" content="https://bjornb0316.github.io/aribouw/beheer.html">
-<meta property="og:image" content="https://bjornb0316.github.io/aribouw/assets/og.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#F6F4F0">
+<title>Beheer | Aribouw</title>
 <link rel="icon" href="assets/favicon-48.png" sizes="48x48" type="image/png">
-<link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
-<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-<link rel="preconnect" href="https://api.fontshare.com" crossorigin><link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=supreme@700&f%5B%5D=synonym@400,500,700&display=swap">
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f%5B%5D=supreme@700&f%5B%5D=synonym@400,500,700&display=swap">
 <link rel="stylesheet" href="assets/css/stijl.css">
-
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://bjornb0316.github.io/aribouw/"}, {"@type": "ListItem", "position": 2, "name": "Project toevoegen", "item": "https://bjornb0316.github.io/aribouw/beheer.html"}]}</script>
+<style>
+  body{padding-bottom:3rem}
+  .bh-kop{background:var(--nacht);color:var(--licht);padding:.9rem 0}
+  .bh-kop .wrap{display:flex;align-items:center;justify-content:space-between;gap:1rem}
+  .bh-kop img{height:26px;width:auto}
+  .bh-uit{color:var(--licht-2);text-decoration:underline;text-underline-offset:3px;font-size:.9rem}
+  .bh-tabs{display:flex;flex-wrap:wrap;gap:.4rem;margin:1.6rem 0 1.2rem}
+  .bh-tab{padding:.55rem 1rem;border:1px solid var(--lijn-2);border-radius:var(--r);
+    font-weight:700;font-size:.92rem;background:var(--wit)}
+  .bh-tab[aria-selected="true"]{background:var(--blauw);border-color:var(--blauw);color:#fff}
+  .bh-paneel[hidden]{display:none}
+  .bh-rij{background:var(--wit);border:1px solid var(--lijn);border-radius:var(--r);
+    padding:1rem 1.1rem;margin-bottom:.7rem}
+  .bh-rij textarea{width:100%;font:inherit;font-size:.95rem;border:1px solid var(--lijn-2);
+    border-radius:var(--r);padding:.6rem .7rem;background:var(--papier);resize:vertical}
+  .bh-rij p.klein{margin-bottom:.35rem}
+  .bh-bewerkt{color:var(--blauw);font-weight:700}
+  .bh-zoek{width:100%;max-width:26rem;font:inherit;padding:.6rem .8rem;border:1px solid var(--lijn-2);
+    border-radius:var(--r);margin-bottom:1rem}
+  .bh-groep{font-family:Supreme,sans-serif;font-weight:700;margin:1.6rem 0 .6rem}
+  .bh-melding{position:fixed;left:50%;bottom:1.2rem;transform:translateX(-50%);background:var(--nacht);
+    color:#fff;padding:.7rem 1.1rem;border-radius:var(--r);font-size:.92rem;z-index:80;display:none}
+  .bh-melding[data-aan="1"]{display:block}
+  .bh-kaart{display:flex;gap:1rem;align-items:flex-start}
+  .bh-kaart img{width:110px;height:82px;object-fit:cover;border-radius:var(--r);background:var(--zand)}
+  .bh-acties{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.6rem}
+  .bh-acties button{font-size:.85rem;padding:.4rem .8rem;border:1px solid var(--lijn-2);
+    border-radius:var(--r);background:var(--papier);font-weight:700}
+  .bh-acties button.weg{color:#A32718;border-color:#E3B6B0}
+  .voortgang{font-size:.88rem;color:var(--inkt-3)}
+</style>
 </head>
-<body data-wa-bericht="Hallo Bjorn, ik heb een vraag over het beheerscherm.">
+<body>
 
-<div class="voorstel">
+<header class="bh-kop">
   <div class="wrap">
-    <span><b>Voorbeeldpagina.</b> Voorstel voor Aribouw, gemaakt door Bjorn van Capital BB. Dit is niet de offici&euml;le website.</span>
-    <span><a href="https://wa.me/31614664161">Reageren via WhatsApp</a></span>
-  </div>
-</div>
-
-<header class="kop">
-  <div class="wrap kop-in">
-    <a class="merk" href="index.html"><img class="merk-logo" src="assets/img/logo-kop.png" width="471" height="120" alt="Aribouw, schilderen en behangen"></a>
-    <nav class="nav" aria-label="Hoofdmenu">
-        <a href="index.html">Home</a>
-        <a href="diensten.html">Diensten</a>
-        <a href="werk.html">Werk</a>
-        <a href="werkgebied.html">Werkgebied</a>
-        <a href="offerte.html">Offerte</a>
-        <a href="contact.html">Contact</a>
-    </nav>
-    <div class="kop-rechts">
-      <a class="kop-tel" href="tel:+31683044191">06 83 04 41 91</a>
-      <a class="knop knop--vol knop--klein" href="offerte.html">Offerte aanvragen</a>
-    </div>
-    <button class="menu-knop" aria-label="Menu openen" aria-expanded="false" aria-controls="menu">
-      <span></span><span></span><span></span>
-    </button>
+    <img src="assets/img/logo-kop-wit.png" alt="Aribouw">
+    <div><a href="/" style="color:var(--licht-2);margin-right:1rem">Naar de site</a>
+      <a class="bh-uit" href="#" data-uitloggen hidden>Uitloggen</a></div>
   </div>
 </header>
 
-<div class="menu" id="menu" data-open="0">
-  <div class="menu-top">
-    <a class="merk" href="index.html"><img class="merk-logo" src="assets/img/logo-kop.png" width="471" height="120" alt="Aribouw, schilderen en behangen"></a>
-    <button class="menu-sluit" aria-label="Menu sluiten">&times;</button>
-  </div>
-  <nav aria-label="Menu">
-      <a href="index.html">Home</a>
-      <a href="diensten.html">Diensten</a>
-      <a href="werk.html">Werk</a>
-      <a href="werkgebied.html">Werkgebied</a>
-      <a href="offerte.html">Offerte</a>
-      <a href="contact.html">Contact</a>
-  </nav>
-  <div class="knopgroep">
-    <a class="knop knop--vol" href="offerte.html">Offerte aanvragen</a>
-    <a class="knop knop--lijn" href="#" data-wa-pagina>WhatsApp</a>
-  </div>
-</div>
+<main class="wrap" style="padding-block:2rem">
 
-<main>
-
-  <section class="sectie beheer">
-    <div class="wrap" style="max-width:48rem">
-      <p class="beheer-voorbeeld op"><b>Voorbeeld voor de correctieronde.</b> Zo zet je straks zelf
-      een project op de site, nadat je bent ingelogd met je pincode. In deze versie wordt nog niets
-      opgeslagen of gepubliceerd; probeer het gerust uit.</p>
-
-      <h1 class="display op">Project toevoegen</h1>
-      <p class="intro op" style="margin-top:.9rem">Na een klus, vijf minuten. Het project komt op de
-      werkpagina en op de pagina&#39;s van de dienst en de plaats. Dat is wat nieuwe klanten
-      overtuigt, en waar Google op zoekt.</p>
-
-      <div class="signalen op">
-        <h3 class="display">Zo maak je de foto&#39;s</h3>
-        <ul>
-          <li>Voor en na vanaf dezelfde plek en in dezelfde hoek</li>
-          <li>Bij daglicht, liggend, zonder flits</li>
-          <li>Ook een foto van een detail: een hoek, een naad, een dorpel</li>
-          <li>Geen mensen, kentekens of huisnummers in beeld</li>
-          <li>Eerst de klant vragen of de foto&#39;s online mogen</li>
-          <li>Na afloop de klant om een Google-review vragen</li>
-        </ul>
+  <section data-inlog hidden>
+    <h1 class="display">Beheer</h1>
+    <p class="intro" style="margin-top:.8rem;max-width:36ch">Vul je pincode in om teksten aan te
+    passen en projecten toe te voegen.</p>
+    <form style="margin-top:1.4rem;max-width:18rem" data-inlogformulier>
+      <div class="veld">
+        <label for="pin">Pincode</label>
+        <input id="pin" name="pin" type="password" inputmode="numeric" autocomplete="current-password" required>
+        <span class="fout" data-pinfout style="display:none">Verkeerde pincode.</span>
       </div>
+      <button class="knop knop--vol" type="submit">Inloggen</button>
+    </form>
+  </section>
 
-      <form class="flow op" style="margin-top:2rem" data-beheer novalidate>
+  <section data-beheer hidden>
+    <h1 class="display">Beheer</h1>
+    <div class="bh-tabs" role="tablist">
+      <button class="bh-tab" role="tab" data-tab="teksten" aria-selected="true">Teksten</button>
+      <button class="bh-tab" role="tab" data-tab="projecten" aria-selected="false">Projecten</button>
+      <button class="bh-tab" role="tab" data-tab="reviews" aria-selected="false">Reviews</button>
+      <button class="bh-tab" role="tab" data-tab="aanvragen" aria-selected="false">Aanvragen</button>
+    </div>
+
+    <div class="bh-paneel" data-paneel="teksten">
+      <p class="klein">Klik in een tekst, pas hem aan en klik ernaast. De wijziging staat meteen op
+      de site. Leegmaken zet de oorspronkelijke tekst terug.</p>
+      <input class="bh-zoek" type="search" placeholder="Zoek een tekst of pagina" data-zoek>
+      <div data-teksten><p class="klein">Laden...</p></div>
+    </div>
+
+    <div class="bh-paneel" data-paneel="projecten" hidden>
+      <form class="flow" data-projectformulier style="margin-bottom:1.6rem">
+        <h2 class="display" style="font-size:1.4rem">Project toevoegen</h2>
         <div class="velden-2">
-          <div class="veld">
-            <label for="bh-werk">Soort werk</label>
-            <select id="bh-werk" name="werk" required>
-              <option value="" disabled selected>Maak een keuze</option>
+          <div class="veld"><label for="pr-titel">Wat is er gedaan</label>
+            <input id="pr-titel" name="titel" type="text" required
+                   placeholder="Vier buitenkozijnen en de voordeur">
+            <span class="fout">Vul in wat er is gedaan.</span></div>
+          <div class="veld"><label for="pr-plaats">Plaats</label>
+            <input id="pr-plaats" name="plaats" type="text" placeholder="Duiven"></div>
+        </div>
+        <div class="velden-2">
+          <div class="veld"><label for="pr-dienst">Soort werk</label>
+            <select id="pr-dienst" name="dienst">
+              <option value="">Kies</option>
               <option>Binnenschilderwerk</option>
               <option>Buitenschilderwerk</option>
               <option>Behangen</option>
               <option>Houtreparaties en onderhoud</option>
               <option>Kozijnen en deuren schilderen</option>
               <option>Wanden en plafonds schilderen</option>
-            </select>
-            <span class="fout">Kies het soort werk.</span>
-          </div>
-          <div class="veld">
-            <label for="bh-plaats">Plaats</label>
-            <select id="bh-plaats" name="plaats" required>
-              <option value="" disabled selected>Maak een keuze</option>
-              <option>Westervoort</option>
-              <option>Duiven</option>
-              <option>Zevenaar</option>
-              <option>Arnhem</option>
-              <option>Doesburg</option>
-              <option>Didam</option>
-              <option>Dieren</option>
-              <option>Velp</option>
-              <option>Huissen</option>
-              <option>Elst</option>
-              <option>Ede</option>
-              <option>Nijmegen</option>
-              <option>Andere plaats</option>
-            </select>
-            <span class="fout">Kies de plaats.</span>
-          </div>
+            </select></div>
+          <div class="veld"><label for="pr-wanneer">Wanneer</label>
+            <input id="pr-wanneer" name="wanneer" type="month"></div>
         </div>
+        <div class="veld"><label for="pr-situatie">Hoe was het ervoor</label>
+          <textarea id="pr-situatie" name="situatie" rows="2"></textarea></div>
+        <div class="veld"><label for="pr-aanpak">Wat heb je gedaan</label>
+          <textarea id="pr-aanpak" name="aanpak" rows="2"></textarea></div>
         <div class="velden-2">
-          <div class="veld">
-            <label for="bh-onderdelen">Wat is er gedaan</label>
-            <input id="bh-onderdelen" name="onderdelen" type="text" required
-                   placeholder="Bijvoorbeeld: vier buitenkozijnen en de voordeur">
-            <span class="fout">Vul in wat er is gedaan.</span>
-          </div>
-          <div class="veld">
-            <label for="bh-wanneer">Wanneer</label>
-            <input id="bh-wanneer" name="wanneer" type="month">
-            <span class="hulp">Maand is genoeg.</span>
-          </div>
+          <div class="veld"><label for="pr-voor">Foto voor</label>
+            <input id="pr-voor" name="voor" type="file" accept="image/*" required>
+            <span class="fout">Kies een foto van voor.</span></div>
+          <div class="veld"><label for="pr-na">Foto na</label>
+            <input id="pr-na" name="na" type="file" accept="image/*" required>
+            <span class="fout">Kies een foto van na.</span></div>
         </div>
-        <div class="veld">
-          <label for="bh-situatie">Hoe was het ervoor</label>
-          <textarea id="bh-situatie" name="situatie" rows="3" required
-                    placeholder="Bijvoorbeeld: lak bladderde op de onderdorpels, houtrot in twee hoeken"></textarea>
-          <span class="fout">Beschrijf hoe het ervoor was.</span>
-        </div>
-        <div class="veld">
-          <label for="bh-aanpak">Wat heb je gedaan</label>
-          <textarea id="bh-aanpak" name="aanpak" rows="3" required
-                    placeholder="Bijvoorbeeld: rot hout eruit, gevuld, geschuurd, gegrond en twee keer gelakt"></textarea>
-          <span class="fout">Beschrijf de aanpak.</span>
-        </div>
-        <div class="velden-2">
-          <div class="veld">
-            <label for="bh-voor">Foto voor</label>
-            <input id="bh-voor" name="voor" type="file" accept="image/*" required>
-            <span class="fout">Kies een foto van voor.</span>
-          </div>
-          <div class="veld">
-            <label for="bh-na">Foto na</label>
-            <input id="bh-na" name="na" type="file" accept="image/*" required>
-            <span class="fout">Kies een foto van na.</span>
-          </div>
-        </div>
-        <div class="veld">
-          <label for="bh-extra">Extra foto&#39;s</label>
-          <input id="bh-extra" name="extra" type="file" accept="image/*" multiple>
-          <span class="hulp">Niet verplicht. Bijvoorbeeld een detail.</span>
-        </div>
-        <label class="vink"><input type="checkbox" name="akkoord" data-akkoord> De klant vindt het goed
-        dat deze foto&#39;s online komen</label>
-        <p class="vink-fout" data-akkoord-fout>Vink dit aan voordat je publiceert.</p>
-        <label class="vink"><input type="checkbox" name="plaatsnaam" checked> Plaatsnaam tonen</label>
-
-        <div class="knopgroep" style="margin-top:1.4rem">
-          <button class="knop knop--lijn" type="button" data-beheer-voorbeeld>Voorbeeld bekijken</button>
-          <button class="knop knop--vol" type="submit">Publiceren</button>
-        </div>
+        <label class="vink"><input type="checkbox" data-akkoord> De klant vindt het goed dat deze
+        foto's online komen</label>
+        <p class="vink-fout" data-akkoordfout>Vink dit aan voordat je publiceert.</p>
+        <button class="knop knop--vol" type="submit" style="margin-top:1rem">Publiceren</button>
+        <span class="voortgang" data-voortgang></span>
       </form>
+      <div data-projecten></div>
+    </div>
 
-      <div class="beheer-kaart" data-beheer-kaart hidden>
-        <p class="label">Zo komt het op de site</p>
-        <h2 class="display" data-bk-titel></h2>
-        <div class="beheer-fotos">
-          <figure><img data-bk-voor alt=""><figcaption>Voor</figcaption></figure>
-          <figure><img data-bk-na alt=""><figcaption>Na</figcaption></figure>
+    <div class="bh-paneel" data-paneel="reviews" hidden>
+      <form class="flow" data-reviewformulier style="margin-bottom:1.6rem">
+        <h2 class="display" style="font-size:1.4rem">Review toevoegen</h2>
+        <div class="veld"><label for="rv-tekst">Wat schreef de klant</label>
+          <textarea id="rv-tekst" name="tekst" rows="3" required></textarea>
+          <span class="fout">Vul de review in.</span></div>
+        <div class="velden-2">
+          <div class="veld"><label for="rv-wie">Naam en plaats</label>
+            <input id="rv-wie" name="wie" type="text" required placeholder="Susanne, Driel">
+            <span class="fout">Vul naam en plaats in.</span></div>
+          <div class="veld"><label for="rv-wat">Soort werk en datum</label>
+            <input id="rv-wat" name="wat" type="text" placeholder="Buitenschilderwerk, mei 2026"></div>
         </div>
-        <h3>Situatie</h3><p data-bk-situatie></p>
-        <h3>Aanpak</h3><p data-bk-aanpak></p>
-        <p class="klein" data-bk-links></p>
-      </div>
+        <button class="knop knop--vol" type="submit" style="margin-top:1rem">Toevoegen</button>
+      </form>
+      <div data-reviews></div>
+    </div>
 
-      <div class="gelukt" data-beheer-gelukt role="status">
-        <b>Klaar, in het voorbeeld.</b>
-        <p>In de echte versie staat het project nu op de site: op de werkpagina, als eigen pagina, en
-        gelinkt vanaf de dienst en de plaats. In deze voorbeeldversie is er niets opgeslagen.</p>
-      </div>
+    <div class="bh-paneel" data-paneel="aanvragen" hidden>
+      <p class="klein">Alles wat via het contactformulier en de offerteaanvraag binnenkomt.</p>
+      <div data-aanvragen></div>
     </div>
   </section>
 </main>
 
-<footer class="voet">
-  <div class="wrap">
-    <div class="voet-in">
-      <div>
-        <span class="voet-merk"><img class="merk-logo merk-logo--voet" src="assets/img/logo-kop-wit.png" width="471" height="120" alt="Aribouw" loading="lazy"></span>
-        <p style="margin-top:.9rem;max-width:34ch">Schilderwerk, behang en houtreparaties.
-        Strak afgewerkt, netjes achtergelaten.</p>
-        <p style="margin-top:.9rem">Ahmad Nikzad<br>Mommenkamp 27<br>6932 HT Westervoort</p>
-        <p style="margin-top:.9rem">KvK 95128905<br>Btw NL005131384B93</p>
-      </div>
-      <div>
-        <p class="voet-kop">Pagina&#39;s</p>
-        <a href="index.html">Home</a>
-        <a href="diensten.html">Diensten</a>
-        <a href="werk.html">Werk</a>
-        <a href="werkgebied.html">Werkgebied</a>
-        <a href="offerte.html">Offerte</a>
-        <a href="contact.html">Contact</a>
-      </div>
-      <div>
-        <p class="voet-kop">Contact</p>
-        <a href="tel:+31683044191">06 83 04 41 91</a>
-        <a href="#" data-wa-pagina>WhatsApp</a>
-        <a href="mailto:aribouw10@gmail.com">aribouw10@gmail.com</a>
-        <a href="https://www.werkspot.nl/profiel/aribouw">Werkspot-profiel</a>
-      </div>
-      <div>
-        <p class="voet-kop">Werkgebied</p>
-        <p style="max-width:30ch">Westervoort, Duiven, Zevenaar, Arnhem, Doesburg, Didam, Dieren, Velp, Huissen, Elst, Ede en Nijmegen. Voor grotere projecten ook buiten deze regio.</p>
-      </div>
-    </div>
-    <div class="voet-onder">
-      <span>Schildersbedrijf uit Westervoort. Werken op afspraak, op locatie.</span>
-      <span><a class="voet-inline" href="privacy.html">Privacyverklaring</a> &nbsp;&middot;&nbsp; Voorbeeldontwerp van Bjorn, Capital BB. <a class="voet-inline" href="https://wa.me/31614664161">Reageren</a></span>
-    </div>
-  </div>
-</footer>
-
-<nav class="balk" aria-label="Snelle acties">
-  <a class="knop knop--lijn" href="tel:+31683044191">Bellen</a>
-  <a class="knop knop--lijn" href="#" data-wa-pagina>WhatsApp</a>
-  <a class="knop knop--vol" href="offerte.html">Offerte</a>
-</nav>
-
-<script src="assets/js/main.js"></script>
+<div class="bh-melding" data-melding role="status"></div>
+<script src="assets/js/beheer.js"></script>
 </body>
 </html>

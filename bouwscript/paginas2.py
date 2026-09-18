@@ -754,3 +754,62 @@ def regiopagina(variant, plaats):
         "Geef door wat er speelt, dan bel ik om een moment af te spreken.",
         variant=variant)
     return h + B.voet(variant)
+
+
+# =====================================================================
+# PROJECTSJABLOON (server vult dit met een project uit de database)
+# =====================================================================
+def projectsjabloon(variant):
+    h = B.kop(variant, "werk.html", "Project | Aribouw",
+              "Een uitgevoerd project van Aribouw.",
+              "Hallo, ik heb een vraag over dit project.",
+              extra='<meta name="robots" content="noindex">')
+    h += """
+  <section class="sectie" style="padding-bottom:clamp(2rem,4vw,3rem)">
+    <div class="wrap">
+      <p class="label op"><a href="werk.html">Werk</a></p>
+      <h1 class="display op" style="max-width:20ch" data-p="titel">Project</h1>
+      <p class="intro op" data-p="samenvatting">Uitgevoerd werk van Aribouw.</p>
+    </div>
+  </section>
+
+  <section class="sectie" style="padding-top:0">
+    <div class="wrap rail">
+      <div class="rail-kop">
+        <span class="rail-naam">Voor en na</span>
+        <p data-p="meta">Aribouw</p>
+      </div>
+      <div class="rail-in">
+        <div class="vergelijk op" data-schuif style="--x:55%">
+          <img data-p-src="voor" src="assets/img/deur-voor-breed.webp" width="1100" height="825"
+               alt="Voor het werk">
+          <img class="schuif-na" data-p-src="na" src="assets/img/deur-na-breed.webp" width="1100"
+               height="825" alt="Na het werk">
+          <span class="schuif-merk schuif-merk--voor">Voor</span>
+          <span class="schuif-merk schuif-merk--na">Na</span>
+          <div class="schuif-greep" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100"
+               aria-valuenow="55" aria-label="Schuif om voor en na te vergelijken"></div>
+        </div>
+        <div class="projecttekst op">
+          <h2 class="display">Hoe het ervoor was</h2>
+          <p data-p="situatie">Situatie.</p>
+          <h2 class="display">Wat ik heb gedaan</h2>
+          <p data-p="aanpak">Aanpak.</p>
+          <p data-p="resultaat" class="klein"></p>
+        </div>
+        <div class="projectfotos op" data-p-extra hidden></div>
+      </div>
+    </div>
+  </section>
+"""
+    h += B.snee(om=True)
+    h += '  <section class="sectie sectie--zand">\n    <div class="wrap rail">\n'
+    h += B.railkop("En verder", "Meer werk en dezelfde aanpak", "Alle projecten",
+                   'Alle foto&#39;s staan op de <a href="werk.html">werkpagina</a>.')
+    h += '        <p class="zie-ook" data-p-links></p>\n'
+    h += "      </div>\n    </div>\n  </section>\n"
+    h += B.contactblok(
+        "Zoiets voor uw woning",
+        "Stuur een foto van de ruimte of het kozijn, dan hoort u wat er nodig is.", variant=variant)
+    return h + B.voet(variant)
+

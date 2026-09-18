@@ -94,7 +94,7 @@
      de demostand: dan telt het als gelukt zonder dat er iets weggaat. Het
      verborgen veld _honey vullen alleen spambots in; die krijgen een
      bevestiging, maar er wordt niets verstuurd. */
-  var ACTIE = "";
+  var ACTIE = "/api/aanvraag";
   function verstuur(bak, gegevens) {
     var honing = bak.querySelector('[name="_honey"]');
     if (!ACTIE || (honing && honing.value)) return Promise.resolve(true);
@@ -159,7 +159,7 @@
         if (!controleer(f)) return;
         function waarde(n) { var i = f.querySelector('[name="' + n + '"]'); return i ? i.value.trim() : ""; }
         var gegevens = {
-          _subject: "Aanvraag via de website: " + (waarde("wat") || "contactformulier"),
+          _soort: "contact", _subject: "Aanvraag via de website: " + (waarde("wat") || "contactformulier"),
           naam: waarde("naam"), telefoon: waarde("tel"), plaats: waarde("plaats"),
           onderwerp: waarde("wat"), situatie: waarde("bericht")
         };
@@ -358,7 +358,7 @@ window.abExtra = function (WA) {
         /* Elke klikvraag met zijn eigen label, zodat de mail leest als een
            ingevuld formulier en niet als een rij losse woorden. */
         var labels = ["werk", "omvang", "kleurrichting", "ondergrond", "wanneer"];
-        var gegevens = { _subject: "Offerteaanvraag via de website: " + (keuzes[0] || "onbekend"),
+        var gegevens = { _soort: "offerte", _subject: "Offerteaanvraag via de website: " + (keuzes[0] || "onbekend"),
                          naam: veld("naam"), telefoon: veld("tel"), plaats: veld("plaats") };
         for (var n = 0; n < labels.length; n++) gegevens[labels[n]] = keuzes[n] || "";
         window.abBezig(knop, true);

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """Bouwstenen die beide varianten delen."""
-import io, os, sys
+import hashlib, io, os, re, sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import data as D
@@ -332,7 +332,8 @@ WERK = [
 
 
 def werkraster(hoeveel=6):
-    h = '        <div class="werk op" data-stagger>\n'
+    # data-blok: hier komen de projecten die Ahmad toevoegt bovenaan te staan.
+    h = '        <div class="werk op" data-stagger data-blok="werk">\n'
     for beeld, titel, onder in WERK[:hoeveel]:
         h += ('          <figure><img src="assets/img/%s" width="1000" height="750" '
               'loading="lazy" alt="%s"><figcaption><h3>%s</h3><p>%s</p></figcaption></figure>\n'
@@ -373,7 +374,9 @@ def werkwijze(klasse="", beelden=False):
 
 def reviews(hoeveel=4, klasse="", indexen=None):
     lijst = [D.REVIEWS[i] for i in indexen] if indexen is not None else D.REVIEWS[:hoeveel]
-    h = '        <div class="reviews%s op" data-stagger>\n' % (" reviews--een" if len(lijst) == 1 else "")
+    # data-blok: hier zet het beheerscherm de reviews in die Ahmad toevoegt.
+    h = ('        <div class="reviews%s op" data-stagger data-blok="reviews">\n'
+         % (" reviews--een" if len(lijst) == 1 else ""))
     for tekst, wie, wat in lijst:
         h += ('          <blockquote class="review"><p>%s</p>'
               '<div class="review-onder"><b>%s</b><span>%s</span></div></blockquote>\n'
@@ -549,10 +552,58 @@ def stijlbladen():
             shutil.copyfile(og, os.path.join(assets, "og.jpg"))
 
 
+# ---------------------------------------------------------------------
+# Bewerkbare teksten
+# ---------------------------------------------------------------------
+# Elke losse zin krijgt een label, zodat het beheerscherm hem kan
+# vervangen. Het label is een hash van de oorspronkelijke tekst: staat
+# dezelfde zin op meerdere pagina's (zoals het contactblok), dan hoeft
+# Ahmad hem maar een keer aan te passen. Verandert de tekst in het
+# bouwscript, dan vervalt de aanpassing en staat de nieuwe tekst er weer:
+# dat is veiliger dan een aanpassing op de verkeerde plek plakken.
+BEWERKBAAR = re.compile(r"<(h1|h2|h3|h4|p|li|small|span|b|a)(\s[^>]*)?>([^<>]{3,}?)</\1>")
+TEKSTEN = {}
+
+
+def labels(inhoud, naam):
+    def vervang(m):
+        tag, attrs, tekst = m.group(1), m.group(2) or "", m.group(3)
+        if "data-tekst" in attrs or not tekst.strip():
+            return m.group(0)
+        sleutel = hashlib.sha1(tekst.strip().encode("utf-8")).hexdigest()[:10]
+        regel = TEKSTEN.setdefault(sleutel, {"tekst": tekst.strip(), "paginas": []})
+        if naam not in regel["paginas"]:
+            regel["paginas"].append(naam)
+        return '<%s%s data-tekst="%s">%s</%s>' % (tag, attrs, sleutel, tekst, tag)
+    return BEWERKBAAR.sub(vervang, inhoud)
+
+
+def tekstenlijst():
+    """assets/teksten.json: wat het beheerscherm laat zien om te bewerken."""
+    import json
+    pad = os.path.join(WORTEL, "assets", "teksten.json")
+    io.open(pad, "w", encoding="utf-8").write(
+        json.dumps(TEKSTEN, ensure_ascii=False, indent=1, sort_keys=True))
+    return len(TEKSTEN)
+
+
+def kortelinks(inhoud):
+    """Cloudflare serveert diensten.html op /diensten en stuurt .html door.
+    Daarom staan de links meteen zonder .html: scheelt bij elke klik een
+    omleiding. De bestanden zelf houden gewoon hun .html-naam."""
+    inhoud = re.sub(r'href="index\.html(#[^"]*)?"', lambda m: 'href="/%s"' % (m.group(1) or ""),
+                    inhoud)
+    return re.sub(r'href="([a-z0-9\-]+)\.html(#[^"]*)?"',
+                  lambda m: 'href="%s%s"' % (m.group(1), m.group(2) or ""), inhoud)
+
+
 def schrijf(variant, naam, inhoud):
     map_ = WORTEL
     os.makedirs(map_, exist_ok=True)
-    inhoud = inhoud.replace("__PAGINA__", "" if naam == "index.html" else naam)
+    kort = "" if naam == "index.html" else naam[:-5] if naam.endswith(".html") else naam
+    inhoud = kortelinks(inhoud).replace("__PAGINA__", kort)
+    if naam != "beheer.html":
+        inhoud = labels(inhoud, naam)
     if naam != "index.html":
         inhoud = inhoud.replace("</head>", kruimels(variant, naam, inhoud) + "\n</head>", 1)
     io.open(os.path.join(map_, naam), "w", encoding="utf-8").write(inhoud)
@@ -586,7 +637,7 @@ def zoekbestanden(variant, namen):
     vandaag = datetime.date.today().isoformat()
     regels = []
     for n in namen:
-        pad = "" if n == "index.html" else n
+        pad = "" if n == "index.html" else (n[:-5] if n.endswith(".html") else n)
         prio = "1.0" if n == "index.html" else ("0.3" if n == "privacy.html" else "0.7")
         regels.append("  <url><loc>%s/%s</loc><lastmod>%s</lastmod><priority>%s</priority></url>"
                       % (site, pad, vandaag, prio))
