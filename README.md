@@ -331,6 +331,51 @@ op Werkspot, niet op deze site.
 - Analytics: kies iets zonder cookies (Cloudflare Web Analytics of Plausible), dan
   blijft de privacyverklaring kloppen
 
+## Het beheerscherm (Cloudflare)
+
+De site is statisch gegenereerd, maar Ahmad past hem zelf aan via `/beheer`.
+Inloggen met een pincode; daarna vier tabbladen: teksten, projecten, reviews en
+binnengekomen aanvragen.
+
+**Hoe de teksten werken.** Het bouwscript zet een label op elke losse zin
+(`assets/teksten.json`, zo'n 500 stuks). Het label is een hash van de
+oorspronkelijke tekst, dus dezelfde zin op meerdere pagina's deelt een label.
+`functions/_middleware.js` vervangt bij het opvragen van een pagina alleen wat
+is aangepast. De HTML blijft dus compleet, en een wijziging is meteen zichtbaar.
+Verandert een zin in het bouwscript, dan vervalt de aanpassing en staat de
+nieuwe tekst er weer.
+
+**Projecten en reviews** komen uit D1 en worden in `[data-blok="werk"]` en
+`[data-blok="reviews"]` gezet. Elk project krijgt een eigen pagina op
+`/projecten/<slug>`, opgebouwd uit `project-sjabloon.html`. Foto's gaan naar R2,
+in de browser verkleind naar 1600 pixels, en worden geserveerd via `/media/...`.
+
+**Aanvragen** van het contactformulier en de offerteflow gaan naar
+`/api/aanvraag`: ze worden opgeslagen in D1, zijn zichtbaar in het beheerscherm
+en worden doorgestuurd naar de mailbox (env `FORMULIER_DOOR`).
+
+```
+functions/_middleware.js      teksten, reviews en projecten in de pagina's
+functions/api/[[route]].js    inloggen, teksten, projecten, reviews, aanvragen, uploads
+functions/projecten/[slug].js projectpagina's
+functions/sitemap.xml.js      sitemap inclusief projecten
+beheer.html + assets/js/beheer.js   het beheerscherm zelf
+schema.sql                    de tabellen in D1
+```
+
+```bash
+npx wrangler d1 execute aribouw --remote --file=schema.sql   # eenmalig
+npx wrangler pages deploy . --project-name=aribouw --branch=main
+```
+
+Geheimen staan niet in de code: `BEHEER_PIN`, `SESSIE_GEHEIM` en
+`FORMULIER_DOOR` via `npx wrangler pages secret put ... --project-name=aribouw`.
+Op deze computer is IPv6 naar Cloudflare stuk; zet daarom
+`NODE_OPTIONS=--dns-result-order=ipv4first` voordat je wrangler gebruikt.
+
+Links staan zonder `.html`, want Cloudflare serveert `diensten.html` op
+`/diensten` en zou anders bij elke klik een omleiding geven.
+
 ## Klaar voor livegang: drie schakelaars
 
 Bovenin `bouwscript/data.py` staan drie instellingen. Alle drie staan nog in

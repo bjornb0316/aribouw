@@ -17,7 +17,7 @@ def bouw(namen):
     map_ = os.path.join(WORTEL, "variant-aflak")
     os.makedirs(map_, exist_ok=True)
     for naam in namen:
-        doel = "../" + ("" if naam == "index.html" else naam)
+        doel = "../" + ("" if naam == "index.html" else naam[:-5])
         html = """<!doctype html>
 <html lang="nl">
 <head>

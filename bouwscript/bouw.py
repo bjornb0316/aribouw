@@ -587,10 +587,21 @@ def tekstenlijst():
     return len(TEKSTEN)
 
 
+def kortelinks(inhoud):
+    """Cloudflare serveert diensten.html op /diensten en stuurt .html door.
+    Daarom staan de links meteen zonder .html: scheelt bij elke klik een
+    omleiding. De bestanden zelf houden gewoon hun .html-naam."""
+    inhoud = re.sub(r'href="index\.html(#[^"]*)?"', lambda m: 'href="/%s"' % (m.group(1) or ""),
+                    inhoud)
+    return re.sub(r'href="([a-z0-9\-]+)\.html(#[^"]*)?"',
+                  lambda m: 'href="%s%s"' % (m.group(1), m.group(2) or ""), inhoud)
+
+
 def schrijf(variant, naam, inhoud):
     map_ = WORTEL
     os.makedirs(map_, exist_ok=True)
-    inhoud = inhoud.replace("__PAGINA__", "" if naam == "index.html" else naam)
+    kort = "" if naam == "index.html" else naam[:-5] if naam.endswith(".html") else naam
+    inhoud = kortelinks(inhoud).replace("__PAGINA__", kort)
     if naam != "beheer.html":
         inhoud = labels(inhoud, naam)
     if naam != "index.html":
@@ -626,7 +637,7 @@ def zoekbestanden(variant, namen):
     vandaag = datetime.date.today().isoformat()
     regels = []
     for n in namen:
-        pad = "" if n == "index.html" else n
+        pad = "" if n == "index.html" else (n[:-5] if n.endswith(".html") else n)
         prio = "1.0" if n == "index.html" else ("0.3" if n == "privacy.html" else "0.7")
         regels.append("  <url><loc>%s/%s</loc><lastmod>%s</lastmod><priority>%s</priority></url>"
                       % (site, pad, vandaag, prio))
