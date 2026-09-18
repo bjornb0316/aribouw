@@ -80,7 +80,10 @@ export async function onRequest(context) {
     /* ---- inloggen ---- */
     if (pad === "/login" && methode === "POST") {
       const { pin } = await request.json();
-      if (!env.BEHEER_PIN || String(pin || "") !== String(env.BEHEER_PIN)) {
+      // trim(): een pincode die via de opdrachtregel is ingesteld kan een
+      // regeleinde meekrijgen.
+      const juist = String(env.BEHEER_PIN || "").trim();
+      if (!juist || String(pin || "").trim() !== juist) {
         // Even wachten, zodat proberen traag wordt.
         await new Promise((r) => setTimeout(r, 700));
         return antwoord({ fout: "Verkeerde pincode" }, 401);
