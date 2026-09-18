@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """Alle harde gegevens over Aribouw op een plek.
 
 Wat er gecontroleerd is en waar het vandaan komt:
@@ -34,15 +34,15 @@ import os
 # ---------------------------------------------------------------------
 # Livegang. Drie schakelaars, alle drie nog in demostand.
 # ---------------------------------------------------------------------
-# LIVE = False: voorbeeldbalk bovenin, voetregel van Bjorn, noindex op elke
+# LIVE = True: voorbeeldbalk bovenin, voetregel van Bjorn, noindex op elke
 # pagina en een robots.txt die alles blokkeert. Op True gaat dat allemaal weg.
-LIVE = False
+LIVE = True
 
 # Het adres waar elke variant staat, zonder slash aan het eind. Voor
 # canonical, og:url, og:image en de sitemap. Bij livegang: het echte domein
 # bij "aflak".
 SITE_URL = {
-    "aflak": "https://bjornb0316.github.io/aribouw",
+    "aflak": "https://aribouw.nl",
 }
 
 # Waar formulieren naartoe gaan. Leeg: demostand, controle en bevestiging
@@ -51,7 +51,7 @@ SITE_URL = {
 # eerste aanvraag stuurt Ahmad een activatiemail die hij een keer bevestigt.
 # Elk adres dat JSON per POST aanneemt en 2xx teruggeeft werkt. Voor een
 # test zonder de code aan te passen: omgevingsvariabele ARIBOUW_FORMULIER.
-FORMULIER_ACTIE = os.environ.get("ARIBOUW_FORMULIER", "")
+FORMULIER_ACTIE = os.environ.get("ARIBOUW_FORMULIER", "/api/aanvraag")
 
 NAAM = "Aribouw"
 PERSOON = "Ahmad"

@@ -39,13 +39,18 @@ def main():
         pagina.append(("regio-%s.html" % plaats.lower(), P2.regiopagina("aflak", plaats)))
     pagina.append(("privacy.html", P2.privacy("aflak")))
     # Alleen voor Ahmad: niet in het menu en niet in de sitemap.
-    pagina.append(("beheer.html", P2.beheer("aflak")))
+    # beheer.html staat als los bestand in de map: dat is geen sitepagina
+    # maar het scherm waarmee Ahmad de site bijwerkt.
+    # Sjabloon voor projectpagina's: de server vult hem met een project uit
+    # de database. Zelf niet in het menu en niet in de sitemap.
+    pagina.append(("project-sjabloon.html", P2.projectsjabloon("aflak")))
     for naam, inhoud in pagina:
         B.schrijf("aflak", naam, inhoud)
-    B.zoekbestanden("aflak", [n for n, _ in pagina if n != "beheer.html"])
+    B.zoekbestanden("aflak", [n for n, _ in pagina if n != "project-sjabloon.html"])
     print("hoofdmap            %2d pagina's" % len(pagina))
     totaal += len(pagina)
 
+    print("teksten             %2d bewerkbare zinnen" % B.tekstenlijst())
     n = doorverwijzing.bouw([n for n, _ in pagina])
     print("variant-aflak/      %2d doorverwijzingen naar de hoofdmap" % n)
 
