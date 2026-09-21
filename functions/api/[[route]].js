@@ -9,7 +9,9 @@
  * Bindings die Pages moet hebben: DB (D1), MEDIA (R2).
  */
 
-const JSON_KOP = { "content-type": "application/json; charset=utf-8" };
+import { mailAanvraag } from "../_mail.js";
+
+const JSON_KOP ={ "content-type": "application/json; charset=utf-8" };
 
 function antwoord(data, status = 200, extra = {}) {
   return new Response(JSON.stringify(data), { status, headers: { ...JSON_KOP, ...extra } });
@@ -205,18 +207,18 @@ export async function onRequest(context) {
     if (pad === "/aanvraag" && methode === "POST") {
       const gegevens = await request.json();
       if (gegevens._honey) return antwoord({ ok: true }); // spambot
-      await db.prepare("INSERT INTO aanvragen (soort, gegevens, gemaakt) VALUES (?, ?, ?)")
-        .bind(gegevens._soort || "contact", JSON.stringify(gegevens), nu()).run();
-      // Doorsturen naar de mailbox als er een adres is ingesteld.
-      if (env.FORMULIER_DOOR) {
-        try {
-          await fetch(env.FORMULIER_DOOR, {
-            method: "POST",
-            headers: { "content-type": "application/json", accept: "application/json" },
-            body: JSON.stringify(gegevens),
-          });
-        } catch (e) { /* de aanvraag staat al in de database */ }
-      }
+      // Eerst opslaan: wat er daarna ook misgaat, de aanvraag is binnen.
+      const rij = await db.prepare(
+        "INSERT INTO aanvragen (soort, gegevens, gemaakt) VALUES (?, ?, ?) RETURNING id"
+      ).bind(gegevens._soort || "contact", JSON.stringify(gegevens), nu()).first();
+      // Dan de mail naar Ahmad, op de achtergrond: de bezoeker krijgt meteen
+      // zijn bevestiging. Of het lukte, komt bij de aanvraag te staan.
+      context.waitUntil((async () => {
+        const status = await mailAanvraag(env, gegevens);
+        if (status && rij) {
+          await db.prepare("UPDATE aanvragen SET mail = ? WHERE id = ?").bind(status, rij.id).run();
+        }
+      })().catch(() => {}));
       return antwoord({ ok: true });
     }
     if (pad === "/aanvragen" && methode === "GET") {

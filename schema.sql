@@ -44,5 +44,8 @@ CREATE TABLE IF NOT EXISTS aanvragen (
   soort       TEXT NOT NULL,
   gegevens    TEXT NOT NULL,  -- JSON
   gelezen     INTEGER NOT NULL DEFAULT 0,
-  gemaakt     TEXT NOT NULL
+  gemaakt     TEXT NOT NULL,
+  mail        TEXT            -- "verstuurd", "mislukt: <reden>" of leeg
 );
+-- Een database van vóór de kolom mail krijgt hem zo (eenmalig):
+--   ALTER TABLE aanvragen ADD COLUMN mail TEXT;

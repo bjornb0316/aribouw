@@ -10,6 +10,11 @@
  */
 export const SITE = "https://aribouw.nl";
 
+/* Waar aanvragen uit de formulieren heen gaan, en van welk adres ze komen.
+ * Het afzendadres moet op een domein staan dat bij Resend is geverifieerd. */
+export const AANVRAAG_AAN = "info@aribouw.nl";
+export const AANVRAAG_VAN = "Website Aribouw <aanvraag@aribouw.nl>";
+
 /* Van de naam van een dienst, zoals die in het beheerscherm wordt gekozen,
  * naar de pagina erover. Staat een dienst er niet bij, dan wijst de link
  * naar het overzicht. */

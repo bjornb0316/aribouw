@@ -310,8 +310,13 @@
       try { g = JSON.parse(a.gegevens); } catch (e) { g = {}; }
       var regels = Object.keys(g).filter(function (k) { return k[0] !== "_" && g[k]; })
         .map(function (k) { return "<b>" + veilig(k) + ":</b> " + veilig(g[k]); }).join("<br>");
+      // Of de mail naar info@aribouw.nl is aangekomen. Mislukt: de aanvraag
+      // staat hier wel, maar Ahmad heeft hem niet in zijn mail gekregen.
+      var mail = !a.mail ? "" : a.mail === "verstuurd"
+        ? " &middot; gemaild"
+        : ' &middot; <b style="color:#b3261e">mail niet aangekomen</b> (' + veilig(a.mail.replace(/^mislukt: /, "")) + ")";
       return '<div class="bh-rij"><p class="klein">' + veilig(a.gemaakt.slice(0, 16).replace("T", " ")) +
-        " &middot; " + veilig(a.soort) + "</p><p>" + regels + "</p>" +
+        " &middot; " + veilig(a.soort) + mail + "</p><p>" + regels + "</p>" +
         '<div class="bh-acties">' +
         (g.telefoon ? '<a class="knop knop--lijn knop--klein" href="tel:' + veilig(g.telefoon) +
           '">Bellen</a>' : "") +

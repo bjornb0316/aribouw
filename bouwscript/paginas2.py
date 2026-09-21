@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """Over, werkgebied, offerte, contact, dienstpagina's en plaatspagina's."""
 import bouw as B
 import data as D
@@ -340,7 +340,7 @@ def nietgevonden(variant):
 # en plaats. Geschreven voor wat de site nu doet: geen cookies, geen
 # analytics, fonts via Fontshare, films en foto's van de eigen server.
 # Wat een keuze van Ahmad is en niet uit de wet volgt, staat gemarkeerd.
-PRIVACY_DATUM = "15 september 2026"
+PRIVACY_DATUM = "21 september 2026"
 
 
 def privacy(variant):
@@ -430,8 +430,12 @@ def privacy(variant):
 """ % dict(datum=PRIVACY_DATUM, eigenaar=D.EIGENAAR, adres=D.ADRES, postcode=D.POSTCODE,
            plaats=D.PLAATS, kvk=D.KVK, mail=D.MAIL, tel=D.TEL_TOON, tellink=D.TEL_LINK,
            # Categorieën van ontvangers volstaan voor de AVG. Namen kunnen erbij
-           # zodra hosting en formulierdienst vastliggen (zie data.py).
-           formulierdienst="", hosting="")
+           # Hosting en formulierdienst liggen vast sinds de livegang (september 2026).
+           formulierdienst="Dat is Resend; de gegevens worden alleen gebruikt om de mail "
+                           "af te leveren. Uw aanvraag wordt daarnaast opgeslagen bij de "
+                           "hostingpartij, zodat hij niet verloren gaat.",
+           hosting="Dat is Cloudflare. Cloudflare verwerkt technische gegevens zoals uw "
+                   "IP-adres om de website te laten werken en te beveiligen.")
     return h + B.voet(variant)
 
 
