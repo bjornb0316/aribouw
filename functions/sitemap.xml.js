@@ -1,5 +1,7 @@
 /* De sitemap: de vaste pagina's uit het bouwscript plus de projecten die
  * Ahmad zelf heeft toegevoegd. */
+import { SITE } from "./_site.js";
+
 export async function onRequest({ request, env }) {
   const url = new URL(request.url);
   const vast = await env.ASSETS.fetch(new URL("/sitemap.xml", url.origin));
@@ -10,7 +12,7 @@ export async function onRequest({ request, env }) {
       const { results } = await env.DB.prepare(
         "SELECT slug, gemaakt FROM projecten WHERE zichtbaar = 1 ORDER BY id DESC").all();
       const extra = (results || []).map((p) =>
-        `  <url><loc>${url.origin}/projecten/${p.slug}</loc>` +
+        `  <url><loc>${SITE}/projecten/${p.slug}</loc>` +
         `<lastmod>${(p.gemaakt || "").slice(0, 10)}</lastmod><priority>0.6</priority></url>`
       ).join("\n");
       if (extra) xml = xml.replace("</urlset>", extra + "\n</urlset>");

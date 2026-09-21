@@ -292,6 +292,48 @@ def contact(variant):
 
 
 # =====================================================================
+# PAGINA NIET GEVONDEN
+# Cloudflare Pages serveert 404.html met status 404 zodra dit bestand er
+# staat. Zonder dit bestand kreeg elk verkeerd adres de homepage met status
+# 200: een zachte 404, die Google eindeloos als dubbele homepage indexeert.
+# Daarom ook nadrukkelijk noindex, en verder gewoon een bruikbare pagina:
+# iemand die hier belandt moet in één klik verder kunnen.
+
+
+def nietgevonden(variant):
+    h = B.kop(variant, "", "Pagina niet gevonden | Aribouw",
+              "Deze pagina bestaat niet of is verhuisd. Ga naar de diensten, het werk of "
+              "neem contact op met Ahmad van Aribouw.",
+              "Hallo, ik kwam op een pagina die niet bestaat.",
+              extra='<meta name="robots" content="noindex,follow">')
+    h += """
+  <section class="sectie">
+    <div class="wrap">
+      <div class="lopend">
+        <h1 class="display op">Deze pagina bestaat niet</h1>
+        <p class="intro op" style="margin-top:1.1rem">Waarschijnlijk klopt het adres niet helemaal,
+        of is de pagina verhuisd. Hieronder staat waar u wel moet zijn. Zoekt u iets wat u niet
+        vindt, bel of app gerust: <a href="tel:{tellink}"
+        style="text-decoration:underline;text-underline-offset:3px">{tel}</a>.</p>
+        <ul class="op" style="margin-top:1.6rem">
+          <li><a href="index.html">Home</a> &mdash; wat Aribouw doet, in het kort</li>
+          <li><a href="diensten.html">Diensten</a> &mdash; schilderwerk, behang, houtwerk, kozijnen
+          en deuren, wanden en plafonds</li>
+          <li><a href="werk.html">Werk</a> &mdash; projecten van voor en na</li>
+          <li><a href="werkgebied.html">Werkgebied</a> &mdash; Westervoort, Arnhem, Duiven,
+          Zevenaar, Huissen en omgeving</li>
+          <li><a href="offerte.html">Offerte aanvragen</a> &mdash; in een paar stappen</li>
+          <li><a href="contact.html">Contact</a> &mdash; bellen, appen of mailen</li>
+        </ul>
+""".format(tellink=D.TEL_LINK, tel=D.TEL_TOON)
+    h += B.ctaregel("Liever even overleggen? Bel of app Ahmad, dan denkt hij meteen mee.",
+                    [("Offerte aanvragen", "offerte.html", "vol"),
+                     ("Bellen: %s" % D.TEL_TOON, "tel:%s" % D.TEL_LINK, "lijn")])
+    h += "      </div>\n    </div>\n  </section>\n"
+    return h + B.voet(variant)
+
+
+# =====================================================================
 # PRIVACYVERKLARING (beide varianten)
 # =====================================================================
 # Verplicht zodra de formulieren echt versturen: ze vragen naam, telefoon

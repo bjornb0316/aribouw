@@ -468,11 +468,44 @@ window.abExtra = function (WA) {
       });
       v.load();
     }
+    /* Een browser mag afspelen weigeren: in een tabblad op de achtergrond,
+       met energiebesparing aan, of terwijl de pagina nog laadt. Dat is geen
+       fout om weg te gooien: zonder tweede kans blijft de film voorgoed
+       stilstaan op de posterfoto. nogmaals() geeft daarom elke stilstaande
+       film in beeld een nieuwe kans, zodra het tabblad zichtbaar wordt of
+       de bezoeker iets doet. */
     function speel(v) {
       laad(v); v.muted = true;
       var p = v.play();
-      if (p && p.catch) p.catch(function () {});
+      if (!p || !p.catch) return;
+      p.catch(function () {
+        /* Meestal is de film simpelweg nog leeg: de bron begint pas te
+           laden bij deze eerste poging. Zodra er beeld is, nog een keer.
+           Zonder dit wacht de film op een aanraking van de bezoeker. */
+        v.addEventListener("loadeddata", function nu() {
+          v.removeEventListener("loadeddata", nu);
+          if (document.hidden || !v.paused) return;
+          var q = v.play();
+          if (q && q.catch) q.catch(function () {});
+        });
+      });
     }
+    function nogmaals() {
+      if (document.hidden) return;
+      alle.forEach(function (v) {
+        if (!v.paused || v.getAttribute("data-klaar")) return;
+        if (v.getAttribute("data-film") === "hover" && muis) return;
+        var r = v.getBoundingClientRect();
+        if (r.bottom > 0 && r.top < (window.innerHeight || 0)) speel(v);
+      });
+    }
+    document.addEventListener("visibilitychange", nogmaals);
+    window.addEventListener("pageshow", nogmaals);
+    // Niet op scrollen: daar gaat de waarnemer hieronder al over, en
+    // meetellen bij elke scrollstap kost onnodig rekenwerk.
+    ["pointerdown", "touchstart", "keydown"].forEach(function (naam) {
+      window.addEventListener(naam, nogmaals, { passive: true });
+    });
 
     var kijker = "IntersectionObserver" in window ? new IntersectionObserver(function (rijen) {
       rijen.forEach(function (r) {

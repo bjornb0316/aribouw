@@ -10,6 +10,8 @@
  *   [data-blok="werk"]       eigen projecten erbij, nieuwste eerst
  */
 
+import { SITE } from "./_site.js";
+
 function veilig(t) {
   return String(t == null ? "" : t)
     .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
@@ -34,6 +36,13 @@ function projectKaart(p) {
 export async function onRequest(context) {
   const { request, next, env } = context;
   const url = new URL(request.url);
+
+  // Eén adres voor de hele site. Wie op www binnenkomt gaat door naar het
+  // adres zonder www, zodat Google dezelfde pagina niet op twee namen ziet.
+  // Blijvend (301), inclusief pad en querystring.
+  if (url.hostname.startsWith("www.")) {
+    return Response.redirect(SITE + url.pathname + url.search, 301);
+  }
 
   // Foto's uit de opslag.
   if (url.pathname.startsWith("/media/") && env.MEDIA) {

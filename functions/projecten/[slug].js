@@ -6,6 +6,8 @@
  * worden als Ahmad een project toevoegt.
  */
 
+import { SITE, DIENSTPAGINA, PLAATSPAGINA } from "../_site.js";
+
 function veilig(t) {
   return String(t == null ? "" : t)
     .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -26,7 +28,7 @@ export async function onRequest(context) {
 
   const project = await env.DB.prepare(
     "SELECT * FROM projecten WHERE slug = ? AND zichtbaar = 1").bind(params.slug).first();
-  if (!project) return Response.redirect(new URL("/werk.html", request.url).toString(), 302);
+  if (!project) return Response.redirect(new URL("/werk", request.url).toString(), 302);
 
   const url = new URL(request.url);
   const sjabloon = await env.ASSETS.fetch(new URL("/project-sjabloon.html", url.origin));
@@ -57,7 +59,7 @@ export async function onRequest(context) {
     .on('link[rel="canonical"], meta[property="og:url"]', {
       element(el) {
         const naam = el.tagName === "link" ? "href" : "content";
-        el.setAttribute(naam, `${url.origin}/projecten/${project.slug}`);
+        el.setAttribute(naam, `${SITE}/projecten/${project.slug}`);
       },
     })
     .on("[data-p]", {
@@ -86,14 +88,19 @@ export async function onRequest(context) {
     })
     .on("[data-p-links]", {
       element(el) {
+        // Naar de pagina over die dienst en die plaats als die bestaat,
+        // anders naar het overzicht. Dat zijn de links waar een bezoeker
+        // (en Google) verder wil.
         const links = [];
         if (project.dienst) {
-          links.push(`<a href="/diensten.html">${veilig(project.dienst)}</a>`);
+          links.push(`<a href="${DIENSTPAGINA[project.dienst] || "/diensten"}">` +
+                     `${veilig(project.dienst)}</a>`);
         }
         if (project.plaats) {
-          links.push(`<a href="/werkgebied.html">Schilder in ${veilig(project.plaats)}</a>`);
+          links.push(`<a href="${PLAATSPAGINA[project.plaats] || "/werkgebied"}">` +
+                     `Schilder in ${veilig(project.plaats)}</a>`);
         }
-        links.push('<a href="/offerte.html">Offerte aanvragen</a>');
+        links.push('<a href="/offerte">Offerte aanvragen</a>');
         el.setInnerContent(links.join(" "), { html: true });
       },
     });
