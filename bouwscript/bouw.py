@@ -169,7 +169,7 @@ def voet(variant):
 """ % dict(links=links, tel=D.TEL_TOON, tellink=D.TEL_LINK, mail=D.MAIL, kvk=D.KVK,
            werkspot=D.WERKSPOT, gebied=gebied, plaats=D.PLAATS, logo_wit=LOGO_WIT,
            eigenaar=D.EIGENAAR, adres=D.ADRES, postcode=D.POSTCODE, btw=D.BTW,
-           ontwerp="" if D.LIVE else (
+           ontwerp=' &nbsp;&middot;&nbsp; Website door Jezz-Media' if D.LIVE else (
                ' &nbsp;&middot;&nbsp; Voorbeeldontwerp van Bjorn, Capital BB. <a class="voet-inline" '
                'href="https://wa.me/%s">Reageren</a>' % D.BJORN_WA))
 

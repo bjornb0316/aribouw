@@ -141,31 +141,6 @@
   ],
   "tekst": "Detail van de pui"
  },
- "0ae9b0cf64": {
-  "paginas": [
-   "index.html",
-   "diensten.html",
-   "werk.html",
-   "werkgebied.html",
-   "offerte.html",
-   "contact.html",
-   "dienst-binnenschilderwerk.html",
-   "dienst-buitenschilderwerk.html",
-   "dienst-behang.html",
-   "dienst-houtwerk.html",
-   "dienst-kozijnen-deuren.html",
-   "dienst-wanden-plafonds.html",
-   "regio-westervoort.html",
-   "regio-duiven.html",
-   "regio-zevenaar.html",
-   "regio-arnhem.html",
-   "regio-huissen.html",
-   "privacy.html",
-   "project-sjabloon.html",
-   "404.html"
-  ],
-  "tekst": "aribouw10@gmail.com"
- },
  "0bff6d6d96": {
   "paginas": [
    "privacy.html"
@@ -2513,6 +2488,31 @@
    "privacy.html"
   ],
   "tekst": "Autoriteit Persoonsgegevens"
+ },
+ "9e52a3e209": {
+  "paginas": [
+   "index.html",
+   "diensten.html",
+   "werk.html",
+   "werkgebied.html",
+   "offerte.html",
+   "contact.html",
+   "dienst-binnenschilderwerk.html",
+   "dienst-buitenschilderwerk.html",
+   "dienst-behang.html",
+   "dienst-houtwerk.html",
+   "dienst-kozijnen-deuren.html",
+   "dienst-wanden-plafonds.html",
+   "regio-westervoort.html",
+   "regio-duiven.html",
+   "regio-zevenaar.html",
+   "regio-arnhem.html",
+   "regio-huissen.html",
+   "privacy.html",
+   "project-sjabloon.html",
+   "404.html"
+  ],
+  "tekst": "info@aribouw.nl"
  },
  "9efbc901ff": {
   "paginas": [

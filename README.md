@@ -62,7 +62,7 @@ Ahmad heeft zijn gegevens en wensen aangeleverd. Die staan allemaal in
 | --- | --- |
 | Eigenaar | Ahmad Nikzad |
 | Telefoon en WhatsApp | 06 83 04 41 91 |
-| E-mail | aribouw10@gmail.com |
+| E-mail | info@aribouw.nl (aanvragen komen hier ook binnen) |
 | Adres | Mommenkamp 27, 6932 HT Westervoort |
 | KvK en btw | 95128905, NL005131384B93 |
 | Werkgebied | Westervoort, Duiven, Zevenaar, Arnhem, Doesburg, Didam, Dieren, Velp, Huissen, Elst, Ede, Nijmegen. Grotere projecten ook daarbuiten |

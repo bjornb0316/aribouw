@@ -63,7 +63,7 @@ POSTCODE = "6932 HT"
 TEL_TOON = "06 83 04 41 91"
 TEL_LINK = "+31683044191"
 WA = "31683044191"
-MAIL = "aribouw10@gmail.com"
+MAIL = "info@aribouw.nl"
 
 KVK = "95128905"
 BTW = "NL005131384B93"
