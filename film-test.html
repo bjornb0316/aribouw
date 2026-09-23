@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Filmtest | Aribouw</title>
+<!--
+  Hulppagina, geen onderdeel van de site: niet in het menu en niet in de
+  sitemap. Leest uit waarom de films op deze computer wel of niet bewegen.
+  Mag weg zodra dat duidelijk is.
+-->
+<style>
+  body{margin:0;padding:24px;font:16px/1.55 system-ui,Segoe UI,Arial,sans-serif;color:#1b2330;
+       background:#f7f6f3}
+  main{max-width:44rem;margin:0 auto}
+  h1{font-size:2rem;line-height:1.2;margin:0 0 .4rem;letter-spacing:-.01em}
+  p.klein{color:#5b6472;margin:0 0 1.5rem;font-size:.875rem}
+  .rij{display:flex;gap:12px;align-items:flex-start;padding:14px 0;border-top:1px solid #e3e6ea}
+  .rij b{flex:0 0 13rem}
+  .goed{color:#1c6b3a;font-weight:700}
+  .fout{color:#b3261e;font-weight:700}
+  .uitleg{font-size:.875rem;color:#5b6472;margin:.25rem 0 0}
+  video{width:100%;max-width:520px;border-radius:8px;background:#000;margin-top:8px}
+  .slot{margin-top:26px;padding:16px;border-radius:8px;background:#fff;border:1px solid #e3e6ea}
+</style>
+</head>
+<body>
+<main>
+  <h1>Waarom bewegen de beelden hier wel of niet?</h1>
+  <p class="klein">Open deze pagina op de computer waar het niet werkt. Hieronder staat wat deze
+  browser doorgeeft aan de website.</p>
+
+  <div id="uitslag"></div>
+
+  <div class="rij" style="display:block">
+    <b>Proef: speelt dit filmpje?</b>
+    <video id="proef" muted playsinline preload="metadata" poster="assets/film/snijlijn.webp">
+      <source src="assets/film/snijlijn.mp4" type="video/mp4">
+    </video>
+    <p class="uitleg" id="proefuitslag">Bezig met proberen...</p>
+  </div>
+
+  <div class="slot" id="slot"></div>
+</main>
+
+<script>
+(function () {
+  var minderBeweging = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var zuinig = !!(navigator.connection && navigator.connection.saveData);
+
+  function rij(naam, waarde, goed, uitleg) {
+    return '<div class="rij"><b>' + naam + '</b><div><span class="' + (goed ? "goed" : "fout") +
+      '">' + waarde + "</span>" + (uitleg ? '<p class="uitleg">' + uitleg + "</p>" : "") + "</div></div>";
+  }
+
+  document.getElementById("uitslag").innerHTML =
+    rij("Animaties in Windows", minderBeweging ? "UIT" : "aan", !minderBeweging,
+        minderBeweging
+          ? "Dit is de oorzaak. Zet aan: Instellingen &rarr; Toegankelijkheid &rarr; Visuele effecten &rarr; Animatie-effecten. Daarna de pagina verversen."
+          : "Goed, deze computer wil gewoon beweging zien.") +
+    rij("Databesparing in de browser", zuinig ? "AAN" : "uit", !zuinig,
+        zuinig
+          ? "Dit is de oorzaak. De browser slaat grote bestanden zoals video's over. Zet databesparing uit in de instellingen van de browser."
+          : "Goed, de browser mag video's ophalen.") +
+    rij("Browser", navigator.userAgent.replace(/^Mozilla\/5\.0 /, ""), true, "");
+
+  var v = document.getElementById("proef");
+  var uit = document.getElementById("proefuitslag");
+  function melden(tekst, goed) {
+    uit.innerHTML = '<span class="' + (goed ? "goed" : "fout") + '">' + tekst + "</span>";
+  }
+  var p = v.play();
+  if (p && p.then) {
+    p.then(function () { melden("Ja, het filmpje speelt. De video zelf werkt hier dus gewoon.", true); })
+     .catch(function (e) {
+       melden("Nee: " + (e && e.name ? e.name : "onbekend") + " &mdash; " +
+              (e && e.message ? e.message : ""), false);
+     });
+  } else {
+    melden("Deze browser is te oud om dit te kunnen melden.", false);
+  }
+
+  document.getElementById("slot").innerHTML = minderBeweging || zuinig
+    ? "<b>Kort gezegd:</b> de website doet wat deze computer vraagt. Er is niets mis met de site. " +
+      "Zet hierboven de rood gemarkeerde instelling om, ververs de pagina, en de beelden bewegen."
+    : "<b>Kort gezegd:</b> deze computer staat beweging gewoon toe. Bewegen de beelden op " +
+      "aribouw.nl toch niet, stuur dan een schermafbeelding van deze pagina door.";
+})();
+</script>
+</body>
+</html>
