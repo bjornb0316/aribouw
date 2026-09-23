@@ -233,7 +233,10 @@ def gebiedstrip():
 
 
 # Aflak: welke Higgsfield-film bij welke dienst hoort. Zie film.py.
-DIENST_FILM = {"binnenschilderwerk": "binnen", "buitenschilderwerk": "buiten",
+# De naam van een film is ook zijn adres. Vervang je een film door een
+# betere versie onder dezelfde naam, dan houden browsers de oude nog
+# uren vast. Daarom krijgt een vervangen film een nieuw nummer.
+DIENST_FILM = {"binnenschilderwerk": "binnen-2", "buitenschilderwerk": "buiten",
                "behang": "behang", "houtwerk": "houtwerk",
                # Specialismen met een eigen film.
                "kozijnen-deuren": "deuren", "wanden-plafonds": "wanden"}

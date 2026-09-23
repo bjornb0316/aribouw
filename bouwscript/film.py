@@ -50,7 +50,7 @@ FILMS = [
     # verticaal liep, en de verfbaan paste niet bij de rol. v95 is hetzelfde
     # beeld met de rol dwars, en loopt heen en terug zodat de lus niet
     # verspringt. Gemaakt op 23 september 2026.
-    ("v95.mp4", "binnen", 1280, 23),
+    ("v95.mp4", "binnen-2", 1280, 23),
     ("v63.mp4", "buiten", 1280, 23),
     ("v64.mp4", "behang", 1280, 23),
     # Houtreparatie: plamuurmes zet houtvuller in een hersteld kozijn. Vervangt
