@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """Over, werkgebied, offerte, contact, dienstpagina's en plaatspagina's."""
 import bouw as B
 import data as D
@@ -292,13 +292,55 @@ def contact(variant):
 
 
 # =====================================================================
+# PAGINA NIET GEVONDEN
+# Cloudflare Pages serveert 404.html met status 404 zodra dit bestand er
+# staat. Zonder dit bestand kreeg elk verkeerd adres de homepage met status
+# 200: een zachte 404, die Google eindeloos als dubbele homepage indexeert.
+# Daarom ook nadrukkelijk noindex, en verder gewoon een bruikbare pagina:
+# iemand die hier belandt moet in één klik verder kunnen.
+
+
+def nietgevonden(variant):
+    h = B.kop(variant, "", "Pagina niet gevonden | Aribouw",
+              "Deze pagina bestaat niet of is verhuisd. Ga naar de diensten, het werk of "
+              "neem contact op met Ahmad van Aribouw.",
+              "Hallo, ik kwam op een pagina die niet bestaat.",
+              extra='<meta name="robots" content="noindex,follow">')
+    h += """
+  <section class="sectie">
+    <div class="wrap">
+      <div class="lopend">
+        <h1 class="display op">Deze pagina bestaat niet</h1>
+        <p class="intro op" style="margin-top:1.1rem">Waarschijnlijk klopt het adres niet helemaal,
+        of is de pagina verhuisd. Hieronder staat waar u wel moet zijn. Zoekt u iets wat u niet
+        vindt, bel of app gerust: <a href="tel:{tellink}"
+        style="text-decoration:underline;text-underline-offset:3px">{tel}</a>.</p>
+        <ul class="op" style="margin-top:1.6rem">
+          <li><a href="index.html">Home</a> &mdash; wat Aribouw doet, in het kort</li>
+          <li><a href="diensten.html">Diensten</a> &mdash; schilderwerk, behang, houtwerk, kozijnen
+          en deuren, wanden en plafonds</li>
+          <li><a href="werk.html">Werk</a> &mdash; projecten van voor en na</li>
+          <li><a href="werkgebied.html">Werkgebied</a> &mdash; Westervoort, Arnhem, Duiven,
+          Zevenaar, Huissen en omgeving</li>
+          <li><a href="offerte.html">Offerte aanvragen</a> &mdash; in een paar stappen</li>
+          <li><a href="contact.html">Contact</a> &mdash; bellen, appen of mailen</li>
+        </ul>
+""".format(tellink=D.TEL_LINK, tel=D.TEL_TOON)
+    h += B.ctaregel("Liever even overleggen? Bel of app Ahmad, dan denkt hij meteen mee.",
+                    [("Offerte aanvragen", "offerte.html", "vol"),
+                     ("Bellen: %s" % D.TEL_TOON, "tel:%s" % D.TEL_LINK, "lijn")])
+    h += "      </div>\n    </div>\n  </section>\n"
+    return h + B.voet(variant)
+
+
+# =====================================================================
 # PRIVACYVERKLARING (beide varianten)
 # =====================================================================
 # Verplicht zodra de formulieren echt versturen: ze vragen naam, telefoon
 # en plaats. Geschreven voor wat de site nu doet: geen cookies, geen
 # analytics, fonts via Fontshare, films en foto's van de eigen server.
 # Wat een keuze van Ahmad is en niet uit de wet volgt, staat gemarkeerd.
-PRIVACY_DATUM = "15 september 2026"
+PRIVACY_DATUM = "21 september 2026"
 
 
 def privacy(variant):
@@ -388,8 +430,12 @@ def privacy(variant):
 """ % dict(datum=PRIVACY_DATUM, eigenaar=D.EIGENAAR, adres=D.ADRES, postcode=D.POSTCODE,
            plaats=D.PLAATS, kvk=D.KVK, mail=D.MAIL, tel=D.TEL_TOON, tellink=D.TEL_LINK,
            # Categorieën van ontvangers volstaan voor de AVG. Namen kunnen erbij
-           # zodra hosting en formulierdienst vastliggen (zie data.py).
-           formulierdienst="", hosting="")
+           # Hosting en formulierdienst liggen vast sinds de livegang (september 2026).
+           formulierdienst="Dat is Resend; de gegevens worden alleen gebruikt om de mail "
+                           "af te leveren. Uw aanvraag wordt daarnaast opgeslagen bij de "
+                           "hostingpartij, zodat hij niet verloren gaat.",
+           hosting="Dat is Cloudflare. Cloudflare verwerkt technische gegevens zoals uw "
+                   "IP-adres om de website te laten werken en te beveiligen.")
     return h + B.voet(variant)
 
 
@@ -754,3 +800,62 @@ def regiopagina(variant, plaats):
         "Geef door wat er speelt, dan bel ik om een moment af te spreken.",
         variant=variant)
     return h + B.voet(variant)
+
+
+# =====================================================================
+# PROJECTSJABLOON (server vult dit met een project uit de database)
+# =====================================================================
+def projectsjabloon(variant):
+    h = B.kop(variant, "werk.html", "Project | Aribouw",
+              "Een uitgevoerd project van Aribouw.",
+              "Hallo, ik heb een vraag over dit project.",
+              extra='<meta name="robots" content="noindex">')
+    h += """
+  <section class="sectie" style="padding-bottom:clamp(2rem,4vw,3rem)">
+    <div class="wrap">
+      <p class="label op"><a href="werk.html">Werk</a></p>
+      <h1 class="display op" style="max-width:20ch" data-p="titel">Project</h1>
+      <p class="intro op" data-p="samenvatting">Uitgevoerd werk van Aribouw.</p>
+    </div>
+  </section>
+
+  <section class="sectie" style="padding-top:0">
+    <div class="wrap rail">
+      <div class="rail-kop">
+        <span class="rail-naam">Voor en na</span>
+        <p data-p="meta">Aribouw</p>
+      </div>
+      <div class="rail-in">
+        <div class="vergelijk op" data-schuif style="--x:55%">
+          <img data-p-src="voor" src="assets/img/deur-voor-breed.webp" width="1100" height="825"
+               alt="Voor het werk">
+          <img class="schuif-na" data-p-src="na" src="assets/img/deur-na-breed.webp" width="1100"
+               height="825" alt="Na het werk">
+          <span class="schuif-merk schuif-merk--voor">Voor</span>
+          <span class="schuif-merk schuif-merk--na">Na</span>
+          <div class="schuif-greep" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100"
+               aria-valuenow="55" aria-label="Schuif om voor en na te vergelijken"></div>
+        </div>
+        <div class="projecttekst op">
+          <h2 class="display">Hoe het ervoor was</h2>
+          <p data-p="situatie">Situatie.</p>
+          <h2 class="display">Wat ik heb gedaan</h2>
+          <p data-p="aanpak">Aanpak.</p>
+          <p data-p="resultaat" class="klein"></p>
+        </div>
+        <div class="projectfotos op" data-p-extra hidden></div>
+      </div>
+    </div>
+  </section>
+"""
+    h += B.snee(om=True)
+    h += '  <section class="sectie sectie--zand">\n    <div class="wrap rail">\n'
+    h += B.railkop("En verder", "Meer werk en dezelfde aanpak", "Alle projecten",
+                   'Alle foto&#39;s staan op de <a href="werk.html">werkpagina</a>.')
+    h += '        <p class="zie-ook" data-p-links></p>\n'
+    h += "      </div>\n    </div>\n  </section>\n"
+    h += B.contactblok(
+        "Zoiets voor uw woning",
+        "Stuur een foto van de ruimte of het kozijn, dan hoort u wat er nodig is.", variant=variant)
+    return h + B.voet(variant)
+

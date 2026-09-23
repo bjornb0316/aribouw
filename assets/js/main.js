@@ -94,7 +94,7 @@
      de demostand: dan telt het als gelukt zonder dat er iets weggaat. Het
      verborgen veld _honey vullen alleen spambots in; die krijgen een
      bevestiging, maar er wordt niets verstuurd. */
-  var ACTIE = "";
+  var ACTIE = "/api/aanvraag";
   function verstuur(bak, gegevens) {
     var honing = bak.querySelector('[name="_honey"]');
     if (!ACTIE || (honing && honing.value)) return Promise.resolve(true);
@@ -159,7 +159,7 @@
         if (!controleer(f)) return;
         function waarde(n) { var i = f.querySelector('[name="' + n + '"]'); return i ? i.value.trim() : ""; }
         var gegevens = {
-          _subject: "Aanvraag via de website: " + (waarde("wat") || "contactformulier"),
+          _soort: "contact", _subject: "Aanvraag via de website: " + (waarde("wat") || "contactformulier"),
           naam: waarde("naam"), telefoon: waarde("tel"), plaats: waarde("plaats"),
           onderwerp: waarde("wat"), situatie: waarde("bericht")
         };
@@ -358,7 +358,7 @@ window.abExtra = function (WA) {
         /* Elke klikvraag met zijn eigen label, zodat de mail leest als een
            ingevuld formulier en niet als een rij losse woorden. */
         var labels = ["werk", "omvang", "kleurrichting", "ondergrond", "wanneer"];
-        var gegevens = { _subject: "Offerteaanvraag via de website: " + (keuzes[0] || "onbekend"),
+        var gegevens = { _soort: "offerte", _subject: "Offerteaanvraag via de website: " + (keuzes[0] || "onbekend"),
                          naam: veld("naam"), telefoon: veld("tel"), plaats: veld("plaats") };
         for (var n = 0; n < labels.length; n++) gegevens[labels[n]] = keuzes[n] || "";
         window.abBezig(knop, true);
@@ -460,11 +460,44 @@ window.abExtra = function (WA) {
       });
       v.load();
     }
+    /* Een browser mag afspelen weigeren: in een tabblad op de achtergrond,
+       met energiebesparing aan, of terwijl de pagina nog laadt. Dat is geen
+       fout om weg te gooien: zonder tweede kans blijft de film voorgoed
+       stilstaan op de posterfoto. nogmaals() geeft daarom elke stilstaande
+       film in beeld een nieuwe kans, zodra het tabblad zichtbaar wordt of
+       de bezoeker iets doet. */
     function speel(v) {
       laad(v); v.muted = true;
       var p = v.play();
-      if (p && p.catch) p.catch(function () {});
+      if (!p || !p.catch) return;
+      p.catch(function () {
+        /* Meestal is de film simpelweg nog leeg: de bron begint pas te
+           laden bij deze eerste poging. Zodra er beeld is, nog een keer.
+           Zonder dit wacht de film op een aanraking van de bezoeker. */
+        v.addEventListener("loadeddata", function nu() {
+          v.removeEventListener("loadeddata", nu);
+          if (document.hidden || !v.paused) return;
+          var q = v.play();
+          if (q && q.catch) q.catch(function () {});
+        });
+      });
     }
+    function nogmaals() {
+      if (document.hidden) return;
+      alle.forEach(function (v) {
+        if (!v.paused || v.getAttribute("data-klaar")) return;
+        if (v.getAttribute("data-film") === "hover" && muis) return;
+        var r = v.getBoundingClientRect();
+        if (r.bottom > 0 && r.top < (window.innerHeight || 0)) speel(v);
+      });
+    }
+    document.addEventListener("visibilitychange", nogmaals);
+    window.addEventListener("pageshow", nogmaals);
+    // Niet op scrollen: daar gaat de waarnemer hieronder al over, en
+    // meetellen bij elke scrollstap kost onnodig rekenwerk.
+    ["pointerdown", "touchstart", "keydown"].forEach(function (naam) {
+      window.addEventListener(naam, nogmaals, { passive: true });
+    });
 
     var kijker = "IntersectionObserver" in window ? new IntersectionObserver(function (rijen) {
       rijen.forEach(function (r) {
